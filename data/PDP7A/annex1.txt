@@ -58,9 +58,9 @@ year  id   tech   name                                   capacity_MW            
 2018  13   ND     hoa ddu Long Son #3                         75              IPP (dong phat)
 2018  14   NMDSK  sinh khoi KCP #2                            30              IPP (Phu Yen)
 2018  15   NMDSK  Dien sinh khoi An Khe #2                    55       Cty CP Duong Quang Ngai
-2018  16   NMDSK  sinh khoi Lee&Man                          125       Cty TNHH Giay Lee & Man  Viet Nam (dong phat)
+2018  16   NMDSK  sinh khoi Lee&Man                          125       Cty TNHH Giay Lee & Man  Viet Nam
 2018  17   DG     Dien gio Khai Long (Cit Mau)               100       Cty TNHH XD - TM - DL  Cong Ly
-2018  18   DG     Dien gio Bac Lieu giai dO?l1 III           142       Cty TNHH XD - TM - DL  Cong Ly
+2018  18   DG     Bac Lieu giai dO?l1 III                    142       Cty TNHH XD - TM - DL  Cong Ly
 2018  19   NLTT   Năng lượng tái tạo                         520                 <empty>
 2019  1    TD     Bao Lam 3                                   46                IPP
 2019  2    TD     Pac Ma                                     140       Cty CP thuy dien Pac Ma
@@ -78,7 +78,7 @@ year  id   tech   name                                   capacity_MW            
 2019  10   ND     Vinh Tan I #1                              600       CSG - CPIH - Vinacomin  (BOT)
 2019  10   ND     Vinh Tan I #2                              600       CSG - CPIH - Vinacomin  (BOT)
 2019  11   ND     Vinh Tan IV rna r9ng                       600                    EVN
-2019  12   TDN    Cum thuy dien nho Nam Cum 1, 4, 5           65                    IPP
+2019  12   TDN    Cum TDN Nam Cum 1, 4, 5                     65                    IPP
 2019  13   DG     Dien gio Trung - Nam                        90            IPP (Ninh Thuan)
 2019  14   DG     Dien gio Soc Trang                          99          Cty TNHH XD - TM - DL Cong Ly
 2019  15   DMT    Dien mặt trời Thien Tan 1                  300           IPP (Ninh Thuan)
@@ -96,7 +96,7 @@ year  id   tech   name                                   capacity_MW            
 2020  8    ND     d.m PM III #2                              220              Vinacomin
 2020  9    ND     Cong Thanh                                 600       Cty Co phan Nhiet diên Cong Thanh
 2020  10   TBKHH  O Mon III                                  750                    EVN
-2020  11   TDN    Cum thuy dien nho Nam Cum 2, 3, 6           54                    IPP
+2020  11   TDN    Cum TDN Nam Cum 2, 3, 6                     54                    IPP
 2020  12   DG     Dien gio Hanbaram                          117                    IPP
 2020  13   DMT    Dien mặt trời Thien Tan 2                  400            IPP (Ninh Thuan)
 2020  14   NLTT   Năng lượng tái tạo                         470                 <empty>
@@ -105,7 +105,7 @@ year  id   tech   name                                   capacity_MW            
 2021  3    ND     Nghi Son II #1                             600       Marubeni - Kepco (BOT)
 2021  4    ND     Viing Ang II #1                            600            VAPCO (BOT)
 2021  5    ND     Hai Duong #2                               600       Jaks Resources Bhd (BOT)
-2021  6    ND     Nam Dinh I #1                              600       Taekwang Power Holdings - ACWA Power (BOT)
+2021  6    ND     Nam Dinh I #1                              600     Taekwang Power Holdings - ACWA Power (BOT)
 2021  7    ND     Quang Tr\l.ch 1#1                          600                  PVN
 2021  8    TBKHH  Kien Giang I                               750                  PVN
 2021  9    TBKHH  6 Mon IV                                   750                  EVN
@@ -129,7 +129,7 @@ year  id   tech   name                                   capacity_MW            
 2022  6    ND     Quynh L~p I #1                             600              Vinacomin
 2022  7    ND     Viing Ang II #2                            600            VAPCO (BOT)
 2022  8    ND     Nghi Son II #2                             600        Marubeni - Kepco (BOT)
-2022  9    ND     Nam Dinh I #2                              600       Taekwang Power Holdings - ACWA Power (BOT)
+2022  9    ND     Nam Dinh I #2                              600     Taekwang Power Holdings - ACWA Power (BOT)
 2022  10   ND     Quang Tr~eh I #2                           600                  PVN
 2022  11   ND     Vinh Tan III #1                            660            VTEC (BOT)
 2022  12   ND     Song H~u II #2                            1000          Toyo Ink (BOT)
@@ -170,10 +170,10 @@ year  id   tech   name                                   capacity_MW            
 2025  8    TD     tich nang Bac Ai #3                        300                EVN
 2025  8    TD     tich nang Bac Ai #4                        300                EVN
 2025  9    NLTT   Năng lượng tái tạo                        1800                <empty>
-2026  1    TD     N~Mo         1 (Lao)                        72                IPP
+2026  1    TD     N~M 1 (Lao)                                 72                IPP
 2026  2    ND     H:l.i PhOng III #2                         600            Vinacomin
 2026  3    ND     QuYnh L?p II #1                            600               BOT
-2026  4    TBKHH  Mien Trung III                             750               PVN (neu khi cho hoa dau khong kha thi)
+2026  4    TBKHH  Mien Trung III                             750       PVN (neu khi cho hoa dau khong kha thi)
 2026  5    ND     Long An II #1                              800               <empty>
 2026  6    TBKHH  6 Mon II                                   750               <empty>
 2026  7    TBKHH  Son My I #1                                750       GDF SUEZ/Sojitz-Paeific (BOT)
@@ -187,7 +187,7 @@ year  id   tech   name                                   capacity_MW            
 2028  2    ND     dong phat Hai Hà 4                         300               IPP
 2028  2    ND     dong phat Hai Hà 4                         300               IPP
 2028  3    ND     Quang Trach II #1                          600               <empty>
-2028  4    DHN    Diện hạt nhân Ninh Thuận I #1             1200               EVN
+2028  4    DHN    Ninh Thuận I #1                           1200               EVN
 2028  5    ND     Tan Phuoc I #2                             600               <empty>
 2028  6    ND     Tan Phuoc II #1 (*)                        600               <empty>
 2028  7    TBKHH  Son My I #3                                750       GDF SUEZ/Sojitz-Pacific  (BOT)
@@ -198,8 +198,8 @@ year  id   tech   name                                   capacity_MW            
 2029  4    ND     Quang TrllCh II #2                         600               <empty>
 2029  5    ND     Tan Phuac II #2 (*)                        600               <empty>
 2029  6    ND     Bac Lieu 1#1 (*)                           600               <empty>
-2029  7    DHN    Diện hạt nhân Ninh Thuận I #2             1200               EVN
-2029  8    DHN    Diện hạt nhân Ninh Thuận II #1            1100               EVN 
+2029  7    DHN    Ninh Thuận I #2                           1200               EVN
+2029  8    DHN    Ninh Thuận II #1                          1100               EVN 
 2029  9    NLTT   Năng lượng tái tạo                        3350               <empty>
 2030  1    TD     Huoi Tao                                   180               <empty>
 2030  2    TD     tich nang Dong Phu Yen #3                  300       Cty Xuan Thien
@@ -207,6 +207,5 @@ year  id   tech   name                                   capacity_MW            
 2030  4    ND     Quang Ninh III #2                          600               <empty>
 2030  5    ND     Vung Ang III #4 (*)                        600               <empty>
 2030  6    ND     Bac Lieu I #2 (*)                          600               <empty>
-2030  7    DHN    Diện hạt nhân Ninh Thuận II #2            1100               EVN
+2030  7    DHN    Ninh Thuận II #2                          1100               EVN
 2030  8    NLTT   Năng lượng tái tạo                        3530               <empty>
-
