@@ -17,8 +17,8 @@ year  id   tech   name                                   capacity_MW            
 2016  14   TD     Song Tranh 4                                48                    IPP
 2016  15   TD     D1ikMi 2                                    98                    IPP
 2016  16   ND     Formosa Hà Tinh #2                         150          IPP - nhien lieu than
-2016  17   ND     Formosa Hà Tinh #3                         1OO          IPP - nhien lieu khi lo cao
-2016  17   ND     Formosa Hà Tinh #4                         1OO          IPP - nhien lieu khi lo cao
+2016  17   ND     Formosa Hà Tinh #3                         100          IPP - nhien lieu khi lo cao
+2016  17   ND     Formosa Hà Tinh #4                         100          IPP - nhien lieu khi lo cao
 2016  18   ND     Formosa Hà Tinh #5                         150          IPP - nhien lieu than
 2016  19   TD     D1ikMi 3                                    45                    IPP
 2016  20   ND     Formosa Dong Nai #3                        150                    IPP
