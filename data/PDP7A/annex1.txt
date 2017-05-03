@@ -38,7 +38,7 @@ year  id   tech   name                                   capacity_MW            
 2017  8    ND     Thai Binh I #2                             300                    EVN
 2017  9    ND     Thai Binh II #1                            600                    PVN
 2017  10   ND     Duyen Hlli III #2                          600                    EVN
-2017  11   ND     hOa ddu Long Son #1                         75               IPP (dong phat)
+2017  11   NDHD   Long Son #1                                 75               IPP (dong phat)
 2017  12   NMDSK  Dien sinh khoi An Khe #1                    55       Cty CP Buang Quang Ngai
 2017  13   NLTT   Năng lượng tái tạo                         360                  <empty>
 2018  1    TD     Song Lo 6                                   44       Cty TNHH Xuan Thien Hà Giang
@@ -54,8 +54,8 @@ year  id   tech   name                                   capacity_MW            
 2018  11   ND     Vinh Tan IV #1                             600                    EVN
 2018  11   ND     Vinh Tan IV #2                             600                    EVN
 2018  12   ND     Long Phil I #1                             600                    PVN
-2018  13   ND     hoa ddu Long Son #2                         75              IPP (dong phat)
-2018  13   ND     hoa ddu Long Son #3                         75              IPP (dong phat)
+2018  13   NDHD   Long Son #2                                 75              IPP (dong phat)
+2018  13   NDHD   Long Son #3                                 75              IPP (dong phat)
 2018  14   NMDSK  sinh khoi KCP #2                            30              IPP (Phu Yen)
 2018  15   NMDSK  Dien sinh khoi An Khe #2                    55       Cty CP Duong Quang Ngai
 2018  16   NMDSK  sinh khoi Lee&Man                          125       Cty TNHH Giay Lee & Man  Viet Nam
