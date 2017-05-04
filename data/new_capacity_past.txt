@@ -1,16 +1,36 @@
-year    tech        name                  capacity_MW        owner
+year    fuel        name                  capacity_MW        owner
 1974    Coal        Ninh Binh             100                GENCO 3
 1975    Coal        Uong Bi               105                GENCO 1
+1976    Dummy       Dummy                   0                Dummy
+1977    Dummy       Dummy                   0                Dummy
+1978    Dummy       Dummy                   0                Dummy
+1979    Dummy       Dummy                   0                Dummy
+1980    Dummy       Dummy                   0                Dummy
+1981    Dummy       Dummy                   0                Dummy
+1982    Dummy       Dummy                   0                Dummy
 1983    Coal        Pha Lai 1             440                GENCO 2
-1986    Hydro       Tri An                400                EVN 
+1984    Dummy       Dummy                   0                Dummy
+1985    Dummy       Dummy                   0                Dummy
+1986    Hydro       Tri An                400                EVN
+1987    Dummy       Dummy                   0                Dummy
+1988    Dummy       Dummy                   0                Dummy
+1989    Dummy       Dummy                   0                Dummy
+1990    Dummy       Dummy                   0                Dummy
+1991    Dummy       Dummy                   0                Dummy
 1992    Gas         Thủ Đức               114                GENCO 2
+1993    Dummy       Dummy                   0                Dummy
 1994    Gas         Can Tho               150                GENCO 2
 1994    Hydro       Hoa Binh             1920                EVN
+1995    Dummy       Dummy                   0                Dummy
+1996    Dummy       Dummy                   0                Dummy
 1997    Gas         Phú Mỹ 2-1            896                GENCO 3
+1998    Dummy       Dummy                   0                Dummy
+1999    Dummy       Dummy                   0                Dummy
 2000    Gas         Phú Mỹ 1             1108                GENCO 3                
 2001    Hydro       Ham Thuan             300                GENCO 1
 2001    Hydro       Ialy                  720                EVN
 2001    Coal        Pha Lai 2             600                GENCO 2
+2002    Dummy       Dummy                   0                Dummy
 2003    Coal        Formosa Dong Nai 1 2  310                Other
 2004    Coal        Na Duong              110                Other
 2004    Gas         Phú Mỹ 3              733                Other
@@ -25,6 +45,7 @@ year    tech        name                  capacity_MW        owner
 2008    Gas         Ca Mau 2              771                Petrovietnam
 2008    Hydro       A Vuong               210                GENCO 2
 2008    Hydro       Dai Ninh              300                GENCO 1
+2008    Biofuel     Soc Trang baggasse      6                Soc Trang Sugar Refinery
 2009    Hydro       Tuyen Quang           342                EVN 
 2009    Hydro       Song Ba Ha            220                GENCO 2
 2009    Hydro       Srepok 3              220                GENCO 3
@@ -33,9 +54,13 @@ year    tech        name                  capacity_MW        owner
 2009    Coal        Hai Phong 1           600                GENCO 2
 2009    Coal        Quang Ninh 1          600                GENCO 1
 2009    Gas         Nhon Trach 1          465                Petrovietnam
+2009    Biofuel     Gia Lai sugarcane      12                Gia Lai Sugar-Thermal Power JSC
 2010    Gas         O Mon 1               660                GENCO 2
 2010    Hydro       Ban Ve                320                GENCO 1
 2010    Hydro       Se San 4              360                EVN
+2010    Biofuel     Ninh Hoa bagasse        8                Ninh Hoa Sugar JSC
+2010    Biofuel     Cam Ranh baggasse      11                Other (year ?)
+2011    Wind        Tuy Phong              30                Others
 2011    Gas         Nhon Trach 2          750                Petrovietnam
 2012    Hydro       Dong Nai 4            340                GENCO 1
 2012    Hydro       Son La               2400                EVN
@@ -45,7 +70,10 @@ year    tech        name                  capacity_MW        owner
 2013    Coal        Hai Phong 2           600                GENCO 2
 2013    Coal        Quang Ninh 2          600                GENCO 1
 2013    Coal        Nghi Son 1            600                EVN
+2013    Wind        Phu Quy                 6                Petrovietnam
+2013    Wind        Bac Lieu phase 1       16                Others
 2015    Coal        An Khanh              120                Other
+2014    Dummy       Dummy                   0                Dummy
 2015    Coal        Mong Duong 1         1080                GENCO 3
 2015    Coal        Mong Duong 2         1120                Other
 2015    Coal        Vung Ang 1           1245                Other
@@ -57,5 +85,8 @@ year    tech        name                  capacity_MW        owner
 2015    Hydro       Lai Chau #1           400                EVN  (#2 and #3 started in 2016) 
 2015    Hydro       Huoi Quan             260                GENCO 3
 2015    Hydro       Ban Chat              220                EVN
-2015    Renewable   Aggregate            2141                Various
+2015    Wind        Bac Lieu phase 2       83                Others
+2015    Biofuel     Ayun Pa sugarcane      20                Gia Lai Sugar-Thermal Power JSC (?)
+2015    SmallHydro  Aggregate            1949                Small hydro
 2015    Hydro       Aggregate            4964                Various  (30-199MW)
+

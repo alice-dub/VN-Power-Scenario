@@ -7,8 +7,8 @@ year  id   tech   name                                   capacity_MW            
 2016  6    TD     Ba Thuoc 1                                  60                    IPP
 2016  7    TD     Song Tranh 3                                62                    IPP
 2016  8    TD     Hu(li Quang #2                             260                    EVN
-2016  9    TD     Lai Chiiu #2                               400                    EVN
-2016  9    TD     Lai Chiiu #3                               400                    EVN
+2016  9    TD     Lai Chau #2                                400                    EVN
+2016  9    TD     Lai Chau #3                                400                    EVN
 2016  10   TD     Trung San #1                                65                    EVN
 2016  10   TD     Trung San #2                                65                    EVN
 2016  11   TD     Nh\U1Hl;lC                                  59                    IPP
@@ -189,15 +189,15 @@ year  id   tech   name                                   capacity_MW            
 2028  3    ND     Quang Trach II #1                          600               <empty>
 2028  4    DHN    Ninh Thuận I #1                           1200               EVN
 2028  5    ND     Tan Phuoc I #2                             600               <empty>
-2028  6    ND     Tan Phuoc II #1 (*)                        600               <empty>
+2028  6    ND*    Tan Phuoc II #1 (*)                        600               <empty>
 2028  7    TBKHH  Son My I #3                                750       GDF SUEZ/Sojitz-Pacific  (BOT)
 2028  8    NLTT   Năng lượng tái tạo                        3240               <empty>
 2029  1    TD     tfch nang Dong Phil Yen #2                 300       Cty Xuan Thien
 2029  2    ND     Quang Ninh III #1                          600               <empty>
-2029  3    ND     Viing Ang III #3 (*)                       600               <empty>
+2029  3    ND*    Viing Ang III #3 (*)                       600               <empty>
 2029  4    ND     Quang TrllCh II #2                         600               <empty>
-2029  5    ND     Tan Phuac II #2 (*)                        600               <empty>
-2029  6    ND     Bac Lieu 1#1 (*)                           600               <empty>
+2029  5    ND*    Tan Phuac II #2 (*)                        600               <empty>
+2029  6    ND*    Bac Lieu 1#1 (*)                           600               <empty>
 2029  7    DHN    Ninh Thuận I #2                           1200               EVN
 2029  8    DHN    Ninh Thuận II #1                          1100               EVN 
 2029  9    NLTT   Năng lượng tái tạo                        3350               <empty>
@@ -205,7 +205,7 @@ year  id   tech   name                                   capacity_MW            
 2030  2    TD     tich nang Dong Phu Yen #3                  300       Cty Xuan Thien
 2030  3    TD     tich nang Don Duong #1                     300               EVN
 2030  4    ND     Quang Ninh III #2                          600               <empty>
-2030  5    ND     Vung Ang III #4 (*)                        600               <empty>
-2030  6    ND     Bac Lieu I #2 (*)                          600               <empty>
+2030  5    ND*    Vung Ang III #4 (*)                        600               <empty>
+2030  6    ND*    Bac Lieu I #2 (*)                          600               <empty>
 2030  7    DHN    Ninh Thuận II #2                          1100               EVN
 2030  8    NLTT   Năng lượng tái tạo                        3530               <empty>

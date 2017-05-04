@@ -54,3 +54,5 @@ Historical capacity additions:
 Column "year" is from various sources on internet
 Columns "capacity" "name" and "owner" is from EVN annual report 2016
 The last two 2015 lines for Renewable and Hydro are remaining agregates, we didn't look at opening dates of the dams under 200MW
+
+Bac Lieu wind farm phase 2 counted as 2015 in EVN, not in PDP7 for 2016
