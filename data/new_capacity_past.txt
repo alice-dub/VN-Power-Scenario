@@ -1,0 +1,61 @@
+year    tech        name                  capacity_MW        owner
+1974    Coal        Ninh Binh             100                GENCO 3
+1975    Coal        Uong Bi               105                GENCO 1
+1983    Coal        Pha Lai 1             440                GENCO 2
+1986    Hydro       Tri An                400                EVN 
+1992    Gas         Thủ Đức               114                GENCO 2
+1994    Gas         Can Tho               150                GENCO 2
+1994    Hydro       Hoa Binh             1920                EVN
+1997    Gas         Phú Mỹ 2-1            896                GENCO 3
+2000    Gas         Phú Mỹ 1             1108                GENCO 3                
+2001    Hydro       Ham Thuan             300                GENCO 1
+2001    Hydro       Ialy                  720                EVN
+2001    Coal        Pha Lai 2             600                GENCO 2
+2003    Coal        Formosa Dong Nai 1 2  310                Other
+2004    Coal        Na Duong              110                Other
+2004    Gas         Phú Mỹ 3              733                Other
+2004    Gas         Phú Mỹ 4              458                GENCO 3                
+2005    Coal        Cao Ngan              115                Other
+2005    Gas         Phú Mỹ 2-2            733                EDF
+2006    Hydro       Buon Kuop             280                GENCO 3
+2007    Hydro       Se San 3              260                EVN
+2007    Gas         Ba Ria                389                BTP (GENCO 3 51%), date approx.
+2007    Coal        Uong Bi extension 1   300                GENCO 1
+2008    Gas         Ca Mau 1              771                Petrovietnam
+2008    Gas         Ca Mau 2              771                Petrovietnam
+2008    Hydro       A Vuong               210                GENCO 2
+2008    Hydro       Dai Ninh              300                GENCO 1
+2009    Hydro       Tuyen Quang           342                EVN 
+2009    Hydro       Song Ba Ha            220                GENCO 2
+2009    Hydro       Srepok 3              220                GENCO 3
+2009    Coal        Cam Pha 1, 2          600                Other
+2009    Coal        Son Dong              220                Other
+2009    Coal        Hai Phong 1           600                GENCO 2
+2009    Coal        Quang Ninh 1          600                GENCO 1
+2009    Gas         Nhon Trach 1          465                Petrovietnam
+2010    Gas         O Mon 1               660                GENCO 2
+2010    Hydro       Ban Ve                320                GENCO 1
+2010    Hydro       Se San 4              360                EVN
+2011    Gas         Nhon Trach 2          750                Petrovietnam
+2012    Hydro       Dong Nai 4            340                GENCO 1
+2012    Hydro       Son La               2400                EVN
+2012    Hydro       Nam Chien 1           200                Nam Chien Hydropower JSC
+2012    Coal        Mao Khe               440                Other
+2013    Coal        Uong Bi extension 2   330                GENCO 1
+2013    Coal        Hai Phong 2           600                GENCO 2
+2013    Coal        Quang Ninh 2          600                GENCO 1
+2013    Coal        Nghi Son 1            600                EVN
+2015    Coal        An Khanh              120                Other
+2015    Coal        Mong Duong 1         1080                GENCO 3
+2015    Coal        Mong Duong 2         1120                Other
+2015    Coal        Vung Ang 1           1245                Other
+2015    Coal        Vinh Tan 2           1244                GENCO 3
+2015    Coal        Duyen Hai 1          1244                GENCO 1
+2015    Coal        Formosa Ha Tinh 1     150                Other
+2015    Coal        Nong Son               30                Other
+2015    Oil         Aggregate             875                Various
+2015    Hydro       Lai Chau #1           400                EVN  (#2 and #3 started in 2016) 
+2015    Hydro       Huoi Quan             260                GENCO 3
+2015    Hydro       Ban Chat              220                EVN
+2015    Renewable   Aggregate            2141                Various
+2015    Hydro       Aggregate            4964                Various  (30-199MW)

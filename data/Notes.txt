@@ -1,0 +1,56 @@
+Acronyms in the table:
+
+TD      Thủy điện			Hydro power
+ND	Nhiệt Điện                      Thermal power 
+TBKHH	Tuabin khí chu trình hỗn hợp	Combined cycle gas turbine
+DHN	Diện hạt nhân			Nuclear power
+
+NLTT	Năng lượng tái tạo		Renewable energy
+TDN     Thủy điện nhỏ                                 Small hydro power    SHP
+DG	Diện gió			Wind power
+DMT	Diện mặt trời			Solar power
+NMDSK	Nhà máy điện sinh khối		Biomass power plant
+
+BOT   Built, Operate, Transfer
+IPP   Independent Power Producer
+EVN   Electricité du Viet Nam
+PVN   Petrovietnam 
+
+
+Notes and parenthesis in the tables:
+
+NLTT includes TDN, DG, DMT, NMDSK and other...
+
+(*) Backup plants for the case all the renewable sources do not meet the set target (27GW by 2030)..
+
+ND hoa dao     oil thermal
+ND dong phat   combined heat power cogeneration
+mo rong        extension
+nhiên liệu khí lò cao    Blast furnace gas
+Differences between PDP7A et EVN 2016 report:
+
+The EVN report does not list IPP or BOT projects.
+
+ND Duyen Hai III #2 listed in 2017 in PDP, in 2016 in EVN
+ND Duyen Hai III #1 and #2 given for 622MW in EVN, 600MW in PDP
+
+ND Vin Tan IV #1 and #2 listed in 2018 in PDP, while #1 in 2017 by EVN
+
+TD Da Nhim extension in 2018 listed for 80MW in EVN, 100MW in PDP
+
+ND Duyen Hai III extension listed in 2018 by EVN, 2019 in PDP
+
+O Mon IV prévu en 2021 dans le PDP, construction 2019-2022 dans EVN
+
+TD Quang Trach 2 prévu 2028 et 2029 dans le PDP, 2023-2024 dans EVN
+
+TD Tan Phuoc 1 et 2 prévus en 2023-2024 pour 1000MW chaque dans EVN pour, à partir de 2027 pour 2x600 chaque dans PDP.
+
+Can Tho and Thu Duc are old power plants, units are 10-30 MW range,
+ historically using Fuel Oil, some units are retrofit with gas turbines, EVN 2016 list them as "Oil fired gas turbines"
+but count them in the "Gas" fuel on page 11. We differ and classify them as Oil capacity, hence 264MW discrepancy..
+
+Historical capacity additions:
+Column "year" is from various sources on internet
+Columns "capacity" "name" and "owner" is from EVN annual report 2016
+The last two 2015 lines for Renewable and Hydro are remaining agregates, we didn't look at opening dates of the dams under 200MW
