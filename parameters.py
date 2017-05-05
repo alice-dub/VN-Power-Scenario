@@ -5,40 +5,72 @@
 # Creative Commons Attribution-ShareAlike 4.0 International
 #
 #
-from data import PDP7A_annex1
+import pandas as pd
+from data import PDP7A_annex1, past_capacity_added
 
 
 #%%
+
+past_capacity_added["Renewable"] = (past_capacity_added.Biofuel
+                                    + past_capacity_added.SmallHydro
+                                    + past_capacity_added.Wind)
+
+past_capacity_added.drop(["Biofuel", "SmallHydro", "Wind"], axis=1, inplace=True)
+
+#print("""
+#Vietnam historical generation capacity by fuel type (MW)
+#Renewable includes small hydro, biofuel, wind (there is no solar capacity)
+#""")
+#print(past_capacity_added.cumsum())
+#print()
 
 #
 # define the baseline scenario
 #
 
-print("***** Baseline *****")
-print()
+
+print("""
+***** Baseline scenario *****
+Based on PDP7A for 2016 onwards
+Renewable includes small hydro
+Nuclear replaced by Coal
+Coal plants proposed as backup for renewables not included
+""")
 
 # The National Assembly voted to cancel the nuclear program
 # ASSUMPTION: Planned Nuclear electricity generation capacity is replaced by Coal
-baseline = PDP7A_annex1.replace({"tech": {"Nuclear": "Coal"}})
+baseline = PDP7A_annex1.replace({"fuel": {"Nuclear": "Coal"}})
 
-# TODO: update with plants removed from the plan like Bac Lieu
-# print(PDP7A_annex1.groupby("tech").capacity_MW.sum())
-# print()
-
-baseline_capacity_added = baseline.groupby(["year", "tech"]).capacity_MW.sum()
-baseline_capacity_added = baseline_capacity_added.unstack().fillna(0)
-
+baseline = baseline.groupby(["year", "fuel"]).capacity_MW.sum()
+baseline = baseline.unstack()
+baseline = pd.concat([past_capacity_added, baseline])
+baseline = baseline.fillna(0)
 # ASSUMPTION: no need for the backup thermal, renewables will be installed as per the plan
-baseline_capacity_added.drop("ND*", axis=1, inplace=True)
+baseline.drop("ND*", axis=1, inplace=True)
 
-print("Annual new capacity (MW)")
-print(baseline_capacity_added)
+print("Vietnam annual generation capacity addition by fuel type (MW)")
+print(baseline)
 print()
 
-print("Cumulative new capacity 2016 (MW)")
-print(baseline_capacity_added.cumsum())
+print("Vietnam generation capacity by fuel type (MW)")
+print(baseline.cumsum())
+print()
+
+#%% Check the capacity numbers vs. PDP7A objectives
+
+print(baseline.cumsum().loc[[2020, 2025, 2030]])
+
+print("""
+Compare to PDP7A:
+       Coal      Gas    Hydro  Renewable   Nuclear   Import
+year
+2020  25620     8940    18060     5940	    0        1440
+2025  47575    15054    20362    12063	    0        1448
+2030  55167    19036    21886    27195	    4662     1554
+""")
 
 
+#%%
 
 """Input parameters of the model"""
 
