@@ -6,7 +6,7 @@
 #
 #
 import pandas as pd
-from data import PDP7A_annex1, past_capacity_added
+from data import PDP7A_annex1, capacities_PDP7A, past_capacity_added
 
 
 #%%
@@ -60,15 +60,13 @@ print()
 
 print(baseline.cumsum().loc[[2020, 2025, 2030]])
 
-print("""
-Compare to PDP7A:
-       Coal      Gas    Hydro  Renewable   Nuclear   Import
-year
-2020  25620     8940    18060     5940	    0        1440
-2025  47575    15054    20362    12063	    0        1448
-2030  55167    19036    21886    27195	    4662     1554
-""")
+print(capacities_PDP7A)
 
+print("""
+Relative error""")
+print((baseline.cumsum().loc[[2020, 2025, 2030]] - capacities_PDP7A) / capacities_PDP7A)
+
+#FIXME: The relative error on Hydro is big
 
 #%%
 

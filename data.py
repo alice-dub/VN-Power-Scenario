@@ -93,15 +93,16 @@ print()
 
 #%%
 
-past_capacity_added["Renewable"] = (past_capacity_added.Biofuel
-                                    + past_capacity_added.SmallHydro
-                                    + past_capacity_added.Wind)
+past_capacity_added["Renewable"] = past_capacity_added.Biofuel + past_capacity_added.Wind
+
+past_capacity_added["Hydro"] = past_capacity_added.Hydro + past_capacity_added.SmallHydro
 
 simpler_past_capacity = past_capacity_added.drop(["Biofuel", "SmallHydro", "Wind"], axis=1)
 
 print("""
 Vietnam historical generation capacity by fuel type (MW)
-Renewable includes small hydro, biofuel, wind (there is no solar capacity)
+Hydro includes small hydro
+Renewable includes biofuel and wind (there is no solar capacity)
 """)
 print(simpler_past_capacity.cumsum())
 print()
@@ -131,7 +132,7 @@ import_2015 = 0.015 * domestic_supply_2015
 
 coal_2015 = round(0.344 * domestic_supply_2015)
 
-renewable_2015 = 200    # Source: Own estimate, extrapolated from 2014, + Bac Lieu 1 online
+renewable_2015 = 300    # Source: Own estimate, extrapolated from 2014, + Bac Lieu 1 online
 hydro_2015 = round((0.304 + 0.037) * domestic_supply_2015) - renewable_2015
 
 oil_2015 = 450         # Source: same as 2015, we have no number about new capacity
@@ -154,8 +155,16 @@ Hydro includes Small Hydro and pumped storage
 print(production_past)
 print()
 
+#%%
+
+capacity_factor_past = production_past / simpler_past_capacity.cumsum() * 1000 / 8760
+capacity_factor_past = capacity_factor_past.loc[1990:]
+
+print(capacity_factor_past)
 #
 #%% Power Development Plan 7 adjusted
+#
+# Capacity additions
 #
 
 PDP7A_annex1 = pd.read_fwf("data/PDP7A/annex1.txt",
@@ -187,3 +196,45 @@ print("""
 *: Backup coal units in case all the renewable sources do not meet the set target (27GW by 2030).
 """)
 
+#%%
+
+capacities_PDP7A = pd.read_csv("data/PDP7A/Objectives.csv",
+                               sep="\t",
+                               decimal=",",
+                               header=14,
+                               nrows=3,
+                               index_col=0,
+                               usecols=["year", "Coal", "Gas", "Hydro", "Renewable"])
+
+print("""
+PDP7A capacity objectives by fuel type (GW)
+Renewable includes Small hydro
+""")
+print(capacities_PDP7A)
+
+
+#%%
+
+production_PDP7A = pd.read_csv("data/PDP7A/Objectives.csv",
+                               sep="\t",
+                               decimal=",",
+                               header=26,
+                               nrows=3,
+                               index_col=0,
+                               usecols=["year", "Coal", "Gas", "Hydro", "Renewable"])
+
+print("""
+PDP7A power generation objectives by fuel type (TWh)
+Renewable includes Small hydro
+""")
+print(production_PDP7A)
+
+#%%
+
+capacity_factor_PDP7A = production_PDP7A / capacities_PDP7A * 1000 * 1000 / 8760
+
+print("""
+Capacity factors implicit in PDP7A decision
+based on 8760 hours/year
+""")
+print(capacity_factor_PDP7A)
