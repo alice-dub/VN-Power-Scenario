@@ -1,4 +1,4 @@
-year  id   tech   name                                   capacity_MW               owner
+year  id   fuel   name                                   capacity_MW               owner
 2016  1    TD     Nho Que 2                                   48                    IPP
 2016  2    TD     Nho Que 1                                   32                    IPP
 2016  3    TD     Nam Na 3                                    84                    IPP
