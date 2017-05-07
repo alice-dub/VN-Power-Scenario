@@ -1,36 +1,36 @@
-Objectives of the PDP7 A																	
-Hydro includes Large, medium and pumped storage hydropower																	
-Renewable includes small hydropower, wind power, solar power, biomass power																	
-Supply = Production + Import																	
-Import is net																	
-																	
-Capacity (%)																	
-year	Total	Hydro	Coal	Gas	Renewable	Nuclear	Import										
-2020	100%	30,1%	42,7%	14,9%	9,9%	0%	2,4%										
-2025	100%	21,1%	49,3%	15,6%	12,5%	0%	1,5%										
-2030	99,9996138996139%	16,9%	42,6%	14,6996138996139%	21%	3,6%	1,2%										
-																	
-Capacity (MW)																	
-2015									17000			140	0				
-year	Total	Hydro	Coal	Gas	Renewable	Nuclear	Import		All hydro	Pumped storage	Small hydro (difference)	Wind	Solar	Sum 3 renewables	Residual for Biomass		
-2020	60000	18060	25620	8940	5940	0	1440		21600	0	3540	800	850	5190	750		
-2025	96500	20361,5	47574,5	15054	12062,5	0	1447,5		24600	1200	3038,5	2000	4000	9038,5	3024		
-2030	129500	21885,5	55167	19036	27195	4662	1554		27800	2400	3514,5	6000	12000	21514,5	5680,5		
-																	
-Supply (%)																	
-year	Total	Hydro	Coal	Gas	Renewable	Nuclear	Import		All hydro		Small hydro (difference)	Wind	Solar	Sum 3 renewables	Biomass (given explicit)	Sum 4 renewables	Error 
-2020	100%	25,2%	49,3%	16,6%	6,5%	0%	2,4%		29,5%		4,3%	0,8%	0,5%	5,6%	1%	6,6%	-0,0999999999999973%
-2025	100%	17,4%	55%	19,1%	6,9%	0%	1,6%		20,5%		3,1%	1%	1,6%	5,7%	1,2%	6,9%	0%
-2030	100%	12,4%	53,2%	16,8%	10,7%	5,7%	1,2%		15,5%		3,1%	2,1%	3,3%	8,5%	2,1%	10,6%	0,0999999999999987%
-																	
-Supply (TWh)																	
-year	Total	Hydro	Coal	Gas	Renewable	Nuclear	Import		All hydro		SmallHydro	Wind	Solar		Biomass	Sum 4 renewables	Error 
-2020	265	66,78	130,645	43,99	17,225	0	6,36		78,175		11,395	2,12	1,325		2,65	17,49	-0,265
-2025	400	69,6	220	76,4	27,6	0	6,4		82		12,4	4	6,4		4,8	27,6	0
-2030	572	70,928	304,304	96,096	61,204	32,604	6,864		88,66		17,732	12,012	18,876		12,012	60,632	0,572
-																	
-Production (%)																	
-year	Total	Hydro	Coal	Gas	Renewable	Nuclear											
-2020	258,64	25,8196721311475%	50,5122950819672%	17,0081967213115%	6,65983606557377%	0%											
-2025	393,6	17,6829268292683%	55,8943089430894%	19,4105691056911%	7,01219512195122%	0%											
-2030	565,136	12,5506072874494%	53,8461538461539%	17,004048582996%	10,82995951417%	5,76923076923077%											
+Objectives of the PDP7 A,,,,,,,,,,,,,,,,,
+"Hydro includes Large, medium and pumped storage hydropower",,,,,,,,,,,,,,,,,
+"Renewable includes small hydropower, wind power, solar power, biomass power",,,,,,,,,,,,,,,,,
+Supply = Production + Import,,,,,,,,,,,,,,,,,
+Import is net,,,,,*** EXPORT AS CSV WITH TAB SEPARATOR ***,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+Capacity (%),,,,,,,,,,,,,,,,,
+year,Total,BigHydro,Coal,Gas,Renewable4,Nuclear,Import,,,,,,,,,,
+2020,"100,0%","30,1%","42,7%","14,9%","9,9%","0,0%","2,4%",,,,,,,,,,
+2025,"100,0%","21,1%","49,3%","15,6%","12,5%","0,0%","1,5%",,,,,,,,,,
+2030,"100,0%","16,9%","42,6%","14,7%","21,0%","3,6%","1,2%",,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+Capacity (MW),,,,,,,,,,,(by difference),(by difference),,,(by difference),,
+year,Capacity,BigHydro,Coal,Gas,Renewable4,Nuclear,Import,,Hydro,PumpedStorage,SmallHydro,Renewable,Wind,Solar,Biomass,,
+2015,,,,,,,,,17000,,,,140,0,,,
+2020,60000,18060,25620,8940,5940,0,1440,,21600,0,3540,2400,800,850,750,,
+2025,96500,20362,47575,15054,12063,0,1448,,24600,1200,3039,9024,2000,4000,3024,,
+2030,129500,21886,55167,19037,27195,4662,1554,,27800,2400,3515,23681,6000,12000,5681,,
+,,,,,,,,,,,,,,,,,
+Supply (%),,,,,,,,,,,(by difference),(by difference),,,(explicit),(reestimate),
+year,Total,BigHydro,Coal,Gas,Renewable4,Nuclear,Import,,Hydro,,SmallHydro,Renewable,Wind,Solar,Biomass,Renewable4,Error 
+2020,"100,0%","25,2%","49,3%","16,6%","6,5%","0,0%","2,4%",,"29,5%",,"4,3%","2,2%","0,8%","0,5%","1,0%","6,6%","-0,1%"
+2025,"100,0%","17,4%","55,0%","19,1%","6,9%","0,0%","1,6%",,"20,5%",,"3,1%","3,8%","1,0%","1,6%","1,2%","6,9%","0,0%"
+2030,"100,0%","12,4%","53,2%","16,8%","10,7%","5,7%","1,2%",,"15,5%",,"3,1%","7,6%","2,1%","3,3%","2,1%","10,6%","0,1%"
+,,,,,,,,,,,,,,,,,
+Supply (GWh),,,,,,,,,,,(by difference),(by difference),,,,(reestimate),
+year,Total,BigHydro,Coal,Gas,Renewable4,Nuclear,Import,,Hydro,,SmallHydro,Renewable,Wind,Solar,Biomass,Renewable4,Error 
+2020,265000,66780,130645,43990,17225,0,6360,,78175,,11395,5830,2120,1325,2650,17490,"-265,0"
+2025,400000,69600,220000,76400,27600,0,6400,,82000,,12400,15200,4000,6400,4800,27600,"0,0"
+2030,572000,70928,304304,96096,61204,32604,6864,,88660,,17732,43472,12012,18876,12012,60632,"572,0"
+,,,,,,,,,,,,,,,,,
+Production (%),,,,,,,,,,,,,,,,,
+year,Total,BigHydro,Coal,Gas,Renewable4,Nuclear,,,,,,,,,,,
+2020,258640,"25,8%","50,5%","17,0%","6,7%","0,0%",,,,,,,,,,,
+2025,393600,"17,7%","55,9%","19,4%","7,0%","0,0%",,,,,,,,,,,
+2030,565136,"12,6%","53,8%","17,0%","10,8%","5,8%",,,,,,,,,,,
