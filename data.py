@@ -24,17 +24,17 @@ pd.set_option('display.max_rows', 1000)
 #
 #    Here we do include SmallHydro in "Hydro" and not in "Renewable"
 #    and then use these column names:
-#      Hydro = BigHydro + SmallHydro + Pumped storage
-#      BigHydro  = LargeHydro + InterHydro
+#      Hydro = BigHydro + SmallHydro
+#      BigHydro = LargeHydro + InterHydro
 #      Renewable = Wind + Solar + Biomass
 #      Renewable4 = Renewable + Small hydro
 #
-# 3/ Adding up fossil fuel generation capacities with renewable capacities is meaningless
+# 3/ We do NOT include PumpedStorage in Hydro
+#
+# 4/ Adding up fossil fuel generation capacities with renewable capacities is meaningless
 #    because the capacity factors are not comparable, neither are the investment costs
 #
-# 4/ In VN capacity stats, generation from fuel oil and from diesel is not clearly accounted for
-#
-# 5/ Pumped storage counts in capacity only, not in production.
+# 5/ In VN capacity stats, generation from fuel oil and from diesel is not clearly accounted for
 
 #%% Historical capacity addition data
 
@@ -42,17 +42,22 @@ capacity_additions_past = pd.read_fwf("data/capacity_additions_past.txt")
 
 print(capacity_additions_past)
 
-capacity_2015 = capacity_additions_past.groupby(["fuel"]).capacity_MW.sum()
+capacity_2015_EVN = capacity_additions_past.groupby(["fuel"]).capacity_MW.sum()
 # print("SummaryCapacity in 2015")
 # print(capacity_2015)
 
 # Comparision with EVN Annual Report 2016, page 11.
-assert capacity_2015.LargeHydro + capacity_2015.InterHydro == 14636
-assert capacity_2015.Coal == 12903
-assert capacity_2015.Oil == 875
-assert capacity_2015.Gas == 7998
-assert capacity_2015.Wind == 135
-assert capacity_2015.Biofuel + capacity_2015.SmallHydro == 2006
+capacity_2015_EVN["BigHydro"] = capacity_2015_EVN.LargeHydro + capacity_2015_EVN.InterHydro
+assert capacity_2015_EVN.BigHydro == 14636
+assert capacity_2015_EVN.Coal == 12903
+assert capacity_2015_EVN.Oil == 875
+assert capacity_2015_EVN.Gas == 7998
+assert capacity_2015_EVN.Wind == 135
+assert capacity_2015_EVN.Biomass + capacity_2015_EVN.SmallHydro == 2006
+capacity_2015_EVN["Renewable4"] = (capacity_2015_EVN.SmallHydro
+                                   + capacity_2015_EVN.Wind
+                                   + capacity_2015_EVN.Biomass)
+
 
 capacity_past = capacity_additions_past.groupby(["year", "fuel"]).capacity_MW.sum()
 capacity_past = capacity_past .unstack().fillna(0)
@@ -83,7 +88,6 @@ def smooth(s):
 capacity_past.InterHydro = smooth(capacity_past.InterHydro)
 capacity_past.SmallHydro = smooth(capacity_past.SmallHydro)
 capacity_past.Oil = smooth(capacity_past.Oil)
-capacity_past["Solar"] = 0
 
 
 #Reorder
@@ -93,9 +97,8 @@ capacity_past = capacity_past[["Coal",
                                "LargeHydro",
                                "InterHydro",
                                "SmallHydro",
-                               "Biofuel",
-                               "Wind",
-                               "Solar"]]
+                               "Biomass",
+                               "Wind"]]
 
 print("""
 Vietnam historical capacity additions by fuel type (MW)
@@ -115,20 +118,37 @@ print()
 
 capacity_past_5cols = capacity_past[["Coal", "Gas", "Oil"]]
 
-capacity_past_5cols["Hydro"] = (capacity_past.LargeHydro
-                                + capacity_past.InterHydro
-                                + capacity_past.SmallHydro)
+capacity_past_5cols["BigHydro"] = (capacity_past.LargeHydro
+                                   + capacity_past.InterHydro)
 
-capacity_past_5cols["Renewable"] = (capacity_past.Biofuel
-                                    + capacity_past.Wind
-                                    + capacity_past.Solar)
+capacity_past_5cols["Renewable4"] = (capacity_past.SmallHydro
+                                     + capacity_past.Biomass
+                                     + capacity_past.Wind)
+#                                    + There was no solar in past
 
 print("""
 Vietnam historical generation capacity by fuel type (MW)
-Hydro includes inter and small hydro
-Renewable includes biofuel and wind (and solar for zero capacity)
+Small hydro included in Renewable4
+(historically, no Solar or Pumped Storage)
 """)
 print(capacity_past_5cols.cumsum())
+print()
+
+capacity_past_IEAcols = capacity_past[["Coal", "Gas", "Oil"]]
+
+capacity_past_IEAcols["Hydro"] = (capacity_past.LargeHydro
+                                  + capacity_past.InterHydro
+                                  + capacity_past.SmallHydro)
+
+capacity_past_IEAcols["Renewable"] = (capacity_past.Biomass
+                                      + capacity_past.Wind)
+
+
+print("""
+Vietnam historical generation capacity by fuel type (MW)
+Small hydro included in Hydro
+""")
+print(capacity_past_IEAcols.cumsum())
 print()
 
 
@@ -181,7 +201,7 @@ print()
 
 #%%
 
-capacity_factor_past = production_past / capacity_past_5cols.cumsum() * 1000 / 8760
+capacity_factor_past = production_past / capacity_past_IEAcols.cumsum() * 1000 / 8760
 capacity_factor_past = capacity_factor_past.loc[1990:]
 
 print("""
@@ -189,11 +209,6 @@ Vietnam historical capacity factors by fuel type
 Source: author
 """)
 print(capacity_factor_past)
-
-clipped = capacity_factor_past.where((0.1 < capacity_factor_past) & (capacity_factor_past < 1))
-clipped.drop("Oil", axis=1).plot(ylim=[0, 1],
-                                 xlim=[1995, 2015],
-                                 title="Vietnam generation capacity factors by fuel type")
 
 #
 #%% Power Development Plan 7 adjusted
@@ -205,27 +220,29 @@ PDP7A_annex1 = pd.read_fwf("data/PDP7A/annex1.txt",
                            usecols=["year", "id", "fuel", "capacity_MW"],
                            )
 
-PDP7A_annex1.replace({"fuel": {"TD": "BigHydro",
-                               "ND": "Coal",
+PDP7A_annex1.replace({"fuel": {"ND": "Coal",
                                "NDHD": "Oil",
                                "TBKHH": "Gas",
-                               "NLTT": "Renewable4",
+                               "TD": "BigHydro",
+                               "TDTN": "PumpedStorage",
+                               "NLTT": "Renewable4",   # Renewable energy (agregate)
+                               "TDN": "Renewable4",    # Small hydro
                                "NMDSK": "Renewable4",  # Biomass
-                               "DG": "Renewable4",  # Wind
-                               "DMT": "Renewable4",  # Solar
-                               "TDN": "Renewable4",  # Small hydro
-                               "DHN": "Nuclear",    # Abandonned
+                               "DG": "Renewable4",     # Wind
+                               "DMT": "Renewable4",    # Solar
+                               "DHN": "Nuclear",
                                }},
                      inplace=True
                      )
 
 # print(PDP7A_annex1)
 
+capacity_total_plan = PDP7A_annex1.groupby("fuel").capacity_MW.sum()
 print("""
 Summary of 2016-2030 new capacity listed in PDP7A annex 1, MW
-Renewable includes Small Hydro
+Renewable4 includes Small Hydro
 """)
-print(PDP7A_annex1.groupby("fuel").capacity_MW.sum())
+print(capacity_total_plan)
 print("""
 *: Backup coal units in case all the renewable sources do not meet the set target (27GW by 2030).
 """)
@@ -241,8 +258,8 @@ capacities_PDP7A = capacities_PDP7A.drop(2015)
 
 capacities_PDP7A = capacities_PDP7A[["Coal",
                                      "Gas",
-                                     "Hydro",
-                                     "BigHydro",
+                                     "Hydro+Storage",
+                                     "BigHydro+Storage",
                                      "SmallHydro",
                                      "PumpedStorage",
                                      "Renewable4",
@@ -252,11 +269,55 @@ capacities_PDP7A = capacities_PDP7A[["Coal",
                                      "Biomass",
                                      "Nuclear"]]
 
+capacities_PDP7A["Hydro"] = capacities_PDP7A["Hydro+Storage"] - capacities_PDP7A["PumpedStorage"]
+capacities_PDP7A["BigHydro"] = (capacities_PDP7A["BigHydro+Storage"]
+                                - capacities_PDP7A["PumpedStorage"])
+
 print("""
 PDP7A capacity objectives by fuel type (GW)
-Renewable includes Small hydro
 """)
 print(capacities_PDP7A)
+
+#%%
+
+cap_2015_implicit = capacities_PDP7A.loc[2030] - capacity_total_plan
+
+cap_2015_implicit.dropna(inplace=True)
+
+comparison = pd.DataFrame([capacity_2015_EVN, cap_2015_implicit],
+                          index=["Total from EVN report", "Implicit in PDP7A decision"])
+
+capacity_closed = pd.Series(comparison.iloc[0] - comparison.iloc[1], name="Diff ?Closed capacity?")
+
+comparison = comparison.append(capacity_closed)
+
+capacity_old = pd.Series(capacity_past_5cols.cumsum().loc[1980], name="Installed before 1980")
+
+comparison = comparison.append(capacity_old)
+
+comparison = comparison[["Coal",
+                         "Gas",
+                         "BigHydro",
+                         "SmallHydro",
+                         "PumpedStorage",
+                         "Renewable4",
+                         "Oil",
+                         "Wind",
+                         "Biomass",
+                         "Nuclear"]]
+
+print("Coherence of 2015 Generation capacity numbers")
+print(comparison)
+
+print("""
+Some coal, gas, oil and hydro capacities listed in the EVN report historical table are
+not accounted for in the PDP7A current capacity total
+The order of magnitude corresponds to capacities installed before 1985,
+which in all probability are already closed or will be before 2030.
+#TODO: Check the operational status of these plants:
+
+Gas capacity in EVN report includes the Tu Duc and Can Tho oil-fired gas turbines (264 MW)
+""")
 
 #%%
 
@@ -303,3 +364,9 @@ Capacity factors implicit in PDP7A decision
 based on 8760 hours/year
 """)
 print(capacity_factor_PDP7A)
+
+cf = pd.concat([capacity_factor_past, capacity_factor_PDP7A])
+cf = cf.where(cf < 1)
+cf = cf[["Coal", "Gas", "Hydro", "Renewable"]]
+ax = cf.plot(ylim=[0, 1], xlim=[1995, 2030], title="Power generation capacity factors by fuel type")
+ax.axvline(2015, color="k")

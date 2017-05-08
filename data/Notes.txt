@@ -1,8 +1,9 @@
 Acronyms in the table:
 
 TD      Thủy điện			Hydro power
+TDTN    Thuỷ điện tích năng             Pumped storage hydroelectricity  PSH, PHES
 ND	Nhiệt Điện                      Thermal power 
-TBKHH	Tuabin khí chu trình hỗn hợp	Combined cycle gas turbine
+TBKHH	Tuabin khí chu trình hỗn hợp	Combined cycle gas turbine  CCGT, NGCC
 DHN	Diện hạt nhân			Nuclear power
 
 NLTT	Năng lượng tái tạo		Renewable energy
