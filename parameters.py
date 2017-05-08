@@ -5,6 +5,9 @@
 # Creative Commons Attribution-ShareAlike 4.0 International
 #
 #
+
+from data import capacity_factor_PDP7A, production_past
+
 #%%
 
 """Input parameters of the model"""
