@@ -5,36 +5,35 @@
 # Creative Commons Attribution-ShareAlike 4.0 International
 #
 #
+
+"""
+Read the prepared data files
+
+There are 3 data sources (PDP7A, EVN 2016 report, IEA statistics)
+so we need to clarify column names.
+
+ 1/ Some include Imports in electricity "Production"
+    Here we don't --it's clearly wrong-- and use these column names:
+      Supply = Production + Imports
+
+ 2/ Another ambiguity is whether SmallHydro is included in "Hydro" or "Renewable"
+    Here we do the former and use these column names:
+      Hydro = BigHydro + SmallHydro
+      BigHydro = LargeHydro + InterHydro
+      Renewable = Wind + Solar + Biomass
+      Renewable4 = Renewable + Small hydro
+
+ 3/ We do NOT include PumpedStorage in Hydro capacities
+
+ 4/ Adding up fossil fuel generation capacities with renewable capacities is meaningless
+    because the capacity factors are not comparable, neither are the investment costs
+
+ 5/ In VN capacity stats, generation from fuel oil and from diesel is not clearly accounted for
+"""
+
 import pandas as pd
 #import matplotlib.pyplot as plt
 pd.set_option('display.max_rows', 1000)
-
-#
-# Read the prepared data
-#
-# There are common gotchas in energy statistics
-#
-# 1/ Some sources include imports in electricity "Production"
-#    Here we don't and use these column names:
-#      Supply = Production + Imports
-#
-# 2/ Another common ambiguity is whether:
-#           "Renewable" includes SmallHydro or not
-#           "Hydro" includes SmallHydro or not
-#
-#    Here we do include SmallHydro in "Hydro" and not in "Renewable"
-#    and then use these column names:
-#      Hydro = BigHydro + SmallHydro
-#      BigHydro = LargeHydro + InterHydro
-#      Renewable = Wind + Solar + Biomass
-#      Renewable4 = Renewable + Small hydro
-#
-# 3/ We do NOT include PumpedStorage in Hydro
-#
-# 4/ Adding up fossil fuel generation capacities with renewable capacities is meaningless
-#    because the capacity factors are not comparable, neither are the investment costs
-#
-# 5/ In VN capacity stats, generation from fuel oil and from diesel is not clearly accounted for
 
 #%% Historical capacity addition data
 
