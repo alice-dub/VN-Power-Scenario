@@ -19,8 +19,11 @@ Renewable4 includes small hydro
 """
 
 import pandas as pd
+import numpy as np
+from init import show, VERBOSE
 from data import fuel_types, PDP7A_annex1, capacities_PDP7A, capacity_past, addcol_Renewable4
 from data import production_past, capacity_factor_past, capacity_factor_PDP7A, production_PDP7A
+from data import fuel_use_PDP7A
 
 #%%  Capacities
 
@@ -64,16 +67,16 @@ additions = additions[fuel_types + ["PumpedStorage"]].fillna(0)
 
 # 2031 - 2050 scenario definition
 
-increment = {"Coal": 0, "Gas": 750, "Oil": 0, "BigHydro": 0,
+increment = {"Coal": 0, "Gas": 750, "Oil": 20, "BigHydro": 0,
              "SmallHydro": 50, "Biomass": 50, "Wind": 900, "Solar": 1000,
              "PumpedStorage": 50}
 
 for y in range(2031, 2051):
     additions.loc[y] = increment
 
-print("Vietnam annual generation capacity addition by fuel type (MW)")
-print(additions[fuel_types + ["PumpedStorage"]])
-print()
+show("Vietnam annual generation capacity addition by fuel type (MW)")
+show(additions[fuel_types + ["PumpedStorage"]])
+show()
 
 #%% Old plant retirement program
 
@@ -101,24 +104,27 @@ retirement.loc[2019, "Oil"] = 100
 retirement = pd.rolling_mean(retirement, 2)
 retirement.loc[1974] = 0
 
-print("Old capacity retirement by fuel type (MW)")
-print(retirement[fuel_types])
-print()
-retirement[fuel_types].plot(title="Retired capacity (MW)")
+show("Old capacity retirement by fuel type (MW)")
+show(retirement[fuel_types])
+show()
+
+if VERBOSE:
+    retirement[fuel_types].plot(title="Retired capacity (MW)")
 
 #%%
 
 capacity_baseline = additions - retirement
-capacities_baseline = capacity_baseline.cumsum()
+capacities_baseline = capacity_baseline.cumsum().astype("int64")
 
-print("Vietnam generation capacity by fuel type (MW)")
-print(capacities_baseline[fuel_types + ["PumpedStorage"]])
-print()
+show("Vietnam generation capacity by fuel type (MW)")
+show(capacities_baseline[fuel_types + ["PumpedStorage"]])
+show()
 
-mix = (capacities_baseline[fuel_types] / 1000).drop("Oil", axis=1)
-ax = mix.plot(title="Baseline scenario\nVietnam generation capacity by fuel type (GW)")
-ax.axvline(2015, color="k")
-ax.axvline(2030, color="k")
+if VERBOSE:
+    mix = (capacities_baseline[fuel_types] / 1000).drop("Oil", axis=1)
+    ax = mix.plot(title="Baseline scenario\nVietnam generation capacity by fuel type (GW)")
+    ax.axvline(2015, color="k")
+    ax.axvline(2030, color="k")
 
 #%% Check the capacity numbers vs. PDP7A objectives
 
@@ -133,15 +139,15 @@ tocompare = tocompare[compared]
 relerror = (tocompare - capacities_PDP7A) / capacities_PDP7A
 relerror = relerror[compared]
 
-print("PDP7A")
-print(capacities_PDP7A[compared])
-print()
-print("Baseline scenario, Gas includes Oil")
-print(tocompare)
-print()
-print("Relative error")
-print(relerror)
-print("Note: Gas 2030 is larger in baseline because we replace nuclear with gas")
+show("PDP7A")
+show(capacities_PDP7A[compared])
+show()
+show("Baseline scenario, Gas includes Oil")
+show(tocompare)
+show()
+show("Relative error")
+show(relerror)
+show("Note: Gas 2030 is larger in baseline because we replace nuclear with gas")
 
 #
 #%% Electricity production
@@ -183,8 +189,8 @@ capacityfactor["Solar"] = extend("Renewable", 0.23, "Solar")
 
 capacityfactor = capacityfactor.where(capacityfactor < 1)
 
-print(capacityfactor)
-print()
+show(capacityfactor)
+show()
 
 #%%
 
@@ -192,18 +198,45 @@ production_baseline = capacities_baseline.loc[1990:] * capacityfactor * 8760 / 1
 
 production_baseline["Import"] = extend("Import", 7000, "Import", production_past, production_PDP7A)
 
-a = production_baseline[fuel_types + ["Import"]].fillna(0).astype("int64")
-print("Baseline scenario - Electricity production (GWh)")
-print(a)
-print()
+
+production_baseline = production_baseline[fuel_types + ["Import"]].fillna(0).astype("int64")
+
+show("Baseline scenario - Electricity production (GWh)")
+show(production_baseline)
+show()
 
 #b = production_past[fuel_types].astype("int64")
 #
-#print("Past - Electricity production (GWh)")
-#print(b)
-#print()
+#show("Past - Electricity production (GWh)")
+#show(b)
+#show()
 #
 #
-#relerr = ((a - b) / b).loc[1990:2015]
-#print("Relative error")
-#print(relerr)
+#relerr = ((production_baseline - b) / b).loc[1990:2015]
+#show("Relative error")
+#show(relerr)
+
+#%% Fuel use
+
+MtCoal_per_GWh = fuel_use_PDP7A.Coal / production_PDP7A.Coal
+
+show(MtCoal_per_GWh)
+
+a = MtCoal_per_GWh[2020]
+b = MtCoal_per_GWh[2025]
+da = (b - a) / 5
+c = MtCoal_per_GWh[2030]
+db = (c - b) / 5
+s = pd.Series(name="Coal",
+              data=np.concatenate([np.arange(a - 10 * da, b, da),
+                                   np.arange(b, c + 21 * db, db)]),
+              index=range(2010, 2051))
+
+show(s)
+
+coal_use_baseline = s * production_baseline.Coal.loc[2010:]
+
+show(fuel_use_PDP7A.Coal)
+show(coal_use_baseline)
+
+#TODO: Check against statistics

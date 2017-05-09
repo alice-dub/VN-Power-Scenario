@@ -34,6 +34,7 @@ so we need to clarify column names.
 """
 
 import pandas as pd
+from init import show, VERBOSE
 #import matplotlib.pyplot as plt
 pd.set_option('display.max_rows', 1000)
 
@@ -53,11 +54,11 @@ def addcol_Renewable4(s):
 
 capacity_additions_past = pd.read_fwf("data/capacity_additions_past.txt")
 
-print(capacity_additions_past)
+show(capacity_additions_past)
 
 capacity_2015_EVN = capacity_additions_past.groupby(["fuel"]).capacity_MW.sum()
-# print("SummaryCapacity in 2015")
-# print(capacity_2015)
+# show("SummaryCapacity in 2015")
+# show(capacity_2015)
 
 # Comparision with EVN Annual Report 2016, page 11.
 capacity_2015_EVN["BigHydro"] = capacity_2015_EVN.LargeHydro + capacity_2015_EVN.InterHydro
@@ -116,34 +117,34 @@ capacity_past["Hydro"] = (capacity_past.BigHydro
 addcol_Renewable(capacity_past)
 addcol_Renewable4(capacity_past)
 
-print("""
+show("""
 Vietnam historical capacity additions by fuel type (MW)
 Source: Capacities listed in EVN activity report 2016, dated by internet search
 """)
-print(capacity_past[fuel_types])
-print()
+show(capacity_past[fuel_types])
+show()
 
-print("""
+show("""
 Vietnam historical generation capacity by fuel type (MW)
 Source: Capacities listed in EVN activity report 2016, dated by internet search
 """)
-print(capacity_past[fuel_types].cumsum())
-print()
+show(capacity_past[fuel_types].cumsum())
+show()
 
-print("""
+show("""
 Vietnam historical generation capacity by fuel type (MW)
 Small hydro included in Renewable4
 """)
 
-print(capacity_past[["Coal", "Gas", "Oil", "BigHydro", "Renewable4"]].cumsum())
-print()
+show(capacity_past[["Coal", "Gas", "Oil", "BigHydro", "Renewable4"]].cumsum())
+show()
 
-print("""
+show("""
 Vietnam historical generation capacity by fuel type (MW)
 Small hydro included in Hydro
 """)
-print(capacity_past[["Coal", "Gas", "Oil", "Hydro", "Renewable"]].cumsum())
-print()
+show(capacity_past[["Coal", "Gas", "Oil", "Hydro", "Renewable"]].cumsum())
+show()
 
 
 #%% read data from International Energy Agency
@@ -194,26 +195,26 @@ production_2015.drop(["GasTurbine", "Renewable4"], inplace=True)
 
 production_past = production_past.append(production_2015)
 
-print("""
+show("""
 Vietnam electricity production by fuel type (GWh)
 Source IEA 1990-2014
 Source GiZ citing Institute of Energy for 2015
 Hydro production divided between small and big proportional to capacity
 Imports are net of exports
 """)
-print(production_past[fuel_types + ["Import"]])
-print()
+show(production_past[fuel_types + ["Import"]])
+show()
 
 #%%
 
 capacity_factor_past = production_past / capacity_past.cumsum() * 1000 / 8760
 capacity_factor_past = capacity_factor_past.loc[1990:]
 
-print("""
+show("""
 Vietnam historical capacity factors by fuel type
 Source: author
 """)
-print(capacity_factor_past[fuel_types].drop("Solar", axis=1))
+show(capacity_factor_past[fuel_types].drop("Solar", axis=1))
 
 #
 #%% Power Development Plan 7 adjusted
@@ -238,14 +239,14 @@ PDP7A_annex1.replace({"fuel": {"ND": "Coal",
                      inplace=True
                      )
 
-# print(PDP7A_annex1)
+# show(PDP7A_annex1)
 
 capacity_total_plan = PDP7A_annex1.groupby("fuel").capacity_MW.sum()
-print("""
+show("""
 Summary of 2016-2030 new capacity listed in PDP7A annex 1, MW
 """)
-print(capacity_total_plan)
-print("""
+show(capacity_total_plan)
+show("""
 *: Backup coal units in case all the renewable sources do not meet the set target (27GW by 2030).
 Small hydro not specified, included in Renewable4
 Wind, Solar, Biomass not specifed after 2020
@@ -262,10 +263,10 @@ capacities_PDP7A["BigHydro"] = (capacities_PDP7A["BigHydro+Storage"]
                                 - capacities_PDP7A["PumpedStorage"])
 capacities_PDP7A["Oil"] = 0
 
-print("""
+show("""
 PDP7A capacity objectives by fuel type (GW)
 """)
-print(capacities_PDP7A[fuel_types + ["Nuclear", "Import", "PumpedStorage"]])
+show(capacities_PDP7A[fuel_types + ["Nuclear", "Import", "PumpedStorage"]])
 
 #%%
 
@@ -284,10 +285,10 @@ capacity_old = pd.Series(capacity_past.cumsum().loc[1980], name="Installed befor
 
 comparison = comparison.append(capacity_old)
 
-print("Coherence of 2015 Generation capacity numbers")
-print(comparison[fuel_types])
+show("Coherence of 2015 Generation capacity numbers")
+show(comparison[fuel_types])
 
-print("""
+show("""
 Some coal, gas, oil and hydro capacities listed in the EVN report historical table are
 not accounted for in the PDP7A current capacity total
 The order of magnitude corresponds to capacities installed before 1985,
@@ -303,10 +304,10 @@ production_PDP7A = pd.read_csv("data/PDP7A/Objectives.csv", header=26, nrows=3, 
 
 production_PDP7A["Oil"] = 0
 
-print("""
+show("""
 PDP7A power generation objectives by fuel type (GWh)
 """)
-print(production_PDP7A[fuel_types + ["Nuclear", "Import"]])
+show(production_PDP7A[fuel_types + ["Nuclear", "Import"]])
 
 #%%
 
@@ -320,14 +321,22 @@ capacity_factor_PDP7A = capacity_factor_PDP7A[["Coal",
                                                "Renewable",
                                                "Nuclear"]]
 
-print("""
+show("""
 Capacity factors implicit in PDP7A decision
 based on 8760 hours/year
 """)
-print(capacity_factor_PDP7A)
+show(capacity_factor_PDP7A)
 
-cf = pd.concat([capacity_factor_past, capacity_factor_PDP7A])
-cf = cf.where(cf < 1)
-cf = cf[["Coal", "Gas", "Hydro", "Renewable"]]
-ax = cf.plot(ylim=[0, 1], xlim=[1995, 2030], title="Power generation capacity factors by fuel type")
-ax.axvline(2015, color="k")
+if VERBOSE:
+    cf = pd.concat([capacity_factor_past, capacity_factor_PDP7A])
+    cf = cf.where(cf < 1)
+    cf = cf[["Coal", "Gas", "Hydro", "Renewable"]]
+    ax = cf.plot(ylim=[0, 1], xlim=[1995, 2030], title="Power generation capacity factors by fuel type")
+    ax.axvline(2015, color="k")
+
+#%%
+
+fuel_use_PDP7A = pd.read_csv("data/PDP7A/Objectives.csv", header=38, nrows=3, index_col=0)
+
+show("Coal consumption, PDP7A (Mt)")
+show(fuel_use_PDP7A.Coal)
