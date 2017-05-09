@@ -39,6 +39,15 @@ pd.set_option('display.max_rows', 1000)
 
 fuel_types = ["Coal", "Gas", "Oil", "BigHydro", "SmallHydro", "Biomass", "Wind", "Solar"]
 
+
+def addcol_Renewable(s):
+    s["Renewable"] = s["Biomass"] + s["Wind"] + s["Solar"]
+
+
+def addcol_Renewable4(s):
+    s["Renewable4"] = s["Biomass"] + s["Wind"] + s["Solar"] + s["SmallHydro"]
+
+
 #%% Read data from EVN 2016 activity report
 # Historical capacity addition
 
@@ -88,6 +97,7 @@ def smooth(s):
     assert sum(data) == total
     return pd.Series(data, s.index)
 
+
 #TODO: Find the installation year of intermediate size dams
 capacity_past.InterHydro = smooth(capacity_past.InterHydro)
 capacity_past.SmallHydro = smooth(capacity_past.SmallHydro)
@@ -103,14 +113,8 @@ capacity_past["BigHydro"] = (capacity_past.LargeHydro
 capacity_past["Hydro"] = (capacity_past.BigHydro
                           + capacity_past.SmallHydro)
 
-capacity_past["Renewable4"] = (capacity_past.SmallHydro
-                               + capacity_past.Biomass
-                               + capacity_past.Wind
-                               + capacity_past.Solar)
-
-capacity_past["Renewable"] = (capacity_past.Biomass
-                              + capacity_past.Wind
-                              + capacity_past.Solar)
+addcol_Renewable(capacity_past)
+addcol_Renewable4(capacity_past)
 
 print("""
 Vietnam historical capacity additions by fuel type (MW)
@@ -147,9 +151,7 @@ print()
 production_past = pd.read_csv("data/IEA/ElectricityProduction.csv", header=5, index_col=0)
 
 production_past["Solar"] = 0
-production_past['Renewable'] = (production_past.Biomass
-                                + production_past.Wind
-                                + production_past.Solar)
+addcol_Renewable(production_past)
 production_past["SmallHydro"] = (production_past.Hydro *
                                  capacity_past.SmallHydro / capacity_past.Hydro)
 production_past["SmallHydro"] = production_past["SmallHydro"].astype(int)
@@ -184,9 +186,7 @@ production_2015["Gas"] = production_2015["GasTurbine"] - production_2015["Oil"]
 production_2015["Wind"] = 240         # Source: Own estimate, 2014 + Bac Lieu 1 online
 production_2015["Biomass"] = 60       # Continuity with 2014 level and trend
 production_2015["Solar"] = 0          # Commercial solar power not allowed by law yet
-production_2015["Renewable"] = (production_2015["Wind"]
-                                + production_2015["Biomass"]
-                                + production_2015["Solar"])
+addcol_Renewable(production_2015)
 production_2015["SmallHydro"] = production_2015["Renewable4"] - production_2015["Renewable"]
 production_2015["Hydro"] = production_2015["BigHydro"] + production_2015["SmallHydro"]
 
