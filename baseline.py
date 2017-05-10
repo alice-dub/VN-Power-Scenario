@@ -21,6 +21,7 @@ Renewable4 includes small hydro
 import pandas as pd
 import numpy as np
 from init import show, VERBOSE
+from parameters import plant_life
 from data import fuel_types, PDP7A_annex1, capacities_PDP7A, capacity_past, addcol_Renewable4
 from data import production_past, capacity_factor_past, capacity_factor_PDP7A, production_PDP7A
 from data import fuel_use_PDP7A
@@ -80,14 +81,10 @@ show()
 
 #%% Old plant retirement program
 
-life = {"Coal": 40, "Gas": 25, "Oil": 30, "BigHydro": 100,
-        "SmallHydro": 60, "Biomass": 25, "Wind": 20, "Solar": 25,
-        "PumpedStorage": 100}
-
 retirement = pd.DataFrame()
 
-for tech in life:
-    retirement[tech] = additions[tech].shift(life[tech])
+for tech in plant_life :
+    retirement[tech] = additions[tech].shift(plant_life[tech])
 
 retirement.fillna(0, inplace=True)
 

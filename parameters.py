@@ -6,10 +6,13 @@
 #
 #
 
-from data import capacity_factor_PDP7A, production_past
+"""Model's parameters of the model"""
 
-#%%
+discount_rate = 0.05
 
-"""Input parameters of the model"""
-
-discount_rate = {0, 0.05, 0.08, 0.12}
+# This is both:
+#   economic life, to assess residual value by linear depreciation
+#   physical life, to retire from production capacities
+plant_life = {"Coal": 40, "Gas": 25, "Oil": 30, "BigHydro": 100,
+              "SmallHydro": 60, "Biomass": 25, "Wind": 20, "Solar": 25,
+              "PumpedStorage": 100}

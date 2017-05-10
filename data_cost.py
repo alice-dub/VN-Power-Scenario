@@ -26,6 +26,7 @@ pd.set_option('display.max_rows', 30)
 
 
 #%% Construction costs
+
 OpenEI_construction_cost_filename = "data/OpenEI/generation.capitalCost.20170510_621.csv"
 OpenEI_construction_cost = pd.read_csv(OpenEI_construction_cost_filename,
                                        skiprows=[0, 2],
