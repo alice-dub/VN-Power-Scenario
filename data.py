@@ -34,11 +34,9 @@ so we need to clarify column names.
 """
 
 import pandas as pd
-from init import show, VERBOSE
+from init import show, VERBOSE, fuel_types
 #import matplotlib.pyplot as plt
-pd.set_option('display.max_rows', 1000)
-
-fuel_types = ["Coal", "Gas", "Oil", "BigHydro", "SmallHydro", "Biomass", "Wind", "Solar"]
+pd.set_option('display.max_rows', 100)
 
 
 def addcol_Renewable(s):
@@ -331,7 +329,8 @@ if VERBOSE:
     cf = pd.concat([capacity_factor_past, capacity_factor_PDP7A])
     cf = cf.where(cf < 1)
     cf = cf[["Coal", "Gas", "Hydro", "Renewable"]]
-    ax = cf.plot(ylim=[0, 1], xlim=[1995, 2030], title="Power generation capacity factors by fuel type")
+    ax = cf.plot(ylim=[0, 1], xlim=[1995, 2030],
+                 title="Power generation capacity factors by fuel type")
     ax.axvline(2015, color="k")
 
 #%%
