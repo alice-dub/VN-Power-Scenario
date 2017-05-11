@@ -22,7 +22,7 @@ import pandas as pd
 import numpy as np
 from init import show, VERBOSE
 from parameters import plant_life
-from data import fuel_types, PDP7A_annex1, capacities_PDP7A, capacity_past, addcol_Renewable4
+from data import fuels, PDP7A_annex1, capacities_PDP7A, capacity_past, addcol_Renewable4
 from data import production_past, capacity_factor_past, capacity_factor_PDP7A, production_PDP7A
 from data import fuel_use_PDP7A
 
@@ -59,31 +59,32 @@ additions["Solar"] = fill_in(capacities_PDP7A.Solar)
 additions["Wind"] = fill_in(capacities_PDP7A.Wind)
 additions["Biomass"] = fill_in(capacities_PDP7A.Biomass)
 additions["SmallHydro"] = fill_in(capacities_PDP7A.SmallHydro)
+additions["Import"] = fill_in(capacities_PDP7A.Import)
 
 # 1974 - 2015 capacity additions and cleanup
 
 additions = pd.concat([capacity_past, additions])
 
-additions = additions[fuel_types + ["PumpedStorage"]].fillna(0)
+additions = additions[fuels + ["PumpedStorage", "Import"]].fillna(0)
 
 # 2031 - 2050 scenario definition
 
 increment = {"Coal": 0, "Gas": 750, "Oil": 20, "BigHydro": 0,
              "SmallHydro": 50, "Biomass": 50, "Wind": 900, "Solar": 1000,
-             "PumpedStorage": 50}
+             "PumpedStorage": 50, "Import": 50}
 
 for y in range(2031, 2051):
     additions.loc[y] = increment
 
 show("Vietnam annual generation capacity addition by fuel type (MW)")
-show(additions[fuel_types + ["PumpedStorage"]])
+show(additions[fuels + ["PumpedStorage", "Import"]])
 show()
 
 #%% Old plant retirement program
 
 retirement = pd.DataFrame()
 
-for tech in plant_life :
+for tech in plant_life:
     retirement[tech] = additions[tech].shift(plant_life[tech])
 
 retirement.fillna(0, inplace=True)
@@ -102,11 +103,11 @@ retirement = pd.rolling_mean(retirement, 2)
 retirement.loc[1974] = 0
 
 show("Old capacity retirement by fuel type (MW)")
-show(retirement[fuel_types])
+show(retirement[fuels])
 show()
 
 if VERBOSE:
-    retirement[fuel_types].plot(title="Retired capacity (MW)")
+    retirement[fuels].plot(title="Retired capacity (MW)")
 
 #%%
 
@@ -114,11 +115,11 @@ capacity_baseline = additions - retirement
 capacities_baseline = capacity_baseline.cumsum().astype("int64")
 
 show("Vietnam generation capacity by fuel type (MW)")
-show(capacities_baseline[fuel_types + ["PumpedStorage"]])
+show(capacities_baseline[fuels + ["PumpedStorage", "Import"]])
 show()
 
 if VERBOSE:
-    mix = (capacities_baseline[fuel_types] / 1000).drop("Oil", axis=1)
+    mix = (capacities_baseline[fuels] / 1000).drop("Oil", axis=1)
     ax = mix.plot(title="Baseline scenario\nVietnam generation capacity by fuel type (GW)")
     ax.axvline(2015, color="k")
     ax.axvline(2030, color="k")
@@ -195,14 +196,13 @@ production_baseline = capacities_baseline.loc[1990:] * capacityfactor * 8760 / 1
 
 production_baseline["Import"] = extend("Import", 7000, "Import", production_past, production_PDP7A)
 
-
-production_baseline = production_baseline[fuel_types + ["Import"]].fillna(0).astype("int64")
+production_baseline = production_baseline[sources].fillna(0).astype("int64")
 
 show("Baseline scenario - Electricity production (GWh)")
 show(production_baseline)
 show()
 
-#b = production_past[fuel_types].astype("int64")
+#b = production_past[fuels].astype("int64")
 #
 #show("Past - Electricity production (GWh)")
 #show(b)

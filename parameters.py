@@ -15,4 +15,4 @@ discount_rate = 0.05
 #   physical life, to retire from production capacities
 plant_life = {"Coal": 40, "Gas": 25, "Oil": 30, "BigHydro": 100,
               "SmallHydro": 60, "Biomass": 25, "Wind": 20, "Solar": 25,
-              "PumpedStorage": 100}
+              "PumpedStorage": 100, "Import": 100}

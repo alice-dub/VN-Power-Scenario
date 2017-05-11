@@ -34,7 +34,7 @@ so we need to clarify column names.
 """
 
 import pandas as pd
-from init import show, VERBOSE, fuel_types
+from init import show, VERBOSE, years, fuels, sources
 #import matplotlib.pyplot as plt
 pd.set_option('display.max_rows', 100)
 
@@ -119,14 +119,14 @@ show("""
 Vietnam historical capacity additions by fuel type (MW)
 Source: Capacities listed in EVN activity report 2016, dated by internet search
 """)
-show(capacity_past[fuel_types])
+show(capacity_past[fuels])
 show()
 
 show("""
 Vietnam historical generation capacity by fuel type (MW)
 Source: Capacities listed in EVN activity report 2016, dated by internet search
 """)
-show(capacity_past[fuel_types].cumsum())
+show(capacity_past[fuels].cumsum())
 show()
 
 show("""
@@ -200,7 +200,7 @@ Source GiZ citing Institute of Energy for 2015
 Hydro production divided between small and big proportional to capacity
 Imports are net of exports
 """)
-show(production_past[fuel_types + ["Import"]])
+show(production_past[sources])
 show()
 
 #%%
@@ -212,7 +212,7 @@ show("""
 Vietnam historical capacity factors by fuel type
 Source: author
 """)
-show(capacity_factor_past[fuel_types].drop("Solar", axis=1))
+show(capacity_factor_past[fuels].drop("Solar", axis=1))
 
 #
 #%% Power Development Plan 7 adjusted
@@ -264,7 +264,7 @@ capacities_PDP7A["Oil"] = 0
 show("""
 PDP7A capacity objectives by fuel type (GW)
 """)
-show(capacities_PDP7A[fuel_types + ["Nuclear", "Import", "PumpedStorage"]])
+show(capacities_PDP7A[fuels + ["Nuclear", "Import", "PumpedStorage"]])
 
 #%%
 
@@ -284,7 +284,7 @@ capacity_old = pd.Series(capacity_past.cumsum().loc[1980], name="Installed befor
 comparison = comparison.append(capacity_old)
 
 show("Coherence of 2015 Generation capacity numbers")
-show(comparison[fuel_types])
+show(comparison[fuels])
 
 show("""
 Some coal, gas, oil and hydro capacities listed in the EVN report historical table are
@@ -305,7 +305,7 @@ production_PDP7A["Oil"] = 0
 show("""
 PDP7A power generation objectives by fuel type (GWh)
 """)
-show(production_PDP7A[fuel_types + ["Nuclear", "Import"]])
+show(production_PDP7A[fuels + ["Nuclear", "Import"]])
 
 #%%
 
@@ -332,6 +332,21 @@ if VERBOSE:
     ax = cf.plot(ylim=[0, 1], xlim=[1995, 2030],
                  title="Power generation capacity factors by fuel type")
     ax.axvline(2015, color="k")
+
+
+#%% Heat rate
+
+heat_rate = pd.DataFrame(index=years)
+
+heat_rate["Coal"] = 0
+heat_rate["Gas"] = 0
+heat_rate["Oil"] = 0
+heat_rate["BigHydro"] = 0
+heat_rate["SmallHydro"] = 0
+heat_rate["Biomass"] = 0
+heat_rate["Wind"] = 0
+heat_rate["Solar"] = 0
+heat_rate["Import"] = 1
 
 #%%
 

@@ -20,13 +20,18 @@ end_year = 2050
 years = range(start_year, end_year + 1)
 n_year = len(years)
 
-fuel_types = ["Coal", "Gas", "Oil", "BigHydro", "SmallHydro", "Biomass", "Wind", "Solar"]
+fuels = ["Coal", "Gas", "Oil", "BigHydro", "SmallHydro", "Biomass", "Wind", "Solar"]
+sources = fuels + ["Import"]
 
 W = 1
 kW = 1000
-MW = 1000000
+MW = 10**6
+GWh = 10**9
+MWh = 10**6
+kWh = 1000
+
 USD = 1
-MUSD = 1000000
+MUSD = 10**6
 
 #from natu import config
 ## config.use_quantities = False
