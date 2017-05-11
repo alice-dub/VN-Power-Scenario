@@ -22,6 +22,12 @@ n_year = len(years)
 
 fuel_types = ["Coal", "Gas", "Oil", "BigHydro", "SmallHydro", "Biomass", "Wind", "Solar"]
 
+W = 1
+kW = 1000
+MW = 1000000
+USD = 1
+MUSD = 1000000
+
 #from natu import config
 ## config.use_quantities = False
 #

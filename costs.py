@@ -17,9 +17,11 @@ import numpy as np
 from functools import lru_cache
 
 from init import show, start_year, end_year, n_year, years, fuel_types
+from init import kW, MW, USD, MUSD
+
 from parameters import discount_rate, plant_life
 from baseline import additions, capacities_baseline, production_baseline, coal_use_baseline
-from data_cost import construction_cost
+from data_cost import construction_cost, fixed_operating_cost
 
 pd.set_option('display.max_rows', 100)
 # pd.set_option('precision', 1)
@@ -47,21 +49,18 @@ show(discountor(discount_rate))
 show()
 
 
-#%% 
+#%% Fuel costs
 
-show("Capacities operating (MW)")
-show(capacities_baseline[fuel_types])
-show()
-
-show("Electricity production (GWh)")
-show(production_baseline[fuel_types + ["Import"]])
-show()
 
 show("Coal used in electricity generation (Mt)")
 show(coal_use_baseline)
 show()
 
 #%% Electricity production
+
+show("Electricity production (GWh)")
+show(production_baseline[fuel_types + ["Import"]])
+show()
 
 
 def show_total_power(fuel):
@@ -86,7 +85,7 @@ show(construction_cost[fuel_types])
 show()
 
 # MW * s / kW / 1000 = M$
-investment_baseline = additions * construction_cost / 1000
+investment_baseline = additions * MW * construction_cost * USD / kW / MUSD
 
 show("Baseline scenario - Construction costs (M$)")
 show(investment_baseline[fuel_types].loc[start_year:].round())
@@ -105,6 +104,23 @@ def residual_value(fuel):
         s.iloc[n - i - 1] = 1 - (i + 1) / lifetime
     return (s * additions[fuel]).sum()
 
+
+#%% Fixed operating costs
+
+show("Capacities operating (MW)")
+show(capacities_baseline[fuel_types].loc[start_year:])
+show()
+
+show("Fixed operating costs ($/kW)")
+show(fixed_operating_cost[fuel_types])
+show()
+
+fixed_operating_cost_baseline = capacities_baseline * MW * fixed_operating_cost * USD / kW / MUSD
+
+show("Baseline scenario - Fixed operating costs (M$)")
+show(fixed_operating_cost_baseline[fuel_types].loc[start_year:].round())
+show()
+
 #%%
 
 
@@ -113,13 +129,14 @@ def lcoe(discount_rate, fuels):
     salvage_value = discount(sum([residual_value(fuel) for fuel in fuels]),
                              end_year,
                              discount_rate)
-    OM_cost = 0
+    fixed_OM_cost = present_value(fixed_operating_cost_baseline[fuels], discount_rate).sum()
     fuel_cost = 0
     total_power = present_value(production_baseline[fuels], discount_rate).sum()
-#    lcoe = (investment_cost - salvage_value + OM_cost + fuel_cost) / total_power
-    lcoe = (total_invest - salvage_value + OM_cost + fuel_cost) / total_power
-    return fuels, lcoe, round(total_power), round(total_invest), round(salvage_value)
-#    return investment_cost, salvage_value, OM_cost, fuel_cost, total_power, lcoe
+    lcoe = (total_invest - salvage_value + fixed_OM_cost + fuel_cost) / total_power
+    return (fuels, lcoe,
+            round(total_power),
+            round(total_invest), round(salvage_value), round(fixed_OM_cost)
+            )
 
 show(lcoe(0.05, ["Coal"]))
 show(lcoe(0.05, ["Gas"]))
