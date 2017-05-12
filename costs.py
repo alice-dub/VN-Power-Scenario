@@ -16,17 +16,19 @@ import pandas as pd
 import numpy as np
 from functools import lru_cache
 
-from init import show, start_year, n_year, years, fuels
-from init import kW, MW, USD, MUSD, GWh, MWh
+from init import show, start_year, n_year, years, fuels, sources, runId, run_locals, run_globals
+from init import kW, MW, USD, MUSD, GWh, MWh, kWh, Btu, MBtu, TBtu
 
 from parameters import discount_rate, plant_life
-from baseline import additions, capacities_baseline, production_baseline, coal_use_baseline
-from data import heat_rate
-from data_cost import construction_cost, fixed_operating_cost, variable_operating_cost, fuel_price
+from baseline import additions, capacities_baseline, production_baseline
+from data_cost import construction_cost, fixed_operating_cost, variable_operating_cost
+from data_cost import heat_rate, heat_price
+
 
 pd.set_option('display.max_rows', 100)
 # pd.set_option('precision', 1)
 
+show(runId)
 
 #%% Accounting functions
 
@@ -85,11 +87,15 @@ def residual_value(fuel):
     lifetime = plant_life[fuel]
     idx = additions.index
     n = len(idx)
-    s = pd.Series(0, index=idx, name=fuel)
+    remaining_fraction = pd.Series(0, index=idx)
     for i in range(min(lifetime, n)):
-        s.iloc[n - i - 1] = 1 - (i + 0.5) / lifetime  # On average, plant opens middle of the year
-    return pd.Series(data=(s * additions[fuel]).sum(), index=[2050])
+        # On average, plant opens middle of the year
+        remaining_fraction.iloc[n - i - 1] = 1 - (i + 0.5) / lifetime
+    s = pd.Series(0, index=years, name=fuel)
+    s[2050] = (remaining_fraction * additions[fuel]).sum()
+    return s
 
+salvage_value_baseline = pd.concat([residual_value(fuel) for fuel in sources], axis=1)
 
 #%% Fixed operating costs
 
@@ -125,14 +131,14 @@ show()
 
 #%% Fuel costs
 
-fuel_used_baseline = production_baseline * heat_rate
-fuel_cost_baseline = fuel_used_baseline * fuel_price
+heat_used_baseline = production_baseline * GWh * heat_rate * Btu / kWh / TBtu
+fuel_cost_baseline = heat_used_baseline * TBtu * heat_price * USD / MBtu / MUSD
 
-show("Fuel price ($/??)")
-show(fuel_price)
+show("Heat price ($/MBtu)")
+show(heat_price)
 show()
-show("Fuel used (??)")
-show(fuel_used_baseline[sources].loc[start_year:])
+show("Heat used (TBtu)")
+show(heat_used_baseline[sources].loc[start_year:].round())
 show()
 show("Baseline scenario - Fuel costs (M$)")
 show(fuel_cost_baseline[sources].loc[start_year:].round())
@@ -141,20 +147,32 @@ show()
 #%% Levelized Cost Of Electricity
 
 
+def pv(variable, cols, discount_rate):
+    return present_value(variable[cols], discount_rate).sum()
+
+
 def lcoe(discount_rate, cols):
-    total_invest = present_value(investment_baseline[cols], discount_rate).sum()
-    salvage_value = sum([present_value(residual_value(fuel), discount_rate) for fuel in cols])
-    fixed_OM_cost = present_value(fixed_operating_cost_baseline[cols], discount_rate).sum()
-    variable_OM_cost = present_value(variable_operating_cost_baseline[cols], discount_rate).sum()
-    total_fuel_cost = present_value(fuel_cost_baseline[cols], discount_rate).sum()
-    total_power = present_value(production_baseline[cols], discount_rate).sum()
+    """Returns the Levelized Cost Of Electricity,
+       computed at the national system level on 2016-2050 period
+
+       The function also returns a runId number, to access details on the model run
+    """
+    total_invest = pv(investment_baseline, cols, discount_rate)
+    salvage_value = pv(salvage_value_baseline, cols, discount_rate)
+    fixed_OM_cost = pv(fixed_operating_cost_baseline, cols, discount_rate)
+    variable_OM_cost = pv(variable_operating_cost_baseline, cols, discount_rate)
+    total_fuel_cost = pv(fuel_cost_baseline, cols, discount_rate)
+    total_power = pv(production_baseline, cols, discount_rate)
+
     lcoe = ((total_invest - salvage_value + fixed_OM_cost + variable_OM_cost + total_fuel_cost)
             / total_power)
-    return (cols, lcoe,
-            [int(total_power),
-             int(total_invest), int(salvage_value),
-             int(fixed_OM_cost), int(variable_OM_cost), int(total_fuel_cost)]
-            )
+
+    # Store details in a global cache
+    global runId
+    runId += 1
+    run_locals[runId] = locals()
+    run_globals[runId] = {k: v for k, v in globals().items() if not k.startswith('_')}
+    return lcoe, cols, runId
 
 show(lcoe(0.05, ["Coal"]))
 show(lcoe(0.05, ["Gas"]))
@@ -164,5 +182,6 @@ show(lcoe(0.05, ["SmallHydro"]))
 show(lcoe(0.05, ["Biomass"]))
 show(lcoe(0.05, ["Wind"]))
 show(lcoe(0.05, ["Solar"]))
+show(lcoe(0.05, ["Import"]))
 show(lcoe(0.05, fuels))
 show(lcoe(0.05, sources))

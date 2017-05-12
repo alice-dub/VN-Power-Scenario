@@ -20,25 +20,37 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-from init import show, VERBOSE, start_year, end_year, n_year, years, fuels, sources
+from init import show, VERBOSE, start_year, end_year, n_year, years, sources
 
 pd.set_option('display.max_rows', 30)
 
 
-#%% Functions to build series from OpenEI data files
+#%% Functions to build series from OpenEI data file
 
+OpenEI = pd.read_csv("data/OpenEI/generation.lcoe.20170510_650.csv",
+                     skiprows=[0, 2],
+                     header=0,
+                     index_col=0,
+                     usecols=["EntityId",
+                              "TechIndex",
+                              "Technology",
+                              "Year",
+                              "PublicationYear",
+                              "OnghtCptlCostDolPerKw",
+                              "FixedOMDolPerKw",
+                              "VariableOMDolPerMwh",
+                              "HeatRate"])
 
-def read_OpenEI(filename, variablename):
-    return pd.read_csv(filename,
-                       skiprows=[0, 2],
-                       header=0,
-                       index_col=0,
-                       usecols=["EntityId",
-                                "TechIndex",
-                                "Technology",
-                                "Year",
-                                "PublicationYear",
-                                variablename])
+techindex = {"Coal": "Scrubbed",
+             "Gas": "Combined Cycle",
+             "Oil": "Combustion Turbine",
+             "BigHydro": "Hydroelectric",
+             "SmallHydro": "Small Hydropower",
+             "Biomass": "Biopower",
+             "Wind": "Offshore",
+             "Offshore": "Offshore",
+             "Onshore": "Offshore",
+             "Solar": "Photovoltaic"}
 
 
 def plot_boxwhisker(data, col):
@@ -70,63 +82,63 @@ description = dict()
 description["OnghtCptlCostDolPerKw"] = " generation capacity overnight construction cost\n$/kW"
 description["FixedOMDolPerKw"] = " fixed operating cost\n$/kW"
 description["VariableOMDolPerMwh"] = " variable operating cost\n$/MWh"
+description["HeatRate"] = " heat rate\nBtu/kWh"
 
 
-def by_median(df, fuel, techindex, col):
-    data = df[df.TechIndex == techindex]
+def as_zero(fuel, col):
+    show(fuel + " set as zero for all years")
+    return 0, 0, pd.Series(0, index=years, name=fuel)
+
+
+def by_median(fuel, col):
+    data = OpenEI[OpenEI.TechIndex == techindex[fuel]]
     past_data = data[data.Year < data.PublicationYear]
-    cost_start_year = past_data[col].median()
-    s = pd.Series(cost_start_year, index=years, name=fuel)
+    level = past_data[col].median()
+    s = pd.Series(level, index=years, name=fuel)
     if VERBOSE:
-        myplot(data, fuel, col, s, " (median of " + str(len(past_data)) + ") " + techindex)
-    return cost_start_year, 0, s
+        myplot(data, fuel, col, s, " (median of " + str(len(past_data)) + ") " + techindex[fuel])
+    return level, 0, s
 
 
-def by_regression(df, fuel, techindex, col):
-    data = df[df.TechIndex == techindex]
+def by_regression(fuel, col):
+    data = OpenEI[OpenEI.TechIndex == techindex[fuel]]
     lm = pd.ols(x=data.Year - start_year, y=data[col])
-    show(fuel, techindex, lm)
-    cost_start_year = lm.beta.intercept
+    show(fuel, techindex[fuel], lm)
+    level = lm.beta.intercept
     trend = lm.beta.x if lm.p_value.x < 0.05 else 0
-    s = pd.Series(np.linspace(cost_start_year, cost_start_year + trend * n_year, n_year),
+    s = pd.Series(np.linspace(level, level + trend * n_year, n_year),
                   index=years,
                   name=fuel)
     if VERBOSE:
-        myplot(data, fuel, col, s, " (regression on " + str(len(data)) + ") " + techindex)
-    return cost_start_year, trend, s
+        myplot(data, fuel, col, s, " (regression on " + str(len(data)) + ") " + techindex[fuel])
+    return level, trend, s
 
 #%%
 
-construction_cost_filename = "data/OpenEI/generation.capitalCost.20170510_621.csv"
-OpenEI_construction_cost = read_OpenEI(construction_cost_filename, "OnghtCptlCostDolPerKw")
 
-
-def set_capital_cost(fuel, techindex, method):
-    cost_start_year, trend, s = method(OpenEI_construction_cost,
-                                       fuel,
-                                       techindex,
-                                       "OnghtCptlCostDolPerKw")
-    construction_cost_start_year[fuel] = int(cost_start_year)
+def set_capital_cost(fuel, method):
+    level, trend, s = method(fuel, "OnghtCptlCostDolPerKw")
+    construction_cost_start_year[fuel] = level
     construction_cost_trend[fuel] = trend
-    construction_cost[fuel] = s.round().astype("int64")
+    construction_cost[fuel] = s
 
-construction_cost_start_year = pd.Series(dtype="int64")
+construction_cost_start_year = pd.Series()
 construction_cost_trend = pd.Series()
 construction_cost = pd.DataFrame()
 
-set_capital_cost("Coal", "Scrubbed", by_median)
-set_capital_cost("Gas", "Combined Cycle", by_median)
-set_capital_cost("Oil", "Combustion Turbine", by_regression)
-set_capital_cost("BigHydro", "Hydroelectric", by_regression)
-set_capital_cost("SmallHydro", "Small Hydropower", by_median)
-set_capital_cost("Solar", "Photovoltaic", by_regression)
+set_capital_cost("Coal", by_median)
+set_capital_cost("Gas", by_median)
+set_capital_cost("Oil", by_regression)
+set_capital_cost("BigHydro", by_regression)
+set_capital_cost("SmallHydro", by_median)
+set_capital_cost("Solar", by_regression)
 
 # Biopower: regression meaningless because of predictions incoherent with observations
-set_capital_cost("Biomass", "Biopower", by_median)
+set_capital_cost("Biomass", by_median)
 
 # In Vietnam, wind power is near-shore
-set_capital_cost("Offshore", "Offshore", by_regression)
-set_capital_cost("Onshore", "Onshore", by_regression)
+set_capital_cost("Offshore", by_regression)
+set_capital_cost("Onshore", by_regression)
 construction_cost_start_year["Wind"] = (construction_cost_start_year["Offshore"]
                                         + construction_cost_start_year["Onshore"]) / 2
 construction_cost_trend["Wind"] = (construction_cost_trend["Offshore"]
@@ -135,7 +147,7 @@ construction_cost["Wind"] = (construction_cost["Offshore"] + construction_cost["
 
 
 # http://www.chinadaily.com.cn/bizchina/2007-04/29/content_863786.htm
-"""The Wenshan-Ha Giang power transmission line is 300 kilometers long, 
+"""The Wenshan-Ha Giang power transmission line is 300 kilometers long,
 its extension will transmit an average 1 billion kwh of electricity a year
 and was built at a cost of 413 million yuan (53 million U.S. dollars).
 ==>
@@ -168,33 +180,27 @@ show(construction_cost[sources])
 
 #%%  Fixed operating costs
 
-fixed_operating_cost_filename = "data/OpenEI/generation.fixedOperatingCost.20170510_612.csv"
-OpenEI_fixed_operating_cost = read_OpenEI(fixed_operating_cost_filename, "FixedOMDolPerKw")
 
-
-def set_fixed_operating_cost(fuel, techindex, method):
-    cost_start_year, trend, s = method(OpenEI_fixed_operating_cost,
-                                       fuel,
-                                       techindex,
-                                       "FixedOMDolPerKw")
-    fixed_operating_cost_start_year[fuel] = int(cost_start_year)
+def set_fixed_operating_cost(fuel, method):
+    level, trend, s = method(fuel, "FixedOMDolPerKw")
+    fixed_operating_cost_start_year[fuel] = level
     fixed_operating_cost_trend[fuel] = trend
-    fixed_operating_cost[fuel] = s.round().astype("int64")
+    fixed_operating_cost[fuel] = s
 
 fixed_operating_cost_start_year = pd.Series()
 fixed_operating_cost_trend = pd.Series()
 fixed_operating_cost = pd.DataFrame()
 
-set_fixed_operating_cost("Coal", "Scrubbed", by_regression)
-set_fixed_operating_cost("Gas", "Combined Cycle", by_regression)
-set_fixed_operating_cost("Oil", "Combustion Turbine", by_median)
-set_fixed_operating_cost("BigHydro", "Hydroelectric", by_regression)
-set_fixed_operating_cost("SmallHydro", "Small Hydropower", by_median)
-set_fixed_operating_cost("Biomass", "Biopower", by_median)
-set_fixed_operating_cost("Solar", "Photovoltaic", by_regression)
+set_fixed_operating_cost("Coal", by_regression)
+set_fixed_operating_cost("Gas", by_regression)
+set_fixed_operating_cost("Oil", by_median)
+set_fixed_operating_cost("BigHydro", by_regression)
+set_fixed_operating_cost("SmallHydro", by_median)
+set_fixed_operating_cost("Biomass", by_median)
+set_fixed_operating_cost("Solar", by_regression)
 
-set_fixed_operating_cost("Offshore", "Offshore", by_regression)
-set_fixed_operating_cost("Onshore", "Onshore", by_regression)
+set_fixed_operating_cost("Offshore", by_regression)
+set_fixed_operating_cost("Onshore", by_regression)
 fixed_operating_cost_start_year["Wind"] = (fixed_operating_cost_start_year["Offshore"]
                                            + fixed_operating_cost_start_year["Onshore"]) / 2
 fixed_operating_cost_trend["Wind"] = (fixed_operating_cost_trend["Offshore"]
@@ -204,12 +210,7 @@ fixed_operating_cost["Wind"] = (fixed_operating_cost["Offshore"]
 
 
 # TODO: get data on maintenance costs for the transboundary transmission lines !
-fixed_operating_cost_start_year["Import"] = 0
-fixed_operating_cost_trend["Import"] = 0
-fixed_operating_cost["Import"] = pd.Series(fixed_operating_cost_start_year["Import"],
-                                           index=years,
-                                           name="Import")
-
+set_fixed_operating_cost("Import", as_zero)
 
 show("Fixed operating costs, $/kW ", start_year)
 show(fixed_operating_cost_start_year)
@@ -223,56 +224,73 @@ show(fixed_operating_cost[sources])
 
 #%%  Variable operating costs
 
-variable_opcost_filename = "data/OpenEI/generation.variableOperatingCost.20170510_621.csv"
-OpenEI_variable_operating_cost = read_OpenEI(variable_opcost_filename, "VariableOMDolPerMwh")
 
-
-def set_variable_operating_cost(fuel, techindex):
-    cost_start_year, trend, s = by_median(OpenEI_variable_operating_cost,
-                                          fuel,
-                                          techindex,
-                                          "VariableOMDolPerMwh")
-    variable_operating_cost_start_year[fuel] = cost_start_year
+def set_variable_operating_cost(fuel, method=by_median):
+    level, trend, s = method(fuel, "VariableOMDolPerMwh")
+    variable_operating_cost_start_year[fuel] = level
     variable_operating_cost[fuel] = s
 
 variable_operating_cost_start_year = pd.Series()
 variable_operating_cost = pd.DataFrame()
 
-set_variable_operating_cost("Coal", "Scrubbed")
-set_variable_operating_cost("Gas", "Combined Cycle")
-set_variable_operating_cost("Oil", "Combustion Turbine")
-set_variable_operating_cost("BigHydro", "Hydroelectric")
-set_variable_operating_cost("SmallHydro", "Small Hydropower")
-set_variable_operating_cost("Biomass", "Biopower")
+set_variable_operating_cost("Coal")
+set_variable_operating_cost("Gas")
+set_variable_operating_cost("Oil")
+set_variable_operating_cost("BigHydro")
+set_variable_operating_cost("SmallHydro")
+set_variable_operating_cost("Biomass")
+set_variable_operating_cost("Solar")
+set_variable_operating_cost("Wind")
 
-set_variable_operating_cost("Offshore", "Offshore")
-set_variable_operating_cost("Onshore", "Onshore")
-variable_operating_cost_start_year["Wind"] = (variable_operating_cost_start_year["Offshore"]
-                                              + variable_operating_cost_start_year["Onshore"]) / 2
-variable_operating_cost["Wind"] = (variable_operating_cost["Offshore"]
-                                   + variable_operating_cost["Onshore"]) / 2
-
-variable_operating_cost_start_year["Solar"] = 0
-variable_operating_cost["Solar"] = pd.Series(0, index=years, name="Solar")
-
-variable_operating_cost_start_year["Import"] = 0
-variable_operating_cost["Import"] = pd.Series(0, index=years, name="Import")
+# $/MW,  Price of imports from China in 2012
+# Source  http://www.globaltimes.cn/content/888455.shtml
+variable_operating_cost_start_year["Import"] = 60.8
+variable_operating_cost["Import"] = pd.Series(variable_operating_cost_start_year["Import"],
+                                              index=years,
+                                              name="Import")
 
 show("Variable operating costs (constant over time), $/MW ", start_year)
 show(variable_operating_cost_start_year)
 show()
 
 
+#%% Heat rate
+
+
+def set_heat_rate(fuel, method=by_median):
+    level, trend, s = method(fuel, "HeatRate")
+    heat_rate_start_year[fuel] = level
+    heat_rate_trend[fuel] = trend
+    heat_rate[fuel] = s
+
+heat_rate_start_year = pd.Series()
+heat_rate_trend = pd.Series()
+heat_rate = pd.DataFrame()
+
+set_heat_rate("Coal")
+set_heat_rate("Gas")
+set_heat_rate("Oil")
+set_heat_rate("BigHydro", as_zero)
+set_heat_rate("SmallHydro", as_zero)
+set_heat_rate("Biomass")
+set_heat_rate("Solar", as_zero)
+set_heat_rate("Wind", as_zero)
+set_heat_rate("Import", as_zero)
+
+show(heat_rate)
+show()
+
 #%% Fuel prices
 
-fuel_price = pd.DataFrame(index=years)
+heat_price = pd.DataFrame(index=years)
 
-fuel_price["Coal"] = 0
-fuel_price["Gas"] = 0
-fuel_price["Oil"] = 0
-fuel_price["BigHydro"] = 0
-fuel_price["SmallHydro"] = 0
-fuel_price["Biomass"] = 0
-fuel_price["Wind"] = 0
-fuel_price["Solar"] = 0
-fuel_price["Import"] = 60.8   # $/MW,  Source  http://www.globaltimes.cn/content/888455.shtml
+# $/MBtu, http://en.openei.org/apps/TCDB/levelized_cost_calculations.html
+heat_price["Coal"] = 2.34
+heat_price["Gas"] = 4.4
+heat_price["Oil"] = 4.4
+heat_price["BigHydro"] = 0
+heat_price["SmallHydro"] = 0
+heat_price["Biomass"] = 2.27
+heat_price["Wind"] = 0
+heat_price["Solar"] = 0
+heat_price["Import"] = 0

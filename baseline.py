@@ -20,12 +20,11 @@ Renewable4 includes small hydro
 
 import pandas as pd
 import numpy as np
-from init import show, VERBOSE
+from init import show, VERBOSE, sources
 from parameters import plant_life
 from data import fuels, PDP7A_annex1, capacities_PDP7A, capacity_past, addcol_Renewable4
 from data import production_past, capacity_factor_past, capacity_factor_PDP7A, production_PDP7A
 from data import fuel_use_PDP7A
-
 #%%  Capacities
 
 # 2016 - 2030 capacity additions for Coal, Gas, Oil, BigHydro

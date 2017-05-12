@@ -29,9 +29,15 @@ MW = 10**6
 GWh = 10**9
 MWh = 10**6
 kWh = 1000
-
+Btu = 1
+MBtu = 10**6
+TBtu = 10**12
 USD = 1
 MUSD = 10**6
+
+runId = 0
+run_locals = dict()
+run_globals = dict()
 
 #from natu import config
 ## config.use_quantities = False

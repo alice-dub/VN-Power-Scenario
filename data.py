@@ -34,7 +34,7 @@ so we need to clarify column names.
 """
 
 import pandas as pd
-from init import show, VERBOSE, years, fuels, sources
+from init import show, VERBOSE, fuels, sources
 #import matplotlib.pyplot as plt
 pd.set_option('display.max_rows', 100)
 
@@ -333,20 +333,6 @@ if VERBOSE:
                  title="Power generation capacity factors by fuel type")
     ax.axvline(2015, color="k")
 
-
-#%% Heat rate
-
-heat_rate = pd.DataFrame(index=years)
-
-heat_rate["Coal"] = 0
-heat_rate["Gas"] = 0
-heat_rate["Oil"] = 0
-heat_rate["BigHydro"] = 0
-heat_rate["SmallHydro"] = 0
-heat_rate["Biomass"] = 0
-heat_rate["Wind"] = 0
-heat_rate["Solar"] = 0
-heat_rate["Import"] = 1
 
 #%%
 
