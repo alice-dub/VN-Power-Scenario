@@ -34,6 +34,12 @@ MBtu = 10**6
 TBtu = 10**12
 USD = 1
 MUSD = 10**6
+g = 10**(-3)
+kg = 1
+t = 1000
+kt = 10**6
+Mt = 10**9
+Gt = 10**12
 
 runId = 0
 run_locals = dict()

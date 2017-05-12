@@ -16,13 +16,14 @@ import pandas as pd
 import numpy as np
 from functools import lru_cache
 
-from init import show, start_year, n_year, years, fuels, sources, runId, run_locals, run_globals
-from init import kW, MW, USD, MUSD, GWh, MWh, kWh, Btu, MBtu, TBtu
+from init import show, start_year, end_year, n_year, years, fuels, sources
+from init import runId, run_locals, run_globals
+from init import kW, MW, USD, MUSD, GWh, MWh, kWh, Btu, MBtu, TBtu, g, kt, Mt, Gt
 
 from parameters import discount_rate, plant_life
 from baseline import additions, capacities_baseline, production_baseline
 from data_cost import construction_cost, fixed_operating_cost, variable_operating_cost
-from data_cost import heat_rate, heat_price
+from data_cost import heat_rate, heat_price, emission_factor
 
 
 pd.set_option('display.max_rows', 100)
@@ -144,6 +145,7 @@ show("Baseline scenario - Fuel costs (M$)")
 show(fuel_cost_baseline[sources].loc[start_year:].round())
 show()
 
+
 #%% Levelized Cost Of Electricity
 
 
@@ -185,3 +187,15 @@ show(lcoe(0.05, ["Solar"]))
 show(lcoe(0.05, ["Import"]))
 show(lcoe(0.05, fuels))
 show(lcoe(0.05, sources))
+
+
+#%% CO2
+
+emissions_baseline = production_baseline * GWh * emission_factor * g / kWh / kt
+
+show(emissions_baseline[sources])
+show()
+show("Sum of CO2eq emissions over ", start_year, "-", end_year, " (Mt)")
+show((emissions_baseline.sum() * kt / Mt).round())
+show()
+show("Total emissions = ", (emissions_baseline.sum().sum() * kt / Gt).round(), " Gt CO2eq")

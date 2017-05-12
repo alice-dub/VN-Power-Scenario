@@ -294,3 +294,16 @@ heat_price["Biomass"] = 2.27
 heat_price["Wind"] = 0
 heat_price["Solar"] = 0
 heat_price["Import"] = 0
+
+
+#%% Emission factors
+
+#Source : IPCC SRREN
+# Table A.II.4 | Aggregated results of literature review of LCAs of GHG emissions
+# from electricity generation technologies (g CO2eq/kWh)
+# Median of the literature reviewed
+emission_factor = pd.Series({"Coal": 1001, "Gas": 469, "Oil": 840, "BigHydro": 4,
+                             "SmallHydro": 4, "Biomass": 18, "Wind": 12, "Solar": 46})
+
+#Assumption: VN imports from China and Lao
+emission_factor["Import"] = 0.5 * emission_factor["Coal"] + 0.5 * emission_factor["BigHydro"]
