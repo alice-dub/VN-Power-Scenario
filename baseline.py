@@ -19,23 +19,69 @@ Renewable4 includes small hydro
 """
 
 import pandas as pd
-import numpy as np
+# import numpy as np
 from init import show, VERBOSE, sources
 from parameters import plant_life
 from data import fuels, PDP7A_annex1, capacities_PDP7A, capacity_past, addcol_Renewable4
 from data import production_past, capacity_factor_past, capacity_factor_PDP7A, production_PDP7A
-from data import fuel_use_PDP7A
-#%%  Capacities
+# from data import fuel_use_PDP7A
 
-# 2016 - 2030 capacity additions for Coal, Gas, Oil, BigHydro
 
-additions = PDP7A_annex1.replace({"fuel": {"Nuclear": "Gas"}})
+#%%
 
-additions = additions.groupby(["year", "fuel"]).capacity_MW.sum()
-additions = additions.unstack()
-additions.drop("ND*", axis=1, inplace=True)
+class PowerPlan:
 
-# 2016 - 2030 capacity additions for the four renewable technologies
+    def __init__(self, additions, retirement, capacity_factor, net_import):
+        self.additions = additions
+        self.retirement = retirement
+        self.capacity_factor = capacity_factor
+        self.net_imports = net_import
+
+        self.capacities = (additions - retirement).cumsum()
+        self.production = self.capacities.loc[1990:] * capacity_factor * 8760 / 1000
+        self.production["Import"] = net_import
+        self.production = self.production[sources].fillna(0)
+
+    def __str__(self):
+        return ("Power development program #" + str(hash(self)))
+
+    def print_details(self):
+        print(self)
+        print()
+        print("Annual generation capacity addition by fuel type (MW)")
+        print(self.additions[sources + ["PumpedStorage"]].round())
+        print()
+        print("Old capacity retirement by fuel type (MW)")
+        print(self.retirement[fuels].round())
+        print()
+        print("Generation capacity by fuel type (MW)")
+        print(self.capacities[sources + ["PumpedStorage"]].round())
+        print()
+        print("Electricity production (GWh)")
+        print(self.production.round())
+        print()
+        print("Capacity factors")
+        print(capacityfactor.round(2))
+        print()
+
+#        print(str(self) + "\n\ntotal electricity produced by fuel type")
+#        print("Period: 2016 - 2050, discount rate:", discount_rate, "per year")
+#        for fuel in fuels:
+#            value = present_value(production_baseline[fuel], discount_rate)
+#            value = int(value / 1000)
+#            print(fuel + ": " + str(value) + " TWh")
+
+    def plot_additions(self):
+        self.additions[fuels].plot(title=str(self) + "\n\nAdded capacity (MW)")
+
+    def plot_retirement(self):
+        self.retirement[fuels].plot(title=str(self) + "\n\nRetired capacity (MW)")
+
+    def plot_capacity_mix(self):
+        mix = (self.capacities[fuels] / 1000).drop("Oil", axis=1)
+        ax = mix.plot(title=str(self) + "\n\nVietnam generation capacity by fuel type (GW)")
+        ax.axvline(2015, color="k")
+        ax.axvline(2030, color="k")
 
 
 def fill_in(serie):
@@ -53,6 +99,18 @@ def fill_in(serie):
                      index=range(2016, 2031),
                      dtype="int64")
 
+
+#%%  Capacity additions
+
+# 2016 - 2030 capacity additions for Coal, Gas, Oil, BigHydro
+
+additions = PDP7A_annex1.replace({"fuel": {"Nuclear": "Gas"}})
+
+additions = additions.groupby(["year", "fuel"]).capacity_MW.sum()
+additions = additions.unstack()
+additions.drop("ND*", axis=1, inplace=True)
+
+# 2016 - 2030 capacity additions for the four renewable technologies
 
 additions["Solar"] = fill_in(capacities_PDP7A.Solar)
 additions["Wind"] = fill_in(capacities_PDP7A.Wind)
@@ -75,9 +133,6 @@ increment = {"Coal": 0, "Gas": 750, "Oil": 20, "BigHydro": 0,
 for y in range(2031, 2051):
     additions.loc[y] = increment
 
-show("Vietnam annual generation capacity addition by fuel type (MW)")
-show(additions[fuels + ["PumpedStorage", "Import"]])
-show()
 
 #%% Old plant retirement program
 
@@ -101,53 +156,7 @@ retirement.loc[2019, "Oil"] = 100
 retirement = pd.rolling_mean(retirement, 2)
 retirement.loc[1974] = 0
 
-show("Old capacity retirement by fuel type (MW)")
-show(retirement[fuels])
-show()
-
-if VERBOSE:
-    retirement[fuels].plot(title="Retired capacity (MW)")
-
 #%%
-
-capacity_baseline = additions - retirement
-capacities_baseline = capacity_baseline.cumsum().astype("int64")
-
-show("Vietnam generation capacity by fuel type (MW)")
-show(capacities_baseline[fuels + ["PumpedStorage", "Import"]])
-show()
-
-if VERBOSE:
-    mix = (capacities_baseline[fuels] / 1000).drop("Oil", axis=1)
-    ax = mix.plot(title="Baseline scenario\nVietnam generation capacity by fuel type (GW)")
-    ax.axvline(2015, color="k")
-    ax.axvline(2030, color="k")
-
-#%% Check the capacity numbers vs. PDP7A objectives
-
-compared = ["Coal", "Gas", "BigHydro", "Renewable4", "Nuclear"]
-
-tocompare = capacities_baseline.loc[[2020, 2025, 2030]]
-tocompare["Gas"] = tocompare.Gas + tocompare.Oil
-tocompare["Nuclear"] = 0
-addcol_Renewable4(tocompare)
-tocompare = tocompare[compared]
-
-relerror = (tocompare - capacities_PDP7A) / capacities_PDP7A
-relerror = relerror[compared]
-
-show("PDP7A")
-show(capacities_PDP7A[compared])
-show()
-show("Baseline scenario, Gas includes Oil")
-show(tocompare)
-show()
-show("Relative error")
-show(relerror)
-show("Note: Gas 2030 is larger in baseline because we replace nuclear with gas")
-
-#
-#%% Electricity production
 
 
 def extend(serie, endpoint, newname, past=capacity_factor_past, future=capacity_factor_PDP7A):
@@ -173,6 +182,9 @@ def extend(serie, endpoint, newname, past=capacity_factor_past, future=capacity_
                   index=range(2031, 2051))
     return r.append(s)
 
+
+#%% Electricity production
+
 capacityfactor = pd.DataFrame()
 
 capacityfactor["Coal"] = extend("Coal", 0.6, "Coal")
@@ -186,20 +198,48 @@ capacityfactor["Solar"] = extend("Renewable", 0.23, "Solar")
 
 capacityfactor = capacityfactor.where(capacityfactor < 1)
 
-show(capacityfactor)
+net_import = extend("Import", 7000, "Import", production_past, production_PDP7A)
+
+
+#%% Main statement
+
+baseline = PowerPlan(additions, retirement, capacityfactor, net_import)
+
+if VERBOSE:
+    baseline.print_details()
+    baseline.plot_additions()
+    baseline.plot_retirement()
+    baseline.plot_capacity_mix()
+
+
+#%% Check the capacity numbers vs. PDP7A objectives
+
+show("""
+*****************************************************
+***     Comparing our baseline with PDP7          ***
+*****************************************************
+""")
+
+compared = ["Coal", "Gas", "BigHydro", "Renewable4", "Nuclear"]
+
+tocompare = baseline.capacities.loc[[2020, 2025, 2030]]
+tocompare["Gas"] = tocompare.Gas + tocompare.Oil
+tocompare["Nuclear"] = 0
+addcol_Renewable4(tocompare)
+tocompare = tocompare[compared]
+
+relerror = (tocompare - capacities_PDP7A) / capacities_PDP7A
+relerror = relerror[compared]
+
+show("PDP7A")
+show(capacities_PDP7A[compared])
 show()
-
-#%%
-
-production_baseline = capacities_baseline.loc[1990:] * capacityfactor * 8760 / 1000
-
-production_baseline["Import"] = extend("Import", 7000, "Import", production_past, production_PDP7A)
-
-production_baseline = production_baseline[sources].fillna(0).astype("int64")
-
-show("Baseline scenario - Electricity production (GWh)")
-show(production_baseline)
+show("Baseline scenario, Gas includes Oil")
+show(tocompare)
 show()
+show("Relative error")
+show(relerror)
+show("Note: Gas 2030 is larger in baseline because we replace nuclear with gas")
 
 #b = production_past[fuels].astype("int64")
 #
@@ -213,26 +253,26 @@ show()
 #show(relerr)
 
 #%% Fuel use
-
-MtCoal_per_GWh = fuel_use_PDP7A.Coal / production_PDP7A.Coal
-
-show(MtCoal_per_GWh)
-
-a = MtCoal_per_GWh[2020]
-b = MtCoal_per_GWh[2025]
-da = (b - a) / 5
-c = MtCoal_per_GWh[2030]
-db = (c - b) / 5
-s = pd.Series(name="Coal",
-              data=np.concatenate([np.arange(a - 10 * da, b, da),
-                                   np.arange(b, c + 21 * db, db)]),
-              index=range(2010, 2051))
-
-show(s)
-
-coal_use_baseline = s * production_baseline.Coal.loc[2010:]
-
-show(fuel_use_PDP7A.Coal)
-show(coal_use_baseline)
-
-#TODO: Check against statistics
+#
+#MtCoal_per_GWh = fuel_use_PDP7A.Coal / production_PDP7A.Coal
+#
+#show(MtCoal_per_GWh)
+#
+#a = MtCoal_per_GWh[2020]
+#b = MtCoal_per_GWh[2025]
+#da = (b - a) / 5
+#c = MtCoal_per_GWh[2030]
+#db = (c - b) / 5
+#s = pd.Series(name="Coal",
+#              data=np.concatenate([np.arange(a - 10 * da, b, da),
+#                                   np.arange(b, c + 21 * db, db)]),
+#              index=range(2010, 2051))
+#
+#show(s)
+#
+#coal_use_baseline = s * production_baseline.Coal.loc[2010:]
+#
+#show(fuel_use_PDP7A.Coal)
+#show(coal_use_baseline)
+#
+##TODO: Check against statistics

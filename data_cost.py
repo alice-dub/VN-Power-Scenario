@@ -20,9 +20,57 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-from init import show, VERBOSE, start_year, end_year, n_year, years, sources
+from init import show, VERBOSE, start_year, end_year, n_year, years, fuels, sources
+from parameters import discount_rate
 
 pd.set_option('display.max_rows', 30)
+
+
+class Parameter():
+
+    def __init__(self,
+                 discount_rate,
+                 construction_cost,
+                 fixed_operating_cost,
+                 variable_operating_cost,
+                 heat_rate,
+                 heat_price,
+                 emission_factor):
+        self.discount_rate = discount_rate
+        self.construction_cost = construction_cost[fuels]
+        self.fixed_operating_cost = fixed_operating_cost[fuels]
+        self.variable_operating_cost = variable_operating_cost[sources]
+        self.heat_rate = heat_rate
+        self.heat_price = heat_price
+        self.emission_factor = emission_factor
+
+    def __str__(self):
+        return ("Parameters set #" + str(hash(self)))
+
+    def summarize(self):
+        print("Discount rate:", self.discount_rate)
+        #TODO: Print a summary table
+
+    def print_details(self):
+        print("Discount rate:", self.discount_rate)
+        print("Overnight construction costs ($/kW)")
+        print(self.construction_cost.round())
+        print()
+        print("Fixed operating costs ($/kW)")
+        print(self.fixed_operating_cost)
+        print()
+        print("Variable operating costs ($/kWh)")
+        print(self.variable_operating_cost)
+        print()
+        print("Heat rate (Btu/kWh)")
+        print(self.heat_rate)
+        print()
+        print("Heat price ($/MBtu)")
+        print(self.heat_price)
+        print()
+        print("Emission factor (gCO2eq/kWh)")
+        print(self.emission_factor)
+        print()
 
 
 #%% Functions to build series from OpenEI data file
@@ -113,8 +161,8 @@ def by_regression(fuel, col):
         myplot(data, fuel, col, s, " (regression on " + str(len(data)) + ") " + techindex[fuel])
     return level, trend, s
 
-#%%
 
+#%%
 
 def set_capital_cost(fuel, method):
     level, trend, s = method(fuel, "OnghtCptlCostDolPerKw")
@@ -307,3 +355,14 @@ emission_factor = pd.Series({"Coal": 1001, "Gas": 469, "Oil": 840, "BigHydro": 4
 
 #Assumption: VN imports from China and Lao
 emission_factor["Import"] = 0.5 * emission_factor["Coal"] + 0.5 * emission_factor["BigHydro"]
+
+
+#%%
+
+reference = Parameter(discount_rate,
+                      construction_cost,
+                      fixed_operating_cost,
+                      variable_operating_cost,
+                      heat_rate,
+                      heat_price,
+                      emission_factor)
