@@ -18,21 +18,14 @@ Nuclear replaced by Coal
 Renewable4 includes small hydro
 """
 
-import pandas as pd
 import matplotlib.pyplot as plt
-from init import show, sources, start_year, end_year
+from init import pd, show, sources, technologies, start_year, end_year
 from init import GWh, TWh, MW, GW
 
 from data_baseline import (fuels, plant_life,
                            PDP7A_annex1, addcol_Renewable4,
                            capacity_past, production_past, capacity_factor_past,
                            capacities_PDP7A, production_PDP7A, capacity_factor_PDP7A)
-
-
-pd.set_option('display.max_rows', 100)
-pd.set_option('display.max_columns', 20)
-pd.set_option('display.width', 1000)
-
 
 #%%
 
@@ -60,13 +53,13 @@ class PowerPlan:
         print()
         milestones = [start_year, 2020, 2025, 2030, 2040, end_year]
         print("Annual generation capacity addition by fuel type (MW)")
-        print(self.additions.loc[milestones][sources + ["PumpedStorage"]].round())
+        print(self.additions.loc[milestones][technologies].round())
         print()
         print("Old capacity retirement by fuel type (MW)")
         print(self.retirement.loc[milestones][fuels].round())
         print()
         print("Generation capacity by fuel type (MW)")
-        print(self.capacities.loc[milestones][sources + ["PumpedStorage"]].round())
+        print(self.capacities.loc[milestones][technologies].round())
         print()
         print("Electricity production (GWh)")
         print(self.production.loc[milestones].round())
@@ -79,13 +72,13 @@ class PowerPlan:
         print(self)
         print()
         print("Annual generation capacity addition by fuel type (MW)")
-        print(self.additions[sources + ["PumpedStorage"]].round())
+        print(self.additions[technologies].round())
         print()
         print("Old capacity retirement by fuel type (MW)")
         print(self.retirement[fuels].round())
         print()
         print("Generation capacity by fuel type (MW)")
-        print(self.capacities[sources + ["PumpedStorage"]].round())
+        print(self.capacities[technologies].round())
         print()
         print("Electricity production (GWh)")
         print(self.production.round())
@@ -173,7 +166,7 @@ additions = additions[fuels + ["PumpedStorage", "Import"]].fillna(0)
 
 increment = {"Coal": 0, "Gas": 750, "Oil": 20, "BigHydro": 0,
              "SmallHydro": 50, "Biomass": 50, "Wind": 900, "Solar": 1000,
-             "PumpedStorage": 50, "Import": 50}
+             "PumpedStorage": 50, "Import": 50, "Coal CCS": 0, "Gas CCS": 0, "Biomass CCS": 0}
 
 for y in range(2031, 2051):
     additions.loc[y] = increment

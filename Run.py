@@ -12,21 +12,16 @@ Assess the cost of baseline scenario
 
 """
 
-import pandas as pd
 import numpy as np
 from functools import lru_cache
 
-from init import fuels, sources
+from init import pd, fuels, sources
 from init import start_year, end_year, n_year, years
 from init import kW, MW, USD, MUSD, GUSD, GWh, MWh, TWh, kWh, Btu, MBtu, TBtu, g, kt, Mt, Gt
 
 from PowerPlan_baseline import baseline
 from Parameter_reference import reference
 
-
-pd.set_option('display.max_rows', 100)
-pd.set_option('display.max_columns', 20)
-pd.set_option('display.width', 1000)
 
 #%% Accounting functions
 

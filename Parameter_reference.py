@@ -6,18 +6,12 @@
 #
 #
 
-import pandas as pd
-
-from init import sources
+from init import pd, sources
 
 from data_baseline import plant_life
 
 from data_OpenEI import (construction_cost, fixed_operating_cost, variable_operating_cost,
                          heat_rate, heat_price)
-
-pd.set_option('display.max_rows', 100)
-pd.set_option('display.max_columns', 20)
-pd.set_option('display.width', 1000)
 
 
 class Parameter():
@@ -116,7 +110,9 @@ class Parameter():
 # Median of the literature reviewed
 
 emission_factor = pd.Series({"Coal": 1001, "Gas": 469, "Oil": 840, "BigHydro": 4,
-                             "SmallHydro": 4, "Biomass": 18, "Wind": 12, "Solar": 46})
+                             "SmallHydro": 4, "Biomass": 18, "Wind": 12, "Solar": 46,
+                             "Coal CCS": float('NaN'), "Gas CCS": float('NaN'),
+                             "Biomass CCS": float('NaN')})
 
 #Assumption: VN imports from China and Lao
 emission_factor["Import"] = 0.5 * emission_factor["Coal"] + 0.5 * emission_factor["BigHydro"]

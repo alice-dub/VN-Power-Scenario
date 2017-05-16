@@ -11,7 +11,14 @@
 # otherwise use_quantities does not work
 #
 #
-VERBOSE = False
+import pandas as pd
+
+pd.set_option('display.max_rows', 100)
+pd.set_option('display.max_columns', 20)
+pd.set_option('display.width', 1000)
+
+
+VERBOSE = True
 
 show = print if VERBOSE else lambda *a, **k: None
 
@@ -20,8 +27,13 @@ end_year = 2050
 years = range(start_year, end_year + 1)
 n_year = len(years)
 
-fuels = ["Coal", "Gas", "Oil", "BigHydro", "SmallHydro", "Biomass", "Wind", "Solar"]
+fuels = ["Coal", "Gas", "Oil",
+         "BigHydro", "SmallHydro", "Biomass", "Wind", "Solar",
+         "Coal CCS", "Gas CCS", "Biomass CCS"]
+
 sources = fuels + ["Import"]
+
+technologies = sources + ["PumpedStorage"]
 
 W = 1
 kW = 1000

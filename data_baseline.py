@@ -33,10 +33,7 @@ so we need to clarify column names.
     because the capacity factors are not comparable, neither are the investment costs
 """
 
-import pandas as pd
-from init import show, VERBOSE, fuels, sources
-
-pd.set_option('display.max_rows', 100)
+from init import pd, show, VERBOSE, fuels, sources
 
 
 def addcol_Renewable(s):
@@ -105,6 +102,9 @@ capacity_past.Oil = smooth(capacity_past.Oil)
 capacity_past["Solar"] = 0
 capacity_past["Import"] = 0
 capacity_past["PumpedStorage"] = 0
+capacity_past["Coal CCS"] = 0
+capacity_past["Gas CCS"] = 0
+capacity_past["Biomass CCS"] = 0
 
 capacity_past["BigHydro"] = (capacity_past.LargeHydro
                              + capacity_past.InterHydro)
@@ -157,6 +157,11 @@ production_past["SmallHydro"] = production_past["SmallHydro"].astype(int)
 production_past["BigHydro"] = production_past.Hydro - production_past.SmallHydro
 production_past["Import"] = production_past.Imports + production_past.Exports
 
+production_past["CoalCCS"] = 0
+production_past["Gas CCS"] = 0
+production_past["Biomass CCS"] = 0
+
+
 #%% Estimates 2015 production by fuel type
 # Source Institute of Energy cited in
 # http://gizenergy.org.vn/en/knowledge-resources/power-sector-vietnam
@@ -190,6 +195,10 @@ production_2015["SmallHydro"] = production_2015["Renewable4"] - production_2015[
 production_2015["Hydro"] = production_2015["BigHydro"] + production_2015["SmallHydro"]
 
 production_2015.drop(["GasTurbine", "Renewable4"], inplace=True)
+
+production_2015["Coal CCS"] = 0
+production_2015["Gas CCS"] = 0
+production_2015["Biomass CCS"] = 0
 
 production_past = production_past.append(production_2015)
 
@@ -260,6 +269,9 @@ capacities_PDP7A["Hydro"] = capacities_PDP7A["Hydro+Storage"] - capacities_PDP7A
 capacities_PDP7A["BigHydro"] = (capacities_PDP7A["BigHydro+Storage"]
                                 - capacities_PDP7A["PumpedStorage"])
 capacities_PDP7A["Oil"] = 0
+capacities_PDP7A["Coal CCS"] = 0
+capacities_PDP7A["Gas CCS"] = 0
+capacities_PDP7A["Biomass CCS"] = 0
 
 show("""
 PDP7A capacity objectives by fuel type (GW)
@@ -301,6 +313,9 @@ Gas capacity in EVN report includes the Tu Duc and Can Tho oil-fired gas turbine
 production_PDP7A = pd.read_csv("data/PDP7A/Objectives.csv", header=26, nrows=3, index_col=0)
 
 production_PDP7A["Oil"] = 0
+production_PDP7A["Coal CCS"] = 0
+production_PDP7A["Gas CCS"] = 0
+production_PDP7A["Biomass CCS"] = 0
 
 show("""
 PDP7A power generation objectives by fuel type (GWh)
@@ -343,6 +358,7 @@ show(fuel_use_PDP7A.Coal)
 
 #%%  Plant physical life - when to retire from production capacities
 
-plant_life = pd.Series({"Coal": 40, "Gas": 25, "Oil": 30, "BigHydro": 100,
-                        "SmallHydro": 60, "Biomass": 25, "Wind": 20, "Solar": 25,
+plant_life = pd.Series({"Coal": 40, "Gas": 25, "Oil": 30,
+                        "BigHydro": 100, "SmallHydro": 60, "Biomass": 25, "Wind": 20, "Solar": 25,
+                        "Coal CCS": 40, "Gas CCS": 25, "Biomass CCS": 25,
                         "PumpedStorage": 100, "Import": 100})
