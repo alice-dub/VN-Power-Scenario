@@ -35,7 +35,7 @@ so we need to clarify column names.
 
 import pandas as pd
 from init import show, VERBOSE, fuels, sources
-#import matplotlib.pyplot as plt
+
 pd.set_option('display.max_rows', 100)
 
 
@@ -340,3 +340,9 @@ fuel_use_PDP7A = pd.read_csv("data/PDP7A/Objectives.csv", header=38, nrows=3, in
 
 show("Coal consumption, PDP7A (Mt)")
 show(fuel_use_PDP7A.Coal)
+
+#%%  Plant physical life - when to retire from production capacities
+
+plant_life = {"Coal": 40, "Gas": 25, "Oil": 30, "BigHydro": 100,
+              "SmallHydro": 60, "Biomass": 25, "Wind": 20, "Solar": 25,
+              "PumpedStorage": 100, "Import": 100}

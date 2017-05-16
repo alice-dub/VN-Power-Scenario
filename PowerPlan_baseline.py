@@ -20,13 +20,14 @@ Renewable4 includes small hydro
 
 import pandas as pd
 from init import show, VERBOSE, sources
-from parameters import plant_life
 
-from data import fuels, PDP7A_annex1, capacities_PDP7A, capacity_past, addcol_Renewable4
-from data import production_past, capacity_factor_past, capacity_factor_PDP7A, production_PDP7A
-
+from data_baseline import (fuels, plant_life,
+                           PDP7A_annex1, addcol_Renewable4,
+                           capacity_past, production_past, capacity_factor_past,
+                           capacities_PDP7A, production_PDP7A, capacity_factor_PDP7A)
 
 #%%
+
 
 class PowerPlan:
 
@@ -62,13 +63,6 @@ class PowerPlan:
         print("Capacity factors")
         print(capacityfactor.round(2))
         print()
-
-#        print(str(self) + "\n\ntotal electricity produced by fuel type")
-#        print("Period: 2016 - 2050, discount rate:", discount_rate, "per year")
-#        for fuel in fuels:
-#            value = present_value(production_baseline[fuel], discount_rate)
-#            value = int(value / 1000)
-#            print(fuel + ": " + str(value) + " TWh")
 
     def plot_additions(self):
         self.additions[fuels].plot(title=str(self) + "\n\nAdded capacity (MW)")

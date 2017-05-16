@@ -20,8 +20,8 @@ from init import fuels, sources
 from init import start_year, end_year, n_year, years
 from init import kW, MW, USD, MUSD, GUSD, GWh, MWh, TWh, kWh, Btu, MBtu, TBtu, g, kt, Mt, Gt
 
-from baseline import baseline
-from data_cost import reference
+from PowerPlan_baseline import baseline
+from Parameter_reference import reference
 
 
 pd.set_option('display.max_rows', 100)

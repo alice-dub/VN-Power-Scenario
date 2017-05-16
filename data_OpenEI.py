@@ -7,73 +7,23 @@
 #
 
 """
-Read-in the data files of costs from OpenEI
+Energy data from OpenEI's Transparent Cost Database
++ newspaper sources for Import capacity costs
++ newspaper source Import electricity price
 
-Transparent Cost Database  compiled and published by OpenEI
-# OpenEI is developed and maintained by the National Renewable Energy Laboratory
-# with funding and support from the U.S. Department of Energy and
-# a network of International Parterns & Sponsors.
-# http://en.openei.org/apps/TCDB/#blank
+OpenEI is developed and maintained by the National Renewable Energy Laboratory
+with funding and support from the U.S. Department of Energy and
+a network of International Parterns & Sponsors.
+http://en.openei.org/apps/TCDB/#blank
 """
 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-from init import show, VERBOSE, start_year, end_year, n_year, years, fuels, sources
-from parameters import discount_rate, plant_accounting_life
+from init import show, VERBOSE, start_year, end_year, n_year, years, sources
 
 pd.set_option('display.max_rows', 30)
-
-
-class Parameter():
-
-    def __init__(self,
-                 discount_rate,
-                 plant_accounting_life,
-                 construction_cost,
-                 fixed_operating_cost,
-                 variable_operating_cost,
-                 heat_rate,
-                 heat_price,
-                 emission_factor):
-        self.discount_rate = discount_rate
-        self.plant_accounting_life = plant_accounting_life
-        self.construction_cost = construction_cost[sources]
-        self.fixed_operating_cost = fixed_operating_cost[sources]
-        self.variable_operating_cost = variable_operating_cost[sources]
-        self.heat_rate = heat_rate
-        self.heat_price = heat_price
-        self.emission_factor = emission_factor
-
-    def __str__(self):
-        return ("Parameters set #" + str(hash(self)))
-
-    def summarize(self):
-        print("Discount rate:", self.discount_rate)
-        #TODO: Print a summary table
-
-    def detail(self):
-        print("Discount rate:", self.discount_rate)
-        print("Overnight construction costs ($/kW)")
-        print(self.construction_cost.round())
-        print()
-        print("Fixed operating costs ($/kW)")
-        print(self.fixed_operating_cost)
-        print()
-        print("Variable operating costs ($/kWh)")
-        print(self.variable_operating_cost)
-        print()
-        print("Heat rate (Btu/kWh)")
-        print(self.heat_rate)
-        print()
-        print("Heat price ($/MBtu)")
-        print(self.heat_price)
-        print()
-        print("Emission factor (gCO2eq/kWh)")
-        print(self.emission_factor)
-        print()
-
 
 #%% Functions to build series from OpenEI data file
 
@@ -330,11 +280,13 @@ set_heat_rate("Import", as_zero)
 show(heat_rate)
 show()
 
+
 #%% Fuel prices
 
 heat_price = pd.DataFrame(index=years)
 
 # $/MBtu, http://en.openei.org/apps/TCDB/levelized_cost_calculations.html
+# One line each, because later on we may assume trend
 heat_price["Coal"] = 2.34
 heat_price["Gas"] = 4.4
 heat_price["Oil"] = 4.4
@@ -344,28 +296,3 @@ heat_price["Biomass"] = 2.27
 heat_price["Wind"] = 0
 heat_price["Solar"] = 0
 heat_price["Import"] = 0
-
-
-#%% Emission factors
-
-#Source : IPCC SRREN
-# Table A.II.4 | Aggregated results of literature review of LCAs of GHG emissions
-# from electricity generation technologies (g CO2eq/kWh)
-# Median of the literature reviewed
-emission_factor = pd.Series({"Coal": 1001, "Gas": 469, "Oil": 840, "BigHydro": 4,
-                             "SmallHydro": 4, "Biomass": 18, "Wind": 12, "Solar": 46})
-
-#Assumption: VN imports from China and Lao
-emission_factor["Import"] = 0.5 * emission_factor["Coal"] + 0.5 * emission_factor["BigHydro"]
-
-
-#%%
-
-reference = Parameter(discount_rate,
-                      plant_accounting_life,
-                      construction_cost,
-                      fixed_operating_cost,
-                      variable_operating_cost,
-                      heat_rate,
-                      heat_price,
-                      emission_factor)
