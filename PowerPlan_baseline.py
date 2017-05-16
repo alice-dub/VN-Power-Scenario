@@ -19,31 +19,61 @@ Renewable4 includes small hydro
 """
 
 import pandas as pd
-from init import show, VERBOSE, sources
+import matplotlib.pyplot as plt
+from init import show, sources, start_year, end_year
+from init import GWh, TWh, MW, GW
 
 from data_baseline import (fuels, plant_life,
                            PDP7A_annex1, addcol_Renewable4,
                            capacity_past, production_past, capacity_factor_past,
                            capacities_PDP7A, production_PDP7A, capacity_factor_PDP7A)
 
+
+pd.set_option('display.max_rows', 100)
+pd.set_option('display.max_columns', 20)
+pd.set_option('display.width', 1000)
+
+
 #%%
 
 
 class PowerPlan:
 
-    def __init__(self, additions, retirement, capacity_factor, net_import):
+    def __init__(self, docstring, additions, retirement, capacity_factor, net_import):
+        self.docstring = docstring
         self.additions = additions
         self.retirement = retirement
         self.capacity_factor = capacity_factor
         self.net_imports = net_import
 
         self.capacities = (additions - retirement).cumsum()
-        self.production = self.capacities.loc[1990:] * capacity_factor * 8760 / 1000
+#        self.production = self.capacities.loc[1990:] * capacity_factor * 8760 / 1000
+        self.production = self.capacities * capacity_factor * 8760 / 1000
         self.production["Import"] = net_import
         self.production = self.production[sources].fillna(0)
 
     def __str__(self):
-        return ("Power development program #" + str(hash(self)))
+        return ("Power development program: " + self.docstring)
+
+    def summarize(self):
+        print(self)
+        print()
+        milestones = [start_year, 2020, 2025, 2030, 2040, end_year]
+        print("Annual generation capacity addition by fuel type (MW)")
+        print(self.additions.loc[milestones][sources + ["PumpedStorage"]].round())
+        print()
+        print("Old capacity retirement by fuel type (MW)")
+        print(self.retirement.loc[milestones][fuels].round())
+        print()
+        print("Generation capacity by fuel type (MW)")
+        print(self.capacities.loc[milestones][sources + ["PumpedStorage"]].round())
+        print()
+        print("Electricity production (GWh)")
+        print(self.production.loc[milestones].round())
+        print()
+        print("Capacity factors")
+        print(capacityfactor.loc[milestones].round(2))
+        print()
 
     def detail(self):
         print(self)
@@ -64,17 +94,39 @@ class PowerPlan:
         print(capacityfactor.round(2))
         print()
 
-    def plot_additions(self):
-        self.additions[fuels].plot(title=str(self) + "\n\nAdded capacity (MW)")
-
-    def plot_retirement(self):
-        self.retirement[fuels].plot(title=str(self) + "\n\nRetired capacity (MW)")
-
-    def plot_capacity_mix(self):
-        mix = (self.capacities[fuels] / 1000).drop("Oil", axis=1)
-        ax = mix.plot(title=str(self) + "\n\nVietnam generation capacity by fuel type (GW)")
+    def plot_additions(self, ax, l=True):
+        self.additions[sources].plot(ax=ax, title="Added capacity (MW)",
+                                     linestyle='', marker='o', legend=l)
         ax.axvline(2015, color="k")
         ax.axvline(2030, color="k")
+
+    def plot_retirement(self, ax, l=True):
+        self.retirement[sources].plot(ax=ax, title="Retired capacity (MW)", legend=l)
+        ax.axvline(2015, color="k")
+        ax.axvline(2030, color="k")
+
+    def plot_capacity_mix(self, ax, l=True):
+        mix = (self.capacities[sources] * MW / GW)
+        mix.plot(ax=ax, title="Total generation capacity (GW)", legend=l)
+        ax.axvline(2015, color="k")
+        ax.axvline(2030, color="k")
+
+    def plot_production_mix(self, ax, l=True):
+        mix = (self.production[sources] * GWh / TWh)
+        mix.plot(ax=ax, title="Electricity production (TWh)", legend=l)
+        ax.axvline(2015, color="k")
+        ax.axvline(2030, color="k")
+
+    def plot_plan(self, filename):
+        fig, axarr = plt.subplots(3, 1, figsize=[8, 12], sharex=True)
+        fig.suptitle(str(self), fontsize=15)
+        self.plot_additions(axarr[2], True)
+        self.plot_capacity_mix(axarr[1], False)
+        self.plot_production_mix(axarr[0], True)
+#        axarr[0].legend(bbox_to_anchor=(1.05, 0), loc='lower left', borderaxespad=0.)
+        fig.tight_layout()
+        plt.subplots_adjust(top=0.94)
+        fig.savefig(filename)
 
 
 def fill_in(serie):
@@ -131,7 +183,7 @@ for y in range(2031, 2051):
 
 retirement = pd.DataFrame()
 
-for tech in plant_life:
+for tech in plant_life.index:
     retirement[tech] = additions[tech].shift(plant_life[tech])
 
 retirement.fillna(0, inplace=True)
@@ -196,14 +248,22 @@ net_import = extend("Import", 7000, "Import", production_past, production_PDP7A)
 
 #%% Main statement
 
-baseline = PowerPlan(additions, retirement, capacityfactor, net_import)
+baseline = PowerPlan("Baseline - PDP7A extended", additions, retirement, capacityfactor, net_import)
 
-if VERBOSE:
-    baseline.detail()
-    baseline.plot_additions()
-    baseline.plot_retirement()
-    baseline.plot_capacity_mix()
+print("""
+******************************************
+***            Power Plan              ***
+******************************************
+""")
 
+baseline.summarize()
+#baseline.detail()
+#
+#baseline.plot_additions()
+#baseline.plot_retirement()
+#baseline.plot_capacity_mix()
+#baseline.plot_production_mix()
+baseline.plot_plan("PowerPlan_baseline.pdf")
 
 #%% Check the capacity numbers vs. PDP7A objectives
 

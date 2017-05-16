@@ -343,6 +343,6 @@ show(fuel_use_PDP7A.Coal)
 
 #%%  Plant physical life - when to retire from production capacities
 
-plant_life = {"Coal": 40, "Gas": 25, "Oil": 30, "BigHydro": 100,
-              "SmallHydro": 60, "Biomass": 25, "Wind": 20, "Solar": 25,
-              "PumpedStorage": 100, "Import": 100}
+plant_life = pd.Series({"Coal": 40, "Gas": 25, "Oil": 30, "BigHydro": 100,
+                        "SmallHydro": 60, "Biomass": 25, "Wind": 20, "Solar": 25,
+                        "PumpedStorage": 100, "Import": 100})

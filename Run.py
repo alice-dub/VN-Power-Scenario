@@ -117,15 +117,18 @@ class Run():
         return 'Model run #' + str(hash(self))
 
     def summarize(self):
-        print("Power plan #" + str(hash(self.plan)))
-        print("Parameter #" + str(hash(self.parameter)))
+        print(self, " - Summary")
+        print()
+        print(self.plan)
+        print(self.parameter)
         print("System LCOE: ", round(100 * self.lcoe, 2), " US cent / kWh")
         print("CO2 emissions", round(self.total_emissions, 1), "Gt CO2eq")
 
     def print_total(self):
         def f(cost):
             return "{:.0f} billion USD".format(cost * MUSD / GUSD)
-        print(self)
+        print(self, " - Totals")
+        print()
         print("Construction:  ", f(self.total_investment))
         print("Salvage value  ", f(-self.total_salvage_value))
         print("Fixed O&M      ", f(self.total_fixed_OM_cost))
@@ -141,7 +144,7 @@ class Run():
         print((self.emissions.sum() * kt / Mt).round())
 
     def detail(self):
-        print(str(self))
+        print(str(self), " - Detailed results tables")
         print()
         print("Construction costs (M$)")
         print(self.investment[fuels].loc[start_year:].round())
@@ -164,8 +167,12 @@ class Run():
 
 scenario = Run(baseline, reference)
 
-print(scenario)
-print()
+print("""
+******************************************
+***             Results                ***
+******************************************
+""")
+
 scenario.summarize()
 print()
 scenario.print_total()
