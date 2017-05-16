@@ -21,7 +21,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from init import show, VERBOSE, start_year, end_year, n_year, years, fuels, sources
-from parameters import discount_rate
+from parameters import discount_rate, plant_accounting_life
 
 pd.set_option('display.max_rows', 30)
 
@@ -30,6 +30,7 @@ class Parameter():
 
     def __init__(self,
                  discount_rate,
+                 plant_accounting_life,
                  construction_cost,
                  fixed_operating_cost,
                  variable_operating_cost,
@@ -37,8 +38,9 @@ class Parameter():
                  heat_price,
                  emission_factor):
         self.discount_rate = discount_rate
-        self.construction_cost = construction_cost[fuels]
-        self.fixed_operating_cost = fixed_operating_cost[fuels]
+        self.plant_accounting_life = plant_accounting_life
+        self.construction_cost = construction_cost[sources]
+        self.fixed_operating_cost = fixed_operating_cost[sources]
         self.variable_operating_cost = variable_operating_cost[sources]
         self.heat_rate = heat_rate
         self.heat_price = heat_price
@@ -51,7 +53,7 @@ class Parameter():
         print("Discount rate:", self.discount_rate)
         #TODO: Print a summary table
 
-    def print_details(self):
+    def detail(self):
         print("Discount rate:", self.discount_rate)
         print("Overnight construction costs ($/kW)")
         print(self.construction_cost.round())
@@ -360,6 +362,7 @@ emission_factor["Import"] = 0.5 * emission_factor["Coal"] + 0.5 * emission_facto
 #%%
 
 reference = Parameter(discount_rate,
+                      plant_accounting_life,
                       construction_cost,
                       fixed_operating_cost,
                       variable_operating_cost,

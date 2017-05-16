@@ -16,10 +16,10 @@ import pandas as pd
 import numpy as np
 from functools import lru_cache
 
-from init import show, start_year, n_year, years, fuels, sources
-from init import kW, MW, USD, MUSD, GWh, MWh, kWh, Btu, MBtu, TBtu, g, kt, Gt
+from init import fuels, sources
+from init import start_year, end_year, n_year, years
+from init import kW, MW, USD, MUSD, GUSD, GWh, MWh, TWh, kWh, Btu, MBtu, TBtu, g, kt, Mt, Gt
 
-from parameters import plant_life
 from baseline import baseline
 from data_cost import reference
 
@@ -46,15 +46,8 @@ def discount(value, year, discount_rate):
     return value * discountor(discount_rate).loc[year]
 
 
-show(discountor(0.05))
-show()
-
-
-#%% Residual value
-
-
-def residual_value(additions, fuel):
-    lifetime = plant_life[fuel]
+def residual_value(additions, plant_accounting_life, fuel):
+    lifetime = plant_accounting_life[fuel]
     idx = additions.index
     n = len(idx)
     remaining_fraction = pd.Series(0, index=idx)
@@ -68,39 +61,38 @@ def residual_value(additions, fuel):
 #%%
 
 
-def pv(variable, cols, discount_rate):
-    return present_value(variable[cols], discount_rate).sum()
-
-#%%
-
-
 class Run():
 
     def __init__(self, plan, parameter):
         self.plan = plan
         self.parameter = parameter
 
-        self.total_production = pv(plan.production, sources, parameter.discount_rate)
+        def pv(variable):
+            return present_value(variable, parameter.discount_rate).sum()
+
+        self.total_production = pv(plan.production)
 
         self.investment = (plan.additions * MW
                            * parameter.construction_cost * USD / kW
                            / MUSD)
-        self.total_investment = pv(self.investment, sources, parameter.discount_rate)
+        self.total_investment = pv(self.investment)
 
-        self.salvage_value = pd.concat([residual_value(plan.additions, fuel)
+        self.salvage_value = pd.concat([residual_value(plan.additions,
+                                                       parameter.plant_accounting_life,
+                                                       fuel)
                                         for fuel in sources],
                                        axis=1)
-        self.total_salvage_value = pv(self.salvage_value, sources, parameter.discount_rate)
+        self.total_salvage_value = pv(self.salvage_value)
 
         self.fixed_OM_cost = (plan.capacities * MW *
                               parameter.fixed_operating_cost * USD / kW
                               / MUSD)
-        self.total_fixed_OM_cost = pv(self.fixed_OM_cost, sources, parameter.discount_rate)
+        self.total_fixed_OM_cost = pv(self.fixed_OM_cost)
 
         self.variable_OM_cost = (plan.production * GWh
                                  * parameter.variable_operating_cost * USD / MWh
                                  / MUSD)
-        self.total_variable_OM_cost = pv(self.variable_OM_cost, sources, parameter.discount_rate)
+        self.total_variable_OM_cost = pv(self.variable_OM_cost)
 
         self.heat_used = (plan.production * GWh
                           * parameter.heat_rate * Btu / kWh
@@ -108,12 +100,13 @@ class Run():
         self.fuel_cost = (self.heat_used * TBtu
                           * parameter.heat_price * USD / MBtu
                           / MUSD)
-        self.total_fuel_cost = pv(self.fuel_cost, sources, parameter.discount_rate)
+        self.total_fuel_cost = pv(self.fuel_cost)
 
-        self.lcoe = ((self.total_investment - self.total_salvage_value
-                      + self.total_fixed_OM_cost + self.total_variable_OM_cost
-                      + self.total_fuel_cost)
-                     / self.total_production)
+        self.total_cost = (self.total_investment - self.total_salvage_value
+                           + self.total_fixed_OM_cost + self.total_variable_OM_cost
+                           + self.total_fuel_cost)
+
+        self.lcoe = self.total_cost / self.total_production
 
         self.emissions = (plan.production * GWh
                           * parameter.emission_factor * g / kWh
@@ -126,10 +119,28 @@ class Run():
     def summarize(self):
         print("Power plan #" + str(hash(self.plan)))
         print("Parameter #" + str(hash(self.parameter)))
-        print("System LCOE: ", round(100 * self.lcoe, 1), " US cent / kWh")
+        print("System LCOE: ", round(100 * self.lcoe, 2), " US cent / kWh")
         print("CO2 emissions", round(self.total_emissions, 1), "Gt CO2eq")
 
-    def print_detail(self):
+    def print_total(self):
+        def f(cost):
+            return "{:.0f} billion USD".format(cost * MUSD / GUSD)
+        print(self)
+        print("Construction:  ", f(self.total_investment))
+        print("Salvage value  ", f(-self.total_salvage_value))
+        print("Fixed O&M      ", f(self.total_fixed_OM_cost))
+        print("Variable O&M   ", f(self.total_variable_OM_cost))
+        print("Fuel cost      ", f(self.total_fuel_cost))
+        print()
+        print("Total cost     ", f(self.total_cost))
+        print("Power produced {:.0f} TWh".format(self.total_production * GWh / TWh))
+        print()
+        print("System LCOE:   {:.2f} US cent / kWh".format(100 * self.lcoe))
+        print()
+        print("GHG emissions over ", start_year, "-", end_year, "by source (Mt CO2eq)")
+        print((self.emissions.sum() * kt / Mt).round())
+
+    def detail(self):
         print(str(self))
         print()
         print("Construction costs (M$)")
@@ -149,11 +160,7 @@ class Run():
         print()
         print("GHG emissions (ktCO2eq including CO2, CH4 and N20)")
         print(self.emissions[sources].round())
-        print()
-#        print("Sum of CO2eq emissions over ", start_year, "-", end_year, " (Mt)")
-#        print((emissions_baseline.sum() * kt / Mt).round())
 
-#%%
 
 scenario = Run(baseline, reference)
 
@@ -161,4 +168,6 @@ print(scenario)
 print()
 scenario.summarize()
 print()
-scenario.print_detail()
+scenario.print_total()
+print()
+scenario.detail()

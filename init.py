@@ -11,7 +11,7 @@
 # otherwise use_quantities does not work
 #
 #
-VERBOSE = True
+VERBOSE = False
 
 show = print if VERBOSE else lambda *a, **k: None
 
@@ -27,6 +27,7 @@ W = 1
 kW = 1000
 MW = 10**6
 GWh = 10**9
+TWh = 10**12
 MWh = 10**6
 kWh = 1000
 Btu = 1
@@ -34,6 +35,7 @@ MBtu = 10**6
 TBtu = 10**12
 USD = 1
 MUSD = 10**6
+GUSD = 10**9
 g = 10**(-3)
 kg = 1
 t = 1000

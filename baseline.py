@@ -19,12 +19,11 @@ Renewable4 includes small hydro
 """
 
 import pandas as pd
-# import numpy as np
 from init import show, VERBOSE, sources
 from parameters import plant_life
+
 from data import fuels, PDP7A_annex1, capacities_PDP7A, capacity_past, addcol_Renewable4
 from data import production_past, capacity_factor_past, capacity_factor_PDP7A, production_PDP7A
-# from data import fuel_use_PDP7A
 
 
 #%%
@@ -45,7 +44,7 @@ class PowerPlan:
     def __str__(self):
         return ("Power development program #" + str(hash(self)))
 
-    def print_details(self):
+    def detail(self):
         print(self)
         print()
         print("Annual generation capacity addition by fuel type (MW)")
@@ -206,7 +205,7 @@ net_import = extend("Import", 7000, "Import", production_past, production_PDP7A)
 baseline = PowerPlan(additions, retirement, capacityfactor, net_import)
 
 if VERBOSE:
-    baseline.print_details()
+    baseline.detail()
     baseline.plot_additions()
     baseline.plot_retirement()
     baseline.plot_capacity_mix()

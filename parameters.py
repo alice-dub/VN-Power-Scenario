@@ -10,9 +10,10 @@
 
 discount_rate = 0.05
 
-# This is both:
-#   economic life, to assess residual value by linear depreciation
 #   physical life, to retire from production capacities
 plant_life = {"Coal": 40, "Gas": 25, "Oil": 30, "BigHydro": 100,
               "SmallHydro": 60, "Biomass": 25, "Wind": 20, "Solar": 25,
               "PumpedStorage": 100, "Import": 100}
+
+#   economic life, to assess residual value by linear depreciation
+plant_accounting_life = plant_life
