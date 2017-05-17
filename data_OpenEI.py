@@ -42,20 +42,42 @@ OpenEI = pd.read_csv("data/OpenEI/generation.lcoe.20170510_650.csv",
 
 view = dict()
 
-#q = 'Technology == "Coal" and TechnologySubtype in ["Conventional PC", "Advanced PC", "IGCC"]'
-q = 'TechIndex == "Scrubbed"'
-#view["Coal"] = OpenEI[(OpenEI.TechIndex == "Scrubbed"]
+q = 'Technology == "Coal"  and '
+q += 'TechnologySubtype in ["Conventional PC", "Advanced PC", "IGCC"]'
 view["Coal"] = OpenEI.query(q)
-view["Gas"] = OpenEI[OpenEI.TechIndex == "Combined Cycle"]
-view["Oil"] = OpenEI[OpenEI.TechIndex == "Combustion Turbine"]
-view["BigHydro"] = OpenEI[OpenEI.TechIndex == "Hydroelectric"]
-view["SmallHydro"] = OpenEI[OpenEI.TechIndex == "Small Hydropower"]
-# includes Biogas] Co fire] Fluidized bed] MSW
-view["Biomass"] = OpenEI[OpenEI.TechIndex == "Biopower"]
-view["Wind"] = OpenEI[OpenEI.TechIndex == "Offshore"]
-view["Offshore"] = OpenEI[OpenEI.TechIndex == "Offshore"]
-view["Onshore"] = OpenEI[OpenEI.TechIndex == "Offshore"]
-view["Solar"] = OpenEI[OpenEI.TechIndex == "Photovoltaic"]
+
+q = 'Technology == "Coal" and '
+q += 'TechnologySubtype in ["Advanced PC CCS", "IGCC CCS"]'
+view["CoalCCS"] = OpenEI.query(q)
+
+q = 'Technology in ["Combined Cycle", "Combustion Turbine"] and '
+q += 'not TechnologySubtype == "Advanced CC CCS"'
+view["Gas"] = OpenEI.query(q)
+
+q = 'TechnologySubtype == "Advanced CC CCS"'
+view["GasCCS"] = OpenEI.query(q)
+
+q = 'Technology == "Combustion Turbine"'
+view["Oil"] = OpenEI.query(q)
+
+q = 'Technology == "Hydroelectric"'
+view["BigHydro"] = OpenEI.query(q)
+
+q = 'Technology == "Small Hydro"'
+view["SmallHydro"] = OpenEI.query(q)
+
+q = 'Technology == "Biopower"'  # Biogas, Coal co-fire, Fluidized bed, MSW, IGCC, boiler, CHP...
+view["Biomass"] = OpenEI.query(q)
+
+q = 'Technology == "Land-Based Wind"'
+view["Onshore"] = OpenEI.query(q)
+
+q = 'Technology == "Wind-Offshore"'
+view["Offshore"] = OpenEI.query(q)
+
+q = '(Technology == "Photovoltaic" and TechnologySubtype == "Utility") or '
+q += 'Technology == "Solar Thermal"'
+view["Solar"] = OpenEI.query(q)
 
 
 def plot_boxwhisker(data, col):
@@ -78,7 +100,7 @@ def plot_boxwhisker(data, col):
 
 def myplot(data, fuel, col, s, method):
         data.plot.scatter("Year", col, title=fuel + description[col] + method)
-        # Red line showing the construction costs used in model
+        # Red line showing the variable_operating costs used in model
         plt.plot(s.index, s.values, "r-", linewidth=2.0)
         # Magenta box and whiskers showing quartiles of observed costs
         plot_boxwhisker(data[data.Year < data.PublicationYear], col)
@@ -137,8 +159,6 @@ set_capital_cost("Oil", by_regression)
 set_capital_cost("BigHydro", by_regression)
 set_capital_cost("SmallHydro", by_median)
 set_capital_cost("Solar", by_regression)
-
-# Biopower: regression meaningless because of predictions incoherent with observations
 set_capital_cost("Biomass", by_median)
 
 # In Vietnam, wind power is near-shore
@@ -150,10 +170,14 @@ construction_cost_trend["Wind"] = (construction_cost_trend["Offshore"]
                                    + construction_cost_trend["Onshore"]) / 2
 construction_cost["Wind"] = (construction_cost["Offshore"] + construction_cost["Onshore"]) // 2
 
-# TODO
-set_capital_cost("CoalCCS", as_zero)
-set_capital_cost("GasCCS", as_zero)
-set_capital_cost("BioCCS", as_zero)
+set_capital_cost("CoalCCS", by_regression)
+set_capital_cost("GasCCS", by_median)
+
+cost_multiplier = construction_cost["CoalCCS"] / construction_cost["Coal"]
+construction_cost["BioCCS"] = construction_cost["Biomass"] * cost_multiplier
+construction_cost_start_year["BioCCS"] = construction_cost.loc[start_year, "BioCCS"]
+construction_cost_trend["BioCCS"] = (construction_cost.loc[start_year + 1, "BioCCS"]
+                                     - construction_cost.loc[start_year, "BioCCS"])
 
 
 # http://www.chinadaily.com.cn/bizchina/2007-04/29/content_863786.htm
@@ -179,13 +203,13 @@ construction_cost["Import"] = pd.Series(construction_cost_start_year["Import"],
                                         name="Import")
 
 show("Overnight construction costs, $/kW ", start_year)
-show(construction_cost_start_year)
+show(construction_cost_start_year.round())
 show()
 show("Trends in overnight construction costs, $/kW/yr", start_year, "-", end_year)
-show(construction_cost_trend)
+show(construction_cost_trend.round(2))
 show()
 show("Overnight construction costs, $/kW")
-show(construction_cost[sources])
+show(construction_cost[sources].round())
 
 
 #%%  Fixed operating costs
@@ -201,11 +225,11 @@ fixed_operating_cost_start_year = pd.Series()
 fixed_operating_cost_trend = pd.Series()
 fixed_operating_cost = pd.DataFrame()
 
-set_fixed_operating_cost("Coal", by_regression)
-set_fixed_operating_cost("Gas", by_regression)
+set_fixed_operating_cost("Coal", by_median)
+set_fixed_operating_cost("Gas", by_median)
 set_fixed_operating_cost("Oil", by_median)
-set_fixed_operating_cost("BigHydro", by_regression)
-fixed_operating_cost["BigHydro"] = fixed_operating_cost["BigHydro"].clip(0)
+set_fixed_operating_cost("BigHydro", by_median)
+#fixed_operating_cost["BigHydro"] = fixed_operating_cost["BigHydro"].clip(0)
 set_fixed_operating_cost("SmallHydro", by_median)
 set_fixed_operating_cost("Biomass", by_median)
 set_fixed_operating_cost("Solar", by_regression)
@@ -219,22 +243,26 @@ fixed_operating_cost_trend["Wind"] = (fixed_operating_cost_trend["Offshore"]
 fixed_operating_cost["Wind"] = (fixed_operating_cost["Offshore"]
                                 + fixed_operating_cost["Onshore"]) / 2
 
-# TODO
-set_fixed_operating_cost("CoalCCS", as_zero)
-set_fixed_operating_cost("GasCCS", as_zero)
-set_fixed_operating_cost("BioCCS", as_zero)
+set_fixed_operating_cost("CoalCCS", by_median)
+set_fixed_operating_cost("GasCCS", by_median)
+#TODO
+cost_multiplier = fixed_operating_cost["CoalCCS"] / fixed_operating_cost["Coal"]
+fixed_operating_cost["BioCCS"] = fixed_operating_cost["Biomass"] * cost_multiplier
+fixed_operating_cost_start_year["BioCCS"] = fixed_operating_cost.loc[start_year, "BioCCS"]
+fixed_operating_cost_trend["BioCCS"] = (fixed_operating_cost.loc[start_year + 1, "BioCCS"]
+                                        - fixed_operating_cost.loc[start_year, "BioCCS"])
 
 # TODO: get data on maintenance costs for the transboundary transmission lines !
 set_fixed_operating_cost("Import", as_zero)
 
 show("Fixed operating costs, $/kW ", start_year)
-show(fixed_operating_cost_start_year)
+show(fixed_operating_cost_start_year.round())
 show()
 show("Trends in fixed operating costs, $/kW/yr", start_year, "-", end_year)
-show(fixed_operating_cost_trend)
+show(fixed_operating_cost_trend.round(2))
 show()
 show("Fixed operating costs, $/kW")
-show(fixed_operating_cost[sources])
+show(fixed_operating_cost[sources].round())
 
 
 #%%  Variable operating costs
@@ -243,6 +271,7 @@ show(fixed_operating_cost[sources])
 def set_variable_operating_cost(fuel, method=by_median):
     level, trend, s = method(fuel, "VariableOMDolPerMwh")
     variable_operating_cost_start_year[fuel] = level
+    # No trend, we assume variable operating cost remains constant
     variable_operating_cost[fuel] = s
 
 variable_operating_cost_start_year = pd.Series()
@@ -255,11 +284,18 @@ set_variable_operating_cost("BigHydro")
 set_variable_operating_cost("SmallHydro")
 set_variable_operating_cost("Biomass")
 set_variable_operating_cost("Solar")
-set_variable_operating_cost("Wind")
-# TODO
-set_variable_operating_cost("CoalCCS", as_zero)
-set_variable_operating_cost("GasCCS", as_zero)
-set_variable_operating_cost("BioCCS", as_zero)
+
+set_variable_operating_cost("Offshore")
+set_variable_operating_cost("Onshore")
+variable_operating_cost_start_year["Wind"] = variable_operating_cost_start_year["Offshore"]
+variable_operating_cost["Wind"] = variable_operating_cost["Offshore"]
+
+set_variable_operating_cost("CoalCCS")
+set_variable_operating_cost("GasCCS")
+
+cost_multiplier = variable_operating_cost["CoalCCS"] / variable_operating_cost["Coal"]
+variable_operating_cost["BioCCS"] = variable_operating_cost["Biomass"] * cost_multiplier
+variable_operating_cost_start_year["BioCCS"] = variable_operating_cost.loc[start_year, "BioCCS"]
 
 # $/MW,  Price of imports from China in 2012
 # Source  http://www.globaltimes.cn/content/888455.shtml
@@ -269,7 +305,7 @@ variable_operating_cost["Import"] = pd.Series(variable_operating_cost_start_year
                                               name="Import")
 
 show("Variable operating costs (constant over time), $/MW ", start_year)
-show(variable_operating_cost_start_year)
+show(variable_operating_cost_start_year.round(2))
 show()
 
 
@@ -295,12 +331,17 @@ set_heat_rate("Biomass")
 set_heat_rate("Solar", as_zero)
 set_heat_rate("Wind", as_zero)
 set_heat_rate("Import", as_zero)
-# TODO
-set_heat_rate("CoalCCS", as_zero)
-set_heat_rate("GasCCS", as_zero)
-set_heat_rate("BioCCS", as_zero)
 
-show(heat_rate)
+start_penalty = 0.30
+end_penalty = 0.15
+energy_penalty = np.linspace(start_penalty, end_penalty, n_year)
+heat_rate["CoalCCS"] = heat_rate["Coal"] * (1 + energy_penalty)
+
+heat_rate["GasCCS"] = heat_rate["Gas"] * (1 + energy_penalty)
+
+heat_rate["BioCCS"] = heat_rate["Biomass"] * (1 + energy_penalty)
+
+show(heat_rate.round())
 show()
 
 
@@ -311,11 +352,14 @@ heat_price = pd.DataFrame(index=years)
 # $/MBtu, http://en.openei.org/apps/TCDB/levelized_cost_calculations.html
 # One line each, because later on we may assume trend
 heat_price["Coal"] = 2.34
+heat_price["CoalCCS"] = 2.34
 heat_price["Gas"] = 4.4
+heat_price["GasCCS"] = 4.4
 heat_price["Oil"] = 4.4
 heat_price["BigHydro"] = 0
 heat_price["SmallHydro"] = 0
 heat_price["Biomass"] = 2.27
+heat_price["BiomassCCS"] = 2.27
 heat_price["Wind"] = 0
 heat_price["Solar"] = 0
 heat_price["Import"] = 0

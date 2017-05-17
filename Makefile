@@ -21,7 +21,7 @@ all: $(tables) $(figures)
 	$(PYTHON) $< > $@
 
 %.txt: %.py
-	-sed -i "s/VERBOSE = True/VERBOSE = False/" init.py
+	@-sed -i "s/VERBOSE = True/VERBOSE = False/" init.py
 	$(PYTHON) $< > $@
 
 %.pdf: %.py

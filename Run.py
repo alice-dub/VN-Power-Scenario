@@ -141,6 +141,7 @@ class Run():
         print("GHG emissions over ", start_year, "-", end_year, "by source (Mt CO2eq)")
         print((self.emissions[sources].sum() * kt / Mt).round())
 
+#TODO: use __repr__ returns a string
     def detail(self):
         print(str(self), " - Detailed results tables")
         print()
@@ -174,8 +175,8 @@ scenario = Run(baseline, reference)
 scenario.summarize()
 print()
 scenario.print_total()
-print()
-scenario.detail()
+#print()
+#scenario.detail()
 
 print("""
 ******************************************
