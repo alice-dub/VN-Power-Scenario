@@ -39,20 +39,13 @@ OpenEI = pd.read_csv("data/OpenEI/generation.lcoe.20170510_650.csv",
                               "VariableOMDolPerMwh",
                               "HeatRate"])
 
-techindex = {"Coal": "Scrubbed",
-             "Gas": "Combined Cycle",
-             "Oil": "Combustion Turbine",
-             "BigHydro": "Hydroelectric",
-             "SmallHydro": "Small Hydropower",
-             "Biomass": "Biopower",              # includes Biogas, Co fire, Fluidized bed, MSW
-             "Wind": "Offshore",
-             "Offshore": "Offshore",
-             "Onshore": "Offshore",
-             "Solar": "Photovoltaic"}
 
 view = dict()
 
-view["Coal"] = OpenEI[OpenEI.TechIndex == "Scrubbed"]
+#q = 'Technology == "Coal" and TechnologySubtype in ["Conventional PC", "Advanced PC", "IGCC"]'
+q = 'TechIndex == "Scrubbed"'
+#view["Coal"] = OpenEI[(OpenEI.TechIndex == "Scrubbed"]
+view["Coal"] = OpenEI.query(q)
 view["Gas"] = OpenEI[OpenEI.TechIndex == "Combined Cycle"]
 view["Oil"] = OpenEI[OpenEI.TechIndex == "Combustion Turbine"]
 view["BigHydro"] = OpenEI[OpenEI.TechIndex == "Hydroelectric"]
@@ -103,26 +96,26 @@ def as_zero(fuel, col):
 
 
 def by_median(fuel, col):
-    data = OpenEI[OpenEI.TechIndex == techindex[fuel]]
+    data = view[fuel]
     past_data = data[data.Year < data.PublicationYear]
     level = past_data[col].median()
     s = pd.Series(level, index=years, name=fuel)
     if VERBOSE:
-        myplot(data, fuel, col, s, " (median of " + str(len(past_data)) + ") " + techindex[fuel])
+        myplot(data, fuel, col, s, " (median of " + str(len(past_data)) + ") ")
     return level, 0, s
 
 
 def by_regression(fuel, col):
-    data = OpenEI[OpenEI.TechIndex == techindex[fuel]]
+    data = view[fuel]
     lm = pd.ols(x=data.Year - start_year, y=data[col])
-    show(fuel, techindex[fuel], lm)
+    show(fuel, lm)
     level = lm.beta.intercept
     trend = lm.beta.x if lm.p_value.x < 0.05 else 0
     s = pd.Series(np.linspace(level, level + trend * n_year, n_year),
                   index=years,
                   name=fuel)
     if VERBOSE:
-        myplot(data, fuel, col, s, " (regression on " + str(len(data)) + ") " + techindex[fuel])
+        myplot(data, fuel, col, s, " (regression on " + str(len(data)) + ") ")
     return level, trend, s
 
 

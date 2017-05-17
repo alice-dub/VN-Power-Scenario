@@ -38,7 +38,7 @@ from plan_baseline import baseline
 
 #%%
 
-additions, retirement = baseline.additions, baseline.retirement
+additions, retirement = baseline.additions.copy(), baseline.retirement.copy()
 
 retrofit_start_year = 2035
 retrofit_period = range(retrofit_start_year, end_year + 1)
@@ -82,9 +82,9 @@ withCCS = PowerPlan("With CCS",
                     baseline.net_import)
 
 
-print(withCCS)
-
-withCCS.summarize()
+#print(withCCS)
+#
+#withCCS.summarize()
 #print(repr(withCCS))
 
 #withCCS.plot_plan("withCCS.pdf")
