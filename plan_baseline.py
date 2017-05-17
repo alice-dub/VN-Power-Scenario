@@ -158,21 +158,6 @@ net_import = extend("Import", 7000, "Import", production_past, production_PDP7A)
 
 baseline = PowerPlan("Baseline - PDP7A extended", additions, retirement, capacityfactor, net_import)
 
-print("""
-******************************************
-***            Power Plan              ***
-******************************************
-""")
-
-baseline.summarize()
-#baseline.detail()
-#
-#baseline.plot_additions()
-#baseline.plot_retirement()
-#baseline.plot_capacity_mix()
-#baseline.plot_production_mix()
-baseline.plot_plan("baseline.pdf")
-
 
 #%% Validation: compares to PDP7A
 

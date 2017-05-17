@@ -22,7 +22,7 @@ class PowerPlan:
         self.additions = additions
         self.retirement = retirement
         self.capacity_factor = capacity_factor
-        self.net_imports = net_import
+        self.net_import = net_import
 
         self.capacities = (additions - retirement).cumsum()
         self.production = self.capacities * capacity_factor * 8760 / 1000

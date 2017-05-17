@@ -32,11 +32,3 @@ reference = Parameter("Reference - median values from OpenEI and IPCC literature
                       heat_rate,
                       heat_price,
                       emission_factor)
-
-print("""
-******************************************
-***             Parameters             ***
-******************************************
-""")
-
-reference.summarize()
