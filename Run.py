@@ -109,7 +109,7 @@ class Run():
         self.total_emissions = self.emissions.sum().sum() * kt / Gt
 
     def __str__(self):
-        return 'Model run #' + str(hash(self))
+        return 'Model run #' + self.plan.digest() + "-" + self.parameter.digest()
 
     def summarize(self):
         print(self, " - Summary")

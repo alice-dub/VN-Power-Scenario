@@ -6,6 +6,7 @@
 #
 #
 
+import hashlib
 from init import pd, sources
 
 from data_OpenEI import (construction_cost, fixed_operating_cost, variable_operating_cost,
@@ -37,7 +38,7 @@ class Parameter():
         self.emission_factor = emission_factor
 
     def __str__(self):
-        return ("Parameters: " + self.docstring)
+        return ("Parameters #" + self.digest() + ": " + self.docstring)
 
     def summarize(self):
         print(self)
@@ -74,33 +75,35 @@ class Parameter():
         print()
         print("Discount rate:", self.discount_rate)
 
-    def detail(self):
-        print(self)
-        print()
-        print("Discount rate:", self.discount_rate)
-        print()
-        print("Plant accounting life (year)")
-        print(self.plant_accounting_life[sources])
-        print()
-        print("Emission factor (gCO2eq/kWh)")
-        print(self.emission_factor[sources])
-        print()
-        print("Overnight construction costs ($/kW)")
-        print(self.construction_cost.round())
-        print()
-        print("Fixed operating costs ($/kW)")
-        print(self.fixed_operating_cost.round(2))
-        print()
-        print("Variable operating costs ($/kWh)")
-        print(self.variable_operating_cost.round(2))
-        print()
-        print("Heat rate (Btu/kWh)")
-        print(self.heat_rate)
-        print()
-        print("Heat price ($/MBtu)")
-        print(self.heat_price)
-        print()
+    def __repr__(self):
+        return ("Parameters: " + self.docstring + "\n"
+                + "\n\n"
+                + "Discount rate:" + str(self.discount_rate)
+                + "\n\n"
+                + "Plant accounting life (year)"
+                + repr(self.plant_accounting_life[sources])
+                + "\n\n"
+                + "Emission factor (gCO2eq/kWh)"
+                + repr(self.emission_factor[sources])
+                + "\n\n"
+                + "Overnight construction costs ($/kW)"
+                + repr(self.construction_cost.round())
+                + "\n\n"
+                + "Fixed operating costs ($/kW)"
+                + repr(self.fixed_operating_cost.round(2))
+                + "\n\n"
+                + "Variable operating costs ($/kWh)"
+                + repr(self.variable_operating_cost.round(2))
+                + "\n\n"
+                + "Heat rate (Btu/kWh)"
+                + repr(self.heat_rate)
+                + "\n\n"
+                + "Heat price ($/MBtu)"
+                + repr(self.heat_price)
+                )
 
+    def digest(self):
+        return hashlib.md5(repr(self).encode('utf-8')).hexdigest()[0:8]
 
 #%% Emission factors
 
