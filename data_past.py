@@ -29,8 +29,12 @@ so we need to clarify column names.
 
  5/ In VN capacity stats, generation from fuel oil and from diesel is not clearly accounted for
 
- 6/ Adding up fossil fuel generation capacities with renewable capacities is meaningless
-    because the capacity factors are not comparable, neither are the investment costs
+ 6/ Column "capacities" means nameplate capacity.
+    Adding up capacities across columns is generally misleading,
+    since the capacity factors are not comparable, neither are the investment costs
+
+ 7/ Column "capacities" is in terms of net electric power.
+    "Coal CCS" has a lower efficiency (higher heat rate) than "Coal" of same capacity
 """
 
 from init import pd, show, fuels, sources, addcol_Renewable, addcol_Renewable4

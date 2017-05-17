@@ -8,11 +8,11 @@
 PYTHON = python3
 
 
-tablepyfiles = summary_baseline.py summary_reference.py Run.py
+tablepyfiles = summary_baseline.py summary_withCCS.py summary_reference.py Run.py
 tables = $(patsubst %.py,%.txt,$(tablepyfiles))
 diffs  = $(patsubst %.py,%.diff,$(tablepyfiles))
 
-figurespyfiles = figure_baseline.py
+figurespyfiles = figure_baseline.py figure_withCCS.py
 figures = $(patsubst %.py,%.pdf,$(figurespyfiles))
 
 all: $(tables) $(figures)

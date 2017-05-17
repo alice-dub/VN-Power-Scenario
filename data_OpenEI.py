@@ -31,6 +31,7 @@ OpenEI = pd.read_csv("data/OpenEI/generation.lcoe.20170510_650.csv",
                      usecols=["EntityId",
                               "TechIndex",
                               "Technology",
+                              "TechnologySubtype",
                               "Year",
                               "PublicationYear",
                               "OnghtCptlCostDolPerKw",
@@ -43,11 +44,25 @@ techindex = {"Coal": "Scrubbed",
              "Oil": "Combustion Turbine",
              "BigHydro": "Hydroelectric",
              "SmallHydro": "Small Hydropower",
-             "Biomass": "Biopower",
+             "Biomass": "Biopower",              # includes Biogas, Co fire, Fluidized bed, MSW
              "Wind": "Offshore",
              "Offshore": "Offshore",
              "Onshore": "Offshore",
              "Solar": "Photovoltaic"}
+
+view = dict()
+
+view["Coal"] = OpenEI[OpenEI.TechIndex == "Scrubbed"]
+view["Gas"] = OpenEI[OpenEI.TechIndex == "Combined Cycle"]
+view["Oil"] = OpenEI[OpenEI.TechIndex == "Combustion Turbine"]
+view["BigHydro"] = OpenEI[OpenEI.TechIndex == "Hydroelectric"]
+view["SmallHydro"] = OpenEI[OpenEI.TechIndex == "Small Hydropower"]
+# includes Biogas] Co fire] Fluidized bed] MSW
+view["Biomass"] = OpenEI[OpenEI.TechIndex == "Biopower"]
+view["Wind"] = OpenEI[OpenEI.TechIndex == "Offshore"]
+view["Offshore"] = OpenEI[OpenEI.TechIndex == "Offshore"]
+view["Onshore"] = OpenEI[OpenEI.TechIndex == "Offshore"]
+view["Solar"] = OpenEI[OpenEI.TechIndex == "Photovoltaic"]
 
 
 def plot_boxwhisker(data, col):
