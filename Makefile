@@ -8,7 +8,7 @@
 PYTHON = python3
 
 
-tablepyfiles = PowerPlan_baseline.py Parameter_reference.py Run.py
+tablepyfiles = baseline.py Parameter_reference.py Run.py
 tables = $(patsubst %.py,%.txt,$(tablepyfiles))
 diffs  = $(patsubst %.py,%.diff,$(tablepyfiles))
 

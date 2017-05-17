@@ -11,7 +11,7 @@ from init import pd, sources
 from data_OpenEI import (construction_cost, fixed_operating_cost, variable_operating_cost,
                          heat_rate, heat_price)
 
-from PowerPlan_baseline import plant_life as plant_accounting_life
+from baseline import plant_life as plant_accounting_life
 
 
 class Parameter():
