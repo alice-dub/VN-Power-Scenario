@@ -9,11 +9,6 @@
 import hashlib
 from init import pd, sources
 
-from data_OpenEI import (construction_cost, fixed_operating_cost, variable_operating_cost,
-                         heat_rate, heat_price)
-
-from baseline import plant_life as plant_accounting_life
-
 
 class Parameter():
 
@@ -104,48 +99,3 @@ class Parameter():
 
     def digest(self):
         return hashlib.md5(repr(self).encode('utf-8')).hexdigest()[0:8]
-
-#%% Emission factors
-
-#Source : IPCC SRREN
-# Table A.II.4 | Aggregated results of literature review of LCAs of GHG emissions
-# from electricity generation technologies (g CO2eq/kWh)
-# Median of the literature reviewed
-
-emission_factor = pd.Series({"Coal": 1001, "Gas": 469, "Oil": 840, "BigHydro": 4,
-                             "SmallHydro": 4, "Biomass": 18, "Wind": 12, "Solar": 46,
-                             "Coal CCS": float('NaN'), "Gas CCS": float('NaN'),
-                             "Biomass CCS": float('NaN')})
-
-#Assumption: VN imports from China and Lao
-emission_factor["Import"] = 0.5 * emission_factor["Coal"] + 0.5 * emission_factor["BigHydro"]
-
-#%%
-
-discount_rate = 0.05
-
-
-#%%   economic life, to assess residual value by linear depreciation
-#
-#plant_accounting_life = plant_life
-
-#%%
-
-reference = Parameter("Reference - median values from OpenEI and IPCC literature reviews",
-                      discount_rate,
-                      plant_accounting_life,
-                      construction_cost,
-                      fixed_operating_cost,
-                      variable_operating_cost,
-                      heat_rate,
-                      heat_price,
-                      emission_factor)
-
-# reference.detail()
-print("""
-******************************************
-***             Parameters             ***
-******************************************
-""")
-
-reference.summarize()

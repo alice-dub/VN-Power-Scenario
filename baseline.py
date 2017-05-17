@@ -171,7 +171,7 @@ baseline.summarize()
 #baseline.plot_retirement()
 #baseline.plot_capacity_mix()
 #baseline.plot_production_mix()
-baseline.plot_plan("PowerPlan_baseline.pdf")
+baseline.plot_plan("baseline.pdf")
 
 
 #%% Validation: compares to PDP7A

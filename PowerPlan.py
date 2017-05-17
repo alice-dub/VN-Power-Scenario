@@ -99,7 +99,7 @@ class PowerPlan:
         ax.axvline(2030, color="k")
 
     def plot_plan(self, filename):
-        fig, axarr = plt.subplots(3, 1, figsize=[8, 12], sharex=True)
+        fig, axarr = plt.subplots(3, 1, figsize=[10, 15], sharex=True)
         fig.suptitle(str(self), fontsize=15)
         self.plot_additions(axarr[2], True)
         self.plot_capacity_mix(axarr[1], False)

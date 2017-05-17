@@ -20,7 +20,7 @@ from init import start_year, end_year, n_year, years
 from init import kW, MW, USD, MUSD, GUSD, GWh, MWh, TWh, kWh, Btu, MBtu, TBtu, g, kt, Mt, Gt
 
 from baseline import baseline
-from Parameter_reference import reference
+from reference import reference
 
 
 #%% Accounting functions
