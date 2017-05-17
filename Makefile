@@ -8,11 +8,11 @@
 PYTHON = python3
 
 
-tablepyfiles = baseline.py reference.py Run.py
+tablepyfiles = plan_baseline.py param_reference.py Run.py
 tables = $(patsubst %.py,%.txt,$(tablepyfiles))
 diffs  = $(patsubst %.py,%.diff,$(tablepyfiles))
 
-figurespyfiles = baseline.py
+figurespyfiles = plan_baseline.py
 figures = $(patsubst %.py,%.pdf,$(figurespyfiles))
 
 all: $(tables) $(figures)

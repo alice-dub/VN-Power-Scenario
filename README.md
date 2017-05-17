@@ -10,4 +10,9 @@ unless noted otherwise
 
 The natu library has the  Python 3 patch which remove the call to "reduce"
 
+Files starting with an Upper case define the class with that name
 
+Files starting with data_X mainly make available the data found in data/X/
+
+Files starting with plan_ instanciate a PowerPlan object
+Files starting with param_ instanciate a Parameter object

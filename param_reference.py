@@ -14,7 +14,7 @@ from data_OpenEI import (construction_cost, fixed_operating_cost, variable_opera
 
 from data_IPCC import emission_factor
 
-from baseline import plant_life as plant_accounting_life
+from plan_baseline import plant_life as plant_accounting_life
 
 #%%
 
