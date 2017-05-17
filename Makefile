@@ -8,12 +8,11 @@
 PYTHON = python3
 
 
-tablepyfiles = summary_baseline.py summary_withCCS.py summary_reference.py Run.py
+tablepyfiles = plan_baseline.py plan_withCCS.py param_reference.py Run.py
 tables = $(patsubst %.py,%.txt,$(tablepyfiles))
 diffs  = $(patsubst %.py,%.diff,$(tablepyfiles))
 
-figurespyfiles = figure_baseline.py figure_withCCS.py
-figures = $(patsubst %.py,%.pdf,$(figurespyfiles))
+figures = plan_baseline.pdf plan_withCCS.pdf
 
 all: $(tables) $(figures)
 
@@ -22,10 +21,10 @@ all: $(tables) $(figures)
 
 %.txt: %.py
 	@-sed -i "s/VERBOSE = True/VERBOSE = False/" init.py
-	$(PYTHON) $< > $@
+	$(PYTHON) $< summarize > $@
 
 %.pdf: %.py
-	$(PYTHON) $< > $@
+	$(PYTHON) $< plot > $@
 
 %.diff: %.txt tables.tocompare/%.txt
 	@diff $^  > $@

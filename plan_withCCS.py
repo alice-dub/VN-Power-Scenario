@@ -28,9 +28,8 @@ coal fired power plants build after 2020 will have to be capture-ready.
 The electricity generation sector is an active player for CO2 transport activities.
 """
 
-#from init import pd
-# , VERBOSE, show
-# from init import fuels, addcol_Renewable4
+import sys
+
 from init import pd, end_year
 from PowerPlan import PowerPlan
 
@@ -80,6 +79,14 @@ withCCS = PowerPlan("With CCS",
                     retirement,
                     baseline.capacity_factor,
                     baseline.net_import)
+
+if (len(sys.argv) == 2) and (sys.argv[0] == "plan_withCCS.py"):
+    if sys.argv[1] == "summarize":
+        withCCS.summarize()
+    elif sys.argv[1] == "plot":
+        baseline.plot_plan("plan_withCCS.pdf")
+    else:
+        print('Call this script with "summarize" or "plot" argument')
 
 
 #print(withCCS)

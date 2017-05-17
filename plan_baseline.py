@@ -17,6 +17,7 @@ Nuclear replaced by Coal
 
 Renewable4 includes small hydro
 """
+import sys
 
 from init import pd, VERBOSE, show
 from init import fuels, addcol_Renewable4
@@ -161,6 +162,14 @@ net_import = extend("Import", 7000, "Import", production_past, production_PDP7A)
 #%% Main statement
 
 baseline = PowerPlan("Baseline - PDP7A extended", additions, retirement, capacityfactor, net_import)
+
+if (len(sys.argv) == 2) and (sys.argv[0] == "plan_baseline.py"):
+    if sys.argv[1] == "summarize":
+        baseline.summarize()
+    elif sys.argv[1] == "plot":
+        baseline.plot_plan("plan_baseline.pdf")
+    else:
+        print('Call this script with "summarize" or "plot" argument')
 
 
 #%% Validation: compares to PDP7A

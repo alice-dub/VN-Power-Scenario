@@ -6,6 +6,7 @@
 #
 #
 
+import sys
 
 from Parameter import Parameter
 
@@ -20,7 +21,6 @@ from plan_baseline import plant_life as plant_accounting_life
 
 discount_rate = 0.05
 
-
 #%%
 
 reference = Parameter("Reference - median values from OpenEI and IPCC literature reviews",
@@ -32,3 +32,9 @@ reference = Parameter("Reference - median values from OpenEI and IPCC literature
                       heat_rate,
                       heat_price,
                       emission_factor)
+
+if (len(sys.argv) == 2) and (sys.argv[0] == "param_reference.py"):
+    if sys.argv[1] == "summarize":
+        reference.summarize()
+    else:
+        print('Call this script with "summarize" to print the summary')

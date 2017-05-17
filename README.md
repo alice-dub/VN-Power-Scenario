@@ -22,9 +22,5 @@ Directory organization:
 
 6. Files starting with param_ instanciate a Parameter object
 
-7. Files starting with summary_ correspond to a table or a set of tables
-
-8. Files starting with figure_ correspond to a figure
-
-9. Files in  tables.tocompare are used for regression testing. Use "make reg_tests_reset" to populate/update it.
+7. Files in  tables.tocompare are used for regression testing. Use "make reg_tests_reset" to populate/update it.
 

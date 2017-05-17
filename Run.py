@@ -8,10 +8,10 @@
 
 
 """
-Assess the cost of baseline scenario
+Assess the scenarios
 
 """
-
+import sys
 import numpy as np
 from functools import lru_cache
 
@@ -164,28 +164,26 @@ class Run():
         print(self.emissions.loc[start_year:, sources + ["Total"]].round())
 
 
-print("""
+if (len(sys.argv) == 2) and (sys.argv[0] == "Run.py"):
+    if sys.argv[1] == "summarize":
+        print("""
 ******************************************
 ***             Results                ***
 ******************************************
 """)
+        scenario = Run(baseline, reference)
+        scenario.summarize()
+        print()
+        scenario.print_total()
 
-scenario = Run(baseline, reference)
-
-scenario.summarize()
-print()
-scenario.print_total()
-#print()
-#scenario.detail()
-
-print("""
+        print("""
 ******************************************
 """)
 
-scenario = Run(withCCS, reference)
-
-scenario.summarize()
-print()
-scenario.print_total()
-print()
-#scenario.detail()
+        scenario = Run(withCCS, reference)
+        scenario.summarize()
+        print()
+        scenario.print_total()
+        print()
+    else:
+        print('Call this script with "summarize" to print the summary')
