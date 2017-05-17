@@ -28,6 +28,7 @@ class PowerPlan:
         self.production = self.capacities * capacity_factor * 8760 / 1000
         self.production["Import"] = net_import
         self.production = self.production[sources].fillna(0)
+        self.production["Total"] = self.production.sum(axis=1)
 
     def __str__(self):
         """Includes a digest of the content"""

@@ -55,7 +55,7 @@ n_year = len(years)
 
 fuels = ["Coal", "Gas", "Oil",
          "BigHydro", "SmallHydro", "Biomass", "Wind", "Solar",
-         "Coal CCS", "Gas CCS", "Biomass CCS"]
+         "CoalCCS", "GasCCS", "BioCCS"]
 
 sources = fuels + ["Import"]
 

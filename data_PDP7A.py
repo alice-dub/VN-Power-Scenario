@@ -67,9 +67,9 @@ capacities_PDP7A["Hydro"] = capacities_PDP7A["Hydro+Storage"] - capacities_PDP7A
 capacities_PDP7A["BigHydro"] = (capacities_PDP7A["BigHydro+Storage"]
                                 - capacities_PDP7A["PumpedStorage"])
 capacities_PDP7A["Oil"] = 0
-capacities_PDP7A["Coal CCS"] = 0
-capacities_PDP7A["Gas CCS"] = 0
-capacities_PDP7A["Biomass CCS"] = 0
+capacities_PDP7A["CoalCCS"] = 0
+capacities_PDP7A["GasCCS"] = 0
+capacities_PDP7A["BioCCS"] = 0
 
 show("""
 PDP7A capacity objectives by fuel type (GW)
@@ -81,9 +81,9 @@ show(capacities_PDP7A[fuels + ["Nuclear", "Import", "PumpedStorage"]])
 production_PDP7A = pd.read_csv("data/PDP7A/Objectives.csv", header=26, nrows=3, index_col=0)
 
 production_PDP7A["Oil"] = 0
-production_PDP7A["Coal CCS"] = 0
-production_PDP7A["Gas CCS"] = 0
-production_PDP7A["Biomass CCS"] = 0
+production_PDP7A["CoalCCS"] = 0
+production_PDP7A["GasCCS"] = 0
+production_PDP7A["BioCCS"] = 0
 
 show("""
 PDP7A power generation objectives by fuel type (GWh)

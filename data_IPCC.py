@@ -18,8 +18,8 @@ Source : IPCC SRREN
 
 emission_factor = pd.Series({"Coal": 1001, "Gas": 469, "Oil": 840, "BigHydro": 4,
                              "SmallHydro": 4, "Biomass": 18, "Wind": 12, "Solar": 46,
-                             "Coal CCS": float('NaN'), "Gas CCS": float('NaN'),
-                             "Biomass CCS": float('NaN')})
+                             "CoalCCS": float('NaN'), "GasCCS": float('NaN'),
+                             "BioCCS": float('NaN')})
 
 #Assumption: VN imports from China and Lao
 emission_factor["Import"] = 0.5 * emission_factor["Coal"] + 0.5 * emission_factor["BigHydro"]

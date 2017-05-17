@@ -75,7 +75,7 @@ additions = additions[fuels + ["PumpedStorage", "Import"]].fillna(0)
 
 increment = {"Coal": 0, "Gas": 750, "Oil": 20, "BigHydro": 0,
              "SmallHydro": 50, "Biomass": 50, "Wind": 900, "Solar": 1000,
-             "PumpedStorage": 50, "Import": 50, "Coal CCS": 0, "Gas CCS": 0, "Biomass CCS": 0}
+             "PumpedStorage": 50, "Import": 50, "CoalCCS": 0, "GasCCS": 0, "BioCCS": 0}
 
 for y in range(2031, 2051):
     additions.loc[y] = increment
@@ -85,7 +85,7 @@ for y in range(2031, 2051):
 
 plant_life = pd.Series({"Coal": 40, "Gas": 25, "Oil": 30,
                         "BigHydro": 100, "SmallHydro": 60, "Biomass": 25, "Wind": 20, "Solar": 25,
-                        "Coal CCS": 40, "Gas CCS": 25, "Biomass CCS": 25,
+                        "CoalCCS": 40, "GasCCS": 25, "BioCCS": 25,
                         "PumpedStorage": 100, "Import": 100})
 
 
@@ -148,6 +148,10 @@ capacityfactor["SmallHydro"] = extend("SmallHydro", 0.6, "SmallHydro")
 capacityfactor["Biomass"] = extend("Renewable", 0.3, "Biomass")
 capacityfactor["Wind"] = extend("Renewable", 0.3, "Wind")
 capacityfactor["Solar"] = extend("Renewable", 0.23, "Solar")
+
+capacityfactor["CoalCCS"] = capacityfactor["Coal"]
+capacityfactor["GasCCS"] = capacityfactor["Gas"]
+capacityfactor["BioCCS"] = capacityfactor["Biomass"]
 
 capacityfactor = capacityfactor.where(capacityfactor < 1)
 

@@ -94,9 +94,9 @@ capacity_past.Oil = smooth(capacity_past.Oil)
 capacity_past["Solar"] = 0
 capacity_past["Import"] = 0
 capacity_past["PumpedStorage"] = 0
-capacity_past["Coal CCS"] = 0
-capacity_past["Gas CCS"] = 0
-capacity_past["Biomass CCS"] = 0
+capacity_past["CoalCCS"] = 0
+capacity_past["GasCCS"] = 0
+capacity_past["BioCCS"] = 0
 
 capacity_past["BigHydro"] = (capacity_past.LargeHydro
                              + capacity_past.InterHydro)
@@ -150,8 +150,8 @@ production_past["BigHydro"] = production_past.Hydro - production_past.SmallHydro
 production_past["Import"] = production_past.Imports + production_past.Exports
 
 production_past["CoalCCS"] = 0
-production_past["Gas CCS"] = 0
-production_past["Biomass CCS"] = 0
+production_past["GasCCS"] = 0
+production_past["BioCCS"] = 0
 
 
 #%% Estimates 2015 production by fuel type
@@ -188,9 +188,9 @@ production_2015["Hydro"] = production_2015["BigHydro"] + production_2015["SmallH
 
 production_2015.drop(["GasTurbine", "Renewable4"], inplace=True)
 
-production_2015["Coal CCS"] = 0
-production_2015["Gas CCS"] = 0
-production_2015["Biomass CCS"] = 0
+production_2015["CoalCCS"] = 0
+production_2015["GasCCS"] = 0
+production_2015["BioCCS"] = 0
 
 production_past = production_past.append(production_2015)
 

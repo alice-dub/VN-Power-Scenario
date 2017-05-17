@@ -143,9 +143,9 @@ construction_cost_trend["Wind"] = (construction_cost_trend["Offshore"]
 construction_cost["Wind"] = (construction_cost["Offshore"] + construction_cost["Onshore"]) // 2
 
 # TODO
-set_capital_cost("Coal CCS", as_zero)
-set_capital_cost("Gas CCS", as_zero)
-set_capital_cost("Biomass CCS", as_zero)
+set_capital_cost("CoalCCS", as_zero)
+set_capital_cost("GasCCS", as_zero)
+set_capital_cost("BioCCS", as_zero)
 
 
 # http://www.chinadaily.com.cn/bizchina/2007-04/29/content_863786.htm
@@ -212,9 +212,9 @@ fixed_operating_cost["Wind"] = (fixed_operating_cost["Offshore"]
                                 + fixed_operating_cost["Onshore"]) / 2
 
 # TODO
-set_fixed_operating_cost("Coal CCS", as_zero)
-set_fixed_operating_cost("Gas CCS", as_zero)
-set_fixed_operating_cost("Biomass CCS", as_zero)
+set_fixed_operating_cost("CoalCCS", as_zero)
+set_fixed_operating_cost("GasCCS", as_zero)
+set_fixed_operating_cost("BioCCS", as_zero)
 
 # TODO: get data on maintenance costs for the transboundary transmission lines !
 set_fixed_operating_cost("Import", as_zero)
@@ -249,9 +249,9 @@ set_variable_operating_cost("Biomass")
 set_variable_operating_cost("Solar")
 set_variable_operating_cost("Wind")
 # TODO
-set_variable_operating_cost("Coal CCS", as_zero)
-set_variable_operating_cost("Gas CCS", as_zero)
-set_variable_operating_cost("Biomass CCS", as_zero)
+set_variable_operating_cost("CoalCCS", as_zero)
+set_variable_operating_cost("GasCCS", as_zero)
+set_variable_operating_cost("BioCCS", as_zero)
 
 # $/MW,  Price of imports from China in 2012
 # Source  http://www.globaltimes.cn/content/888455.shtml
@@ -288,9 +288,9 @@ set_heat_rate("Solar", as_zero)
 set_heat_rate("Wind", as_zero)
 set_heat_rate("Import", as_zero)
 # TODO
-set_heat_rate("Coal CCS", as_zero)
-set_heat_rate("Gas CCS", as_zero)
-set_heat_rate("Biomass CCS", as_zero)
+set_heat_rate("CoalCCS", as_zero)
+set_heat_rate("GasCCS", as_zero)
+set_heat_rate("BioCCS", as_zero)
 
 show(heat_rate)
 show()
