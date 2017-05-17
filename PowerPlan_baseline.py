@@ -19,13 +19,14 @@ Renewable4 includes small hydro
 """
 
 import matplotlib.pyplot as plt
-from init import pd, show, sources, technologies, start_year, end_year
+from init import pd, VERBOSE, show
+from init import fuels, sources, technologies, start_year, end_year, addcol_Renewable4
 from init import GWh, TWh, MW, GW
 
-from data_baseline import (fuels, plant_life,
-                           PDP7A_annex1, addcol_Renewable4,
-                           capacity_past, production_past, capacity_factor_past,
-                           capacities_PDP7A, production_PDP7A, capacity_factor_PDP7A)
+from data_past import capacity_past, production_past, capacity_factor_past, capacity_2015_EVN
+
+from data_PDP7A import (PDP7A_annex1, capacities_PDP7A, capacity_total_plan, production_PDP7A,
+                        capacity_factor_PDP7A)
 
 #%%
 
@@ -174,6 +175,12 @@ for y in range(2031, 2051):
 
 #%% Old plant retirement program
 
+plant_life = pd.Series({"Coal": 40, "Gas": 25, "Oil": 30,
+                        "BigHydro": 100, "SmallHydro": 60, "Biomass": 25, "Wind": 20, "Solar": 25,
+                        "Coal CCS": 40, "Gas CCS": 25, "Biomass CCS": 25,
+                        "PumpedStorage": 100, "Import": 100})
+
+
 retirement = pd.DataFrame()
 
 for tech in plant_life.index:
@@ -258,7 +265,8 @@ baseline.summarize()
 #baseline.plot_production_mix()
 baseline.plot_plan("PowerPlan_baseline.pdf")
 
-#%% Check the capacity numbers vs. PDP7A objectives
+
+#%% Validation: compares to PDP7A
 
 show("""
 *****************************************************
@@ -286,6 +294,47 @@ show()
 show("Relative error")
 show(relerror)
 show("Note: Gas 2030 is larger in baseline because we replace nuclear with gas")
+
+
+#%% Compares PDP7A
+
+cap_2015_implicit = capacities_PDP7A.loc[2030] - capacity_total_plan
+
+cap_2015_implicit.dropna(inplace=True)
+
+comparison = pd.DataFrame([capacity_2015_EVN, cap_2015_implicit],
+                          index=["Total from EVN report", "Implicit in PDP7A decision"])
+
+capacity_closed = pd.Series(comparison.iloc[0] - comparison.iloc[1], name="Diff ?Closed capacity?")
+
+comparison = comparison.append(capacity_closed)
+
+capacity_old = pd.Series(capacity_past.cumsum().loc[1980], name="Installed before 1980")
+
+comparison = comparison.append(capacity_old)
+
+show("Coherence of 2015 Generation capacity numbers")
+show(comparison[fuels])
+
+show("""
+Some coal, gas, oil and hydro capacities listed in the EVN report historical table are
+not accounted for in the PDP7A current capacity total
+The order of magnitude corresponds to capacities installed before 1985,
+which in all probability are already closed or will be before 2030.
+#TODO: Check the operational status of these plants:
+
+Gas capacity in EVN report includes the Tu Duc and Can Tho oil-fired gas turbines (264 MW)
+""")
+
+
+if VERBOSE:
+    cf = pd.concat([capacity_factor_past, capacity_factor_PDP7A])
+    cf = cf.where(cf < 1)
+    cf = cf[["Coal", "Gas", "Hydro", "Renewable"]]
+    ax = cf.plot(ylim=[0, 1], xlim=[1995, 2030],
+                 title="Power generation capacity factors by fuel type")
+    ax.axvline(2015, color="k")
+
 
 #b = production_past[fuels].astype("int64")
 #

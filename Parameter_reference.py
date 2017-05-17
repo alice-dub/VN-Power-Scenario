@@ -8,10 +8,10 @@
 
 from init import pd, sources
 
-from data_baseline import plant_life
-
 from data_OpenEI import (construction_cost, fixed_operating_cost, variable_operating_cost,
                          heat_rate, heat_price)
+
+from PowerPlan_baseline import plant_life as plant_accounting_life
 
 
 class Parameter():
@@ -121,9 +121,10 @@ emission_factor["Import"] = 0.5 * emission_factor["Coal"] + 0.5 * emission_facto
 
 discount_rate = 0.05
 
-#%%   economic life, to assess residual value by linear depreciation
 
-plant_accounting_life = plant_life
+#%%   economic life, to assess residual value by linear depreciation
+#
+#plant_accounting_life = plant_life
 
 #%%
 
