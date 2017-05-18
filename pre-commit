@@ -1,0 +1,16 @@
+#!/bin/sh
+# this hook is in SCM so that it can be shared
+# to install it, create a symbolic link in the projects .git/hooks folder
+#
+#       i.e. - from the .git/hooks directory, run
+#               $ ln ../../pre-commit pre-commit
+#
+# to skip the tests, run git commit with the --no-verify argument
+#       i.e. - $ 'git commit --no-verify'
+
+git stash -q --keep-index
+make cleaner
+make test
+RESULT=$?
+git stash pop -q
+exit $RESULT
