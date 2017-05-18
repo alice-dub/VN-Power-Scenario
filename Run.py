@@ -135,9 +135,9 @@ class Run():
         def f(cost):
             return [round(cost * MUSD / GUSD), "bn USD"]
         d = pd.DataFrame()
-        d["System LCOE"] = [round(self.lcoe * (MUSD / GWh) / (USD / MWh), 1), "USD/MWh"]
         d["Power produced"] = [(self.total_production * GWh / TWh).round(), "Twh"]
         d["CO2 emissions"] = [round(self.total_emissions, 1), "GtCO2eq"]
+        d["System LCOE"] = [round(self.lcoe * (MUSD / GWh) / (USD / MWh), 1), "USD/MWh"]
         d["Total cost"] = f(self.total_cost)
         d["Construction"] = f(self.total_investment)
         d["Fuel cost"] = f(self.total_fuel_cost)
@@ -146,6 +146,16 @@ class Run():
         d = d.transpose()
         d.columns = [str(self), 'Unit']
         return d
+
+    def carbon_intensity(self):
+        key_years = [start_year, 2030, 2050]
+        p = self.plan.production.loc[key_years, 'Total']
+        p.name = "GWh"
+        e = self.emissions.loc[key_years, 'Total']
+        e.name = "ktCO2eq"
+        intensity = (e * kt) / (p * GWh) / (g / kWh)
+        intensity.name = str(self)
+        return intensity.round()
 
     def emission_sum(self):
         s = self.emissions[sources].sum() * kt / Mt
@@ -206,6 +216,14 @@ class RunPair():
         d.columns = ['BAU', 'ALT', 'difference']
         return d
 
+    def carbon_intensity(self):
+        ci_BAU = self.BAU.carbon_intensity()
+        ci_ALT = self.ALT.carbon_intensity()
+        ci_diff = ci_ALT - ci_BAU
+        d = pd.concat([ci_BAU, ci_ALT, ci_diff], axis=1)
+        d.columns = ['BAU', 'ALT', 'difference']
+        return d
+
     def carbon_value(self):
         s = self.total()['difference']
         return - s['Total cost'] / s['CO2 emissions']
@@ -217,7 +235,11 @@ class RunPair():
         s += '\n\n'
         s += str(self.total())
         s += '\n\n'
+        s += 'Emissions by source (ktCO2eq)\n'
         s += str(self.emission_sum())
+        s += '\n\n'
+        s += 'Average Carbon Intensity (g/kWh)\n'
+        s += str(self.carbon_intensity())
         return s
 
 
