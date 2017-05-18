@@ -21,7 +21,8 @@ class Parameter():
                  variable_operating_cost,
                  heat_rate,
                  heat_price,
-                 emission_factor):
+                 emission_factor,
+                 carbon_price):
         self.docstring = docstring
         self.discount_rate = discount_rate
         self.plant_accounting_life = plant_accounting_life
@@ -31,6 +32,7 @@ class Parameter():
         self.heat_rate = heat_rate
         self.heat_price = heat_price
         self.emission_factor = emission_factor
+        self.carbon_price = carbon_price
 
     def __str__(self):
         return ("Parameters #" + self.digest() + ": " + self.docstring)
@@ -68,9 +70,12 @@ class Parameter():
         summary = summary.append(s)
         print(summary[sources])
         print()
+        print("Carbon price ($/tCO2eq)")
+        print(self.carbon_price.loc[[start_year, 2030, 2040, 2050]])
+        print()
         print("Discount rate:", self.discount_rate)
 
-    def __repr__(self):
+    def represent(self):
         return ("Parameters: " + self.docstring + "\n"
                 + "\n\n"
                 + "Discount rate:" + str(self.discount_rate)
@@ -95,7 +100,10 @@ class Parameter():
                 + "\n\n"
                 + "Heat price ($/MBtu)"
                 + repr(self.heat_price)
+                + "\n\n"
+                + "Carbon price ($/tCO2eq)"
+                + repr(self.carbon_price)
                 )
 
     def digest(self):
-        return hashlib.md5(repr(self).encode('utf-8')).hexdigest()[0:6]
+        return hashlib.md5(self.represent().encode('utf-8')).hexdigest()[0:6]

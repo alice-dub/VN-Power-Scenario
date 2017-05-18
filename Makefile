@@ -8,7 +8,7 @@
 PYTHON = python3
 
 
-tablepyfiles = plan_baseline.py plan_withCCS.py param_reference.py Run.py
+tablepyfiles = plan_baseline.py plan_withCCS.py param_reference.py Run.py analysis.py
 tables = $(patsubst %.py,%.txt,$(tablepyfiles))
 diffs  = $(patsubst %.py,%.diff,$(tablepyfiles))
 

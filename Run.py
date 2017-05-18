@@ -17,7 +17,7 @@ from functools import lru_cache
 
 from init import pd, fuels, sources
 from init import start_year, end_year, n_year, years
-from init import kW, MW, USD, MUSD, GUSD, GWh, MWh, TWh, kWh, Btu, MBtu, TBtu, g, kt, Mt, Gt
+from init import kW, MW, USD, MUSD, GUSD, GWh, MWh, TWh, kWh, Btu, MBtu, TBtu, g, t, kt, Mt, Gt
 
 from plan_baseline import baseline
 from plan_withCCS import withCCS
@@ -109,7 +109,11 @@ class Run():
                           / kt)
         self.emissions["Total"] = self.emissions.sum(axis=1)
         self.total_emissions = self.emissions["Total"].sum() * kt / Gt
-#        self.total_emissions = self.emissions.sum().sum() * kt / Gt
+
+        self.external_cost = (self.emissions["Total"] * kt
+                              * parameter.carbon_price * USD / t
+                              / MUSD)
+        self.total_external_cost = pv(self.external_cost)
 
     def __str__(self):
         return '#' + self.plan.digest() + "-" + self.parameter.digest()
@@ -136,13 +140,15 @@ class Run():
             return [round(cost * MUSD / GUSD), "bn USD"]
         d = pd.DataFrame()
         d["Power produced"] = [(self.total_production * GWh / TWh).round(), "Twh"]
-        d["CO2 emissions"] = [round(self.total_emissions, 1), "GtCO2eq"]
         d["System LCOE"] = [round(self.lcoe * (MUSD / GWh) / (USD / MWh), 1), "USD/MWh"]
         d["Total cost"] = f(self.total_cost)
-        d["Construction"] = f(self.total_investment)
-        d["Fuel cost"] = f(self.total_fuel_cost)
-        d["O&M"] = f(self.total_fixed_OM_cost + self.total_variable_OM_cost)
-        d["Salvage value"] = f(-self.total_salvage_value)
+        d[" Construction"] = f(self.total_investment)
+        d[" Fuel cost"] = f(self.total_fuel_cost)
+        d[" O&M"] = f(self.total_fixed_OM_cost + self.total_variable_OM_cost)
+        d[" Salvage value"] = f(-self.total_salvage_value)
+        d["CO2 emissions"] = [round(self.total_emissions, 1), "GtCO2eq"]
+        d["CO2 cost"] = f(self.total_external_cost)
+        d["Cost with CO2"] = f(self.total_cost + self.total_external_cost)
         d = d.transpose()
         d.columns = [str(self), 'Unit']
         return d
@@ -194,7 +200,7 @@ class RunPair():
         self.ALT = Run(alternate, parameter)
 
     def __str__(self):
-        s = str(self.BAU.parameter) + '\n'
+        s = str(self.BAU.parameter) + '\n\n'
         s += "BAU = " + str(self.BAU.plan) + '\n'
         s += "ALT = " + str(self.ALT.plan)
         return s
@@ -229,7 +235,8 @@ class RunPair():
         return - s['Total cost'] / s['CO2 emissions']
 
     def summary(self):
-        s = str(self) + '\n\n'
+        s = "*******************\n\n"
+        s += str(self) + '\n\n'
         s += 'Present value cost of avoided emissions: '
         s += str(round(self.carbon_value(), 1)) + " USD/tCO2eq"
         s += '\n\n'
