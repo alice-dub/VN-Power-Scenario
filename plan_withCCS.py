@@ -84,7 +84,7 @@ if (len(sys.argv) == 2) and (sys.argv[0] == "plan_withCCS.py"):
     if sys.argv[1] == "summarize":
         withCCS.summarize()
     elif sys.argv[1] == "plot":
-        baseline.plot_plan("plan_withCCS.pdf")
+        withCCS.plot_plan("plan_withCCS.pdf")
     else:
         print('Call this script with "summarize" or "plot" argument')
 

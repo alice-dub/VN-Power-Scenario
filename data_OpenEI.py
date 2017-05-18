@@ -114,7 +114,7 @@ description["HeatRate"] = " heat rate\nBtu/kWh"
 
 def as_zero(fuel, col):
     show(fuel + " set as zero for all years")
-    return 0, 0, pd.Series(0, index=years, name=fuel)
+    return pd.Series(0, index=years, name=fuel)
 
 
 def by_median(fuel, col):
@@ -124,7 +124,7 @@ def by_median(fuel, col):
     s = pd.Series(level, index=years, name=fuel)
     if VERBOSE:
         myplot(data, fuel, col, s, " (median of " + str(len(past_data)) + ") ")
-    return level, 0, s
+    return s
 
 
 def by_regression(fuel, col):
@@ -138,46 +138,34 @@ def by_regression(fuel, col):
                   name=fuel)
     if VERBOSE:
         myplot(data, fuel, col, s, " (regression on " + str(len(data)) + ") ")
-    return level, trend, s
+    return s
 
 
-#%%
+#%%  Construction costs
 
-def set_capital_cost(fuel, method):
-    level, trend, s = method(fuel, "OnghtCptlCostDolPerKw")
-    construction_cost_start_year[fuel] = level
-    construction_cost_trend[fuel] = trend
-    construction_cost[fuel] = s
+def set_construction_cost(fuel, method):
+    construction_cost[fuel] = method(fuel, "OnghtCptlCostDolPerKw")
 
-construction_cost_start_year = pd.Series()
-construction_cost_trend = pd.Series()
 construction_cost = pd.DataFrame()
 
-set_capital_cost("Coal", by_median)
-set_capital_cost("Gas", by_median)
-set_capital_cost("Oil", by_regression)
-set_capital_cost("BigHydro", by_regression)
-set_capital_cost("SmallHydro", by_median)
-set_capital_cost("Solar", by_regression)
-set_capital_cost("Biomass", by_median)
+set_construction_cost("Coal", by_median)
+set_construction_cost("Gas", by_median)
+set_construction_cost("Oil", by_regression)
+set_construction_cost("BigHydro", by_regression)
+set_construction_cost("SmallHydro", by_median)
+set_construction_cost("Solar", by_regression)
+set_construction_cost("Biomass", by_median)
 
 # In Vietnam, wind power is near-shore
-set_capital_cost("Offshore", by_regression)
-set_capital_cost("Onshore", by_regression)
-construction_cost_start_year["Wind"] = (construction_cost_start_year["Offshore"]
-                                        + construction_cost_start_year["Onshore"]) / 2
-construction_cost_trend["Wind"] = (construction_cost_trend["Offshore"]
-                                   + construction_cost_trend["Onshore"]) / 2
+set_construction_cost("Offshore", by_regression)
+set_construction_cost("Onshore", by_regression)
 construction_cost["Wind"] = (construction_cost["Offshore"] + construction_cost["Onshore"]) // 2
 
-set_capital_cost("CoalCCS", by_regression)
-set_capital_cost("GasCCS", by_median)
+set_construction_cost("CoalCCS", by_regression)
+set_construction_cost("GasCCS", by_median)
 
 cost_multiplier = construction_cost["CoalCCS"] / construction_cost["Coal"]
 construction_cost["BioCCS"] = construction_cost["Biomass"] * cost_multiplier
-construction_cost_start_year["BioCCS"] = construction_cost.loc[start_year, "BioCCS"]
-construction_cost_trend["BioCCS"] = (construction_cost.loc[start_year + 1, "BioCCS"]
-                                     - construction_cost.loc[start_year, "BioCCS"])
 
 
 # http://www.chinadaily.com.cn/bizchina/2007-04/29/content_863786.htm
@@ -196,17 +184,16 @@ at the cost of 75 million U.S. dollars
 ==>
 500 $ per kW"""
 
-construction_cost_start_year["Import"] = 500
-construction_cost_trend["Import"] = 0
-construction_cost["Import"] = pd.Series(construction_cost_start_year["Import"],
+construction_cost_start_year_import = 500
+construction_cost["Import"] = pd.Series(construction_cost_start_year_import,
                                         index=years,
                                         name="Import")
 
 show("Overnight construction costs, $/kW ", start_year)
-show(construction_cost_start_year.round())
+show(construction_cost.loc[start_year].round())
 show()
 show("Trends in overnight construction costs, $/kW/yr", start_year, "-", end_year)
-show(construction_cost_trend.round(2))
+show(construction_cost.diff().loc[start_year].round(2))
 show()
 show("Overnight construction costs, $/kW")
 show(construction_cost[sources].round())
@@ -214,52 +201,38 @@ show(construction_cost[sources].round())
 
 #%%  Fixed operating costs
 
-
 def set_fixed_operating_cost(fuel, method):
-    level, trend, s = method(fuel, "FixedOMDolPerKw")
-    fixed_operating_cost_start_year[fuel] = level
-    fixed_operating_cost_trend[fuel] = trend
-    fixed_operating_cost[fuel] = s
+    fixed_operating_cost[fuel] = method(fuel, "FixedOMDolPerKw")
 
-fixed_operating_cost_start_year = pd.Series()
-fixed_operating_cost_trend = pd.Series()
 fixed_operating_cost = pd.DataFrame()
 
 set_fixed_operating_cost("Coal", by_median)
 set_fixed_operating_cost("Gas", by_median)
 set_fixed_operating_cost("Oil", by_median)
 set_fixed_operating_cost("BigHydro", by_median)
-#fixed_operating_cost["BigHydro"] = fixed_operating_cost["BigHydro"].clip(0)
 set_fixed_operating_cost("SmallHydro", by_median)
 set_fixed_operating_cost("Biomass", by_median)
 set_fixed_operating_cost("Solar", by_regression)
 
 set_fixed_operating_cost("Offshore", by_regression)
 set_fixed_operating_cost("Onshore", by_regression)
-fixed_operating_cost_start_year["Wind"] = (fixed_operating_cost_start_year["Offshore"]
-                                           + fixed_operating_cost_start_year["Onshore"]) / 2
-fixed_operating_cost_trend["Wind"] = (fixed_operating_cost_trend["Offshore"]
-                                      + fixed_operating_cost_trend["Onshore"]) / 2
 fixed_operating_cost["Wind"] = (fixed_operating_cost["Offshore"]
                                 + fixed_operating_cost["Onshore"]) / 2
 
 set_fixed_operating_cost("CoalCCS", by_median)
 set_fixed_operating_cost("GasCCS", by_median)
-#TODO
+
 cost_multiplier = fixed_operating_cost["CoalCCS"] / fixed_operating_cost["Coal"]
 fixed_operating_cost["BioCCS"] = fixed_operating_cost["Biomass"] * cost_multiplier
-fixed_operating_cost_start_year["BioCCS"] = fixed_operating_cost.loc[start_year, "BioCCS"]
-fixed_operating_cost_trend["BioCCS"] = (fixed_operating_cost.loc[start_year + 1, "BioCCS"]
-                                        - fixed_operating_cost.loc[start_year, "BioCCS"])
 
 # TODO: get data on maintenance costs for the transboundary transmission lines !
 set_fixed_operating_cost("Import", as_zero)
 
 show("Fixed operating costs, $/kW ", start_year)
-show(fixed_operating_cost_start_year.round())
+show(fixed_operating_cost.loc[start_year].round())
 show()
 show("Trends in fixed operating costs, $/kW/yr", start_year, "-", end_year)
-show(fixed_operating_cost_trend.round(2))
+show(fixed_operating_cost.diff().loc[start_year].round(2))
 show()
 show("Fixed operating costs, $/kW")
 show(fixed_operating_cost[sources].round())
@@ -267,14 +240,9 @@ show(fixed_operating_cost[sources].round())
 
 #%%  Variable operating costs
 
-
 def set_variable_operating_cost(fuel, method=by_median):
-    level, trend, s = method(fuel, "VariableOMDolPerMwh")
-    variable_operating_cost_start_year[fuel] = level
-    # No trend, we assume variable operating cost remains constant
-    variable_operating_cost[fuel] = s
+    variable_operating_cost[fuel] = method(fuel, "VariableOMDolPerMwh")
 
-variable_operating_cost_start_year = pd.Series()
 variable_operating_cost = pd.DataFrame()
 
 set_variable_operating_cost("Coal")
@@ -287,7 +255,6 @@ set_variable_operating_cost("Solar")
 
 set_variable_operating_cost("Offshore")
 set_variable_operating_cost("Onshore")
-variable_operating_cost_start_year["Wind"] = variable_operating_cost_start_year["Offshore"]
 variable_operating_cost["Wind"] = variable_operating_cost["Offshore"]
 
 set_variable_operating_cost("CoalCCS")
@@ -295,31 +262,24 @@ set_variable_operating_cost("GasCCS")
 
 cost_multiplier = variable_operating_cost["CoalCCS"] / variable_operating_cost["Coal"]
 variable_operating_cost["BioCCS"] = variable_operating_cost["Biomass"] * cost_multiplier
-variable_operating_cost_start_year["BioCCS"] = variable_operating_cost.loc[start_year, "BioCCS"]
 
 # $/MW,  Price of imports from China in 2012
 # Source  http://www.globaltimes.cn/content/888455.shtml
-variable_operating_cost_start_year["Import"] = 60.8
-variable_operating_cost["Import"] = pd.Series(variable_operating_cost_start_year["Import"],
+variable_operating_cost_start_year_import = 60.8
+variable_operating_cost["Import"] = pd.Series(variable_operating_cost_start_year_import,
                                               index=years,
                                               name="Import")
 
 show("Variable operating costs (constant over time), $/MW ", start_year)
-show(variable_operating_cost_start_year.round(2))
+show(variable_operating_cost.loc[start_year].round(2))
 show()
 
 
 #%% Heat rate
 
-
 def set_heat_rate(fuel, method=by_median):
-    level, trend, s = method(fuel, "HeatRate")
-    heat_rate_start_year[fuel] = level
-    heat_rate_trend[fuel] = trend
-    heat_rate[fuel] = s
+    heat_rate[fuel] = method(fuel, "HeatRate")
 
-heat_rate_start_year = pd.Series()
-heat_rate_trend = pd.Series()
 heat_rate = pd.DataFrame()
 
 set_heat_rate("Coal")
@@ -336,9 +296,7 @@ start_penalty = 0.30
 end_penalty = 0.15
 energy_penalty = np.linspace(start_penalty, end_penalty, n_year)
 heat_rate["CoalCCS"] = heat_rate["Coal"] * (1 + energy_penalty)
-
 heat_rate["GasCCS"] = heat_rate["Gas"] * (1 + energy_penalty)
-
 heat_rate["BioCCS"] = heat_rate["Biomass"] * (1 + energy_penalty)
 
 show(heat_rate.round())
