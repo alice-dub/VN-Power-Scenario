@@ -118,10 +118,12 @@ def as_zero(fuel, col):
 
 
 def by_median(fuel, col):
+    """Median of observed costs, defined as 'refering to a year prior year of publication'"""
     data = view[fuel]
     past_data = data[data.Year < data.PublicationYear]
-    level = past_data[col].median()
-    s = pd.Series(level, index=years, name=fuel)
+    s = pd.Series(past_data[col].median(),
+                  index=years,
+                  name=fuel)
     if VERBOSE:
         myplot(data, fuel, col, s, " (median of " + str(len(past_data)) + ") ")
     return s
@@ -146,7 +148,7 @@ def by_regression(fuel, col):
 def set_construction_cost(fuel, method):
     construction_cost[fuel] = method(fuel, "OnghtCptlCostDolPerKw")
 
-construction_cost = pd.DataFrame()
+construction_cost = pd.DataFrame(index=years)
 
 set_construction_cost("Coal", by_median)
 set_construction_cost("Gas", by_median)
@@ -204,7 +206,7 @@ show(construction_cost[sources].round())
 def set_fixed_operating_cost(fuel, method):
     fixed_operating_cost[fuel] = method(fuel, "FixedOMDolPerKw")
 
-fixed_operating_cost = pd.DataFrame()
+fixed_operating_cost = pd.DataFrame(index=years)
 
 set_fixed_operating_cost("Coal", by_median)
 set_fixed_operating_cost("Gas", by_median)
@@ -243,7 +245,7 @@ show(fixed_operating_cost[sources].round())
 def set_variable_operating_cost(fuel, method=by_median):
     variable_operating_cost[fuel] = method(fuel, "VariableOMDolPerMwh")
 
-variable_operating_cost = pd.DataFrame()
+variable_operating_cost = pd.DataFrame(index=years)
 
 set_variable_operating_cost("Coal")
 set_variable_operating_cost("Gas")
@@ -280,7 +282,7 @@ show()
 def set_heat_rate(fuel, method=by_median):
     heat_rate[fuel] = method(fuel, "HeatRate")
 
-heat_rate = pd.DataFrame()
+heat_rate = pd.DataFrame(index=years)
 
 set_heat_rate("Coal")
 set_heat_rate("Gas")

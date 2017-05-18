@@ -98,4 +98,4 @@ class Parameter():
                 )
 
     def digest(self):
-        return hashlib.md5(repr(self).encode('utf-8')).hexdigest()[0:8]
+        return hashlib.md5(repr(self).encode('utf-8')).hexdigest()[0:6]

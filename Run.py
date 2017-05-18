@@ -112,7 +112,7 @@ class Run():
 #        self.total_emissions = self.emissions.sum().sum() * kt / Gt
 
     def __str__(self):
-        return 'Model run #' + self.plan.digest() + "-" + self.parameter.digest()
+        return '#' + self.plan.digest() + "-" + self.parameter.digest()
 
     def summarize(self):
         print(self, " - Summary")
@@ -123,23 +123,35 @@ class Run():
         print("CO2 emissions", round(self.total_emissions, 1), "Gt CO2eq")
 
     def print_total(self):
-        def f(cost):
-            return "{:.0f} billion USD".format(cost * MUSD / GUSD)
         print(self, " - Totals")
         print()
-        print("Construction:  ", f(self.total_investment))
-        print("Salvage value  ", f(-self.total_salvage_value))
-        print("Fixed O&M      ", f(self.total_fixed_OM_cost))
-        print("Variable O&M   ", f(self.total_variable_OM_cost))
-        print("Fuel cost      ", f(self.total_fuel_cost))
-        print()
-        print("Total cost     ", f(self.total_cost))
-        print("Power produced {:.0f} TWh".format(self.total_production * GWh / TWh))
-        print()
-        print("System LCOE:   {:.2f} US cent / kWh".format(100 * self.lcoe))
+        print(self.total())
         print()
         print("GHG emissions over ", start_year, "-", end_year, "by source (Mt CO2eq)")
-        print((self.emissions[sources].sum() * kt / Mt).round())
+        print()
+        print(self.emission_sum())
+
+    def total(self):
+        def f(cost):
+            return [round(cost * MUSD / GUSD), "bn USD"]
+        d = pd.DataFrame()
+        d["System LCOE"] = [round(self.lcoe * (MUSD / GWh) / (USD / MWh), 1), "USD/MWh"]
+        d["Power produced"] = [(self.total_production * GWh / TWh).round(), "Twh"]
+        d["CO2 emissions"] = [round(self.total_emissions, 1), "GtCO2eq"]
+        d["Total cost"] = f(self.total_cost)
+        d["Construction"] = f(self.total_investment)
+        d["Fuel cost"] = f(self.total_fuel_cost)
+        d["O&M"] = f(self.total_fixed_OM_cost + self.total_variable_OM_cost)
+        d["Salvage value"] = f(-self.total_salvage_value)
+        d = d.transpose()
+        d.columns = [str(self), 'Unit']
+        return d
+
+    def emission_sum(self):
+        s = self.emissions[sources].sum() * kt / Mt
+        s = s.round()
+        s.name = str(self)
+        return s
 
 #TODO: use __repr__ returns a string
     def detail(self):
@@ -164,6 +176,51 @@ class Run():
         print(self.emissions.loc[start_year:, sources + ["Total"]].round())
 
 
+class RunPair():
+    """Two courses of action, compared in one environment"""
+
+    def __init__(self, baseline, alternate, parameter):
+        self.BAU = Run(baseline, parameter)
+        self.ALT = Run(alternate, parameter)
+
+    def __str__(self):
+        s = str(self.BAU.parameter) + '\n'
+        s += "BAU = " + str(self.BAU.plan) + '\n'
+        s += "ALT = " + str(self.ALT.plan)
+        return s
+
+    def total(self):
+        units = self.BAU.total().iloc[:, 1]
+        total_BAU = self.BAU.total().iloc[:, 0]    # Only the values
+        total_ALT = self.ALT.total().iloc[:, 0]
+        total_diff = total_ALT - total_BAU
+        d = pd.concat([total_BAU, total_ALT, total_diff, units], axis=1)
+        d.columns = ['BAU', 'ALT', 'difference', 'Units']
+        return d
+
+    def emission_sum(self):
+        es_BAU = self.BAU.emission_sum()
+        es_ALT = self.ALT.emission_sum()
+        es_diff = es_ALT - es_BAU
+        d = pd.concat([es_BAU, es_ALT, es_diff], axis=1)
+        d.columns = ['BAU', 'ALT', 'difference']
+        return d
+
+    def carbon_value(self):
+        s = self.total()['difference']
+        return - s['Total cost'] / s['CO2 emissions']
+
+    def summary(self):
+        s = str(self) + '\n\n'
+        s += 'Present value cost of avoided emissions: '
+        s += str(round(self.carbon_value(), 1)) + " USD/tCO2eq"
+        s += '\n\n'
+        s += str(self.total())
+        s += '\n\n'
+        s += str(self.emission_sum())
+        return s
+
+
 if (len(sys.argv) == 2) and (sys.argv[0] == "Run.py"):
     if sys.argv[1] == "summarize":
         print("""
@@ -171,19 +228,7 @@ if (len(sys.argv) == 2) and (sys.argv[0] == "Run.py"):
 ***             Results                ***
 ******************************************
 """)
-        scenario = Run(baseline, reference)
-        scenario.summarize()
-        print()
-        scenario.print_total()
-
-        print("""
-******************************************
-""")
-
-        scenario = Run(withCCS, reference)
-        scenario.summarize()
-        print()
-        scenario.print_total()
-        print()
+        pair = RunPair(baseline, withCCS, reference)
+        print(pair.summary())
     else:
         print('Call this script with "summarize" to print the summary')

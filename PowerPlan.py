@@ -74,7 +74,7 @@ class PowerPlan:
                 )
 
     def digest(self):
-        return hashlib.md5(repr(self).encode('utf-8')).hexdigest()[0:8]
+        return hashlib.md5(repr(self).encode('utf-8')).hexdigest()[0:4]
 
     def plot_additions(self, ax, l=True):
         self.additions[sources].plot(ax=ax, title="Added capacity (MW)",
