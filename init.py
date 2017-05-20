@@ -32,6 +32,8 @@
 """
 
 import pandas as pd
+import numpy as np
+from functools import lru_cache
 
 pd.set_option('display.max_rows', 100)
 pd.set_option('display.max_columns', 20)
@@ -48,6 +50,22 @@ start_year = 2016
 end_year = 2050
 years = range(start_year, end_year + 1)
 n_year = len(years)
+
+
+@lru_cache(maxsize=32)
+def discountor(discount_rate):
+    return pd.Series(data=np.logspace(0, n_year - 1, n_year, base=1 / (1 + discount_rate)),
+                     index=years)
+
+
+def present_value(series, discount_rate):
+    """series can be a series or a dataframe"""
+    return series.mul(discountor(discount_rate), axis=0).sum()
+
+
+def discount(value, year, discount_rate):
+    return value * discountor(discount_rate).loc[year]
+
 
 #%% Columns
 # Nuclear is presently out of the power planning discussion in Vietnam
@@ -92,3 +110,4 @@ t = 1000
 kt = 10**6
 Mt = 10**9
 Gt = 10**12
+

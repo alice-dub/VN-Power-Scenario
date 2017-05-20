@@ -300,13 +300,16 @@ set_heat_rate("Import", as_zero)
 heat_price = pd.DataFrame(index=years)
 
 # $/MBtu, http://en.openei.org/apps/TCDB/levelized_cost_calculations.html
-# One line each, because later on we may assume trend
-heat_price["Coal"] = 2.34
-heat_price["Gas"] = 4.4
-heat_price["Oil"] = 4.4
-heat_price["BigHydro"] = 0
-heat_price["SmallHydro"] = 0
-heat_price["Biomass"] = 2.27
-heat_price["Wind"] = 0
-heat_price["Solar"] = 0
-heat_price["Import"] = 0
+# In controlled environment (China in the 50-70, Vietnam now), fossil fuel prices grow stable
+# In market they swing with the balance of supply and demand
+# But there is little empirical evidence about any long term trend
+#.
+heat_price["Coal"] = pd.Series(2.34, index=years)
+heat_price["Gas"] = pd.Series(4.4, index=years)
+heat_price["Oil"] = pd.Series(4.4, index=years)
+heat_price["BigHydro"] = pd.Series(0, index=years)
+heat_price["SmallHydro"] = pd.Series(0, index=years)
+heat_price["Biomass"] = pd.Series(2.27, index=years)
+heat_price["Wind"] = pd.Series(0, index=years)
+heat_price["Solar"] = pd.Series(0, index=years)
+heat_price["Import"] = pd.Series(0, index=years)

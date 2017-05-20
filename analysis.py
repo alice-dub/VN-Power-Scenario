@@ -15,6 +15,7 @@ Assess an ensemble of scenarios
 import copy
 import sys
 
+from init import discountor
 from plan_baseline import baseline
 from plan_withCCS import withCCS
 from param_reference import reference
@@ -32,7 +33,16 @@ hiCarbonPrice = copy.deepcopy(reference)
 hiCarbonPrice.carbon_price = reference.carbon_price * 1.75
 hiCarbonPrice.docstring = "175% carbon price"
 
-ensemble = [reference, hidiscount, lodiscount, hiCarbonPrice]
+# Coal prices on liberalized markets have been volaile.
+# A 100% swing in one year is not exceptionnal
+#
+# This scenaro's falling 3% per year means division by ~3 from 2016 in 2050
+loCoalPrice = copy.deepcopy(reference)
+loCoalPrice.heat_price["Coal"] *= discountor(0.03)
+loCoalPrice.heat_price["Gas"] *= discountor(0.03)
+loCoalPrice.docstring = "Coal and Gas price fall by 3% per year"
+
+ensemble = [reference, hidiscount, lodiscount, hiCarbonPrice, loCoalPrice]
 
 runs = [RunPair(baseline, withCCS, parameter) for parameter in ensemble]
 
@@ -47,4 +57,3 @@ if (len(sys.argv) == 2) and (sys.argv[0] == "analysis.py"):
             print(run.summary(), "\n\n")
     else:
         print('Call this script with "summarize" to print the summary')
-

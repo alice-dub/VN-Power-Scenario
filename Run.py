@@ -12,11 +12,9 @@ Assess the scenarios
 
 """
 import sys
-import numpy as np
-from functools import lru_cache
 
 from init import pd, fuels, sources
-from init import start_year, end_year, n_year, years
+from init import start_year, end_year, years, present_value
 from init import kW, MW, USD, MUSD, GUSD, GWh, MWh, TWh, kWh, Btu, MBtu, TBtu, g, t, kt, Mt, Gt
 
 from plan_baseline import baseline
@@ -25,21 +23,6 @@ from param_reference import reference
 
 
 #%% Accounting functions
-
-
-@lru_cache(maxsize=32)
-def discountor(discount_rate):
-    return pd.Series(data=np.logspace(0, n_year - 1, n_year, base=1 / (1 + discount_rate)),
-                     index=years)
-
-
-def present_value(series, discount_rate):
-    """series can be a series or a dataframe"""
-    return series.mul(discountor(discount_rate), axis=0).sum()
-
-
-def discount(value, year, discount_rate):
-    return value * discountor(discount_rate).loc[year]
 
 
 def residual_value(additions, plant_accounting_life, fuel):
