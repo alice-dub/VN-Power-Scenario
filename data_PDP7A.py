@@ -23,7 +23,7 @@ PDP7A list of power plant projects include some designated as '* Backup if renew
 are not build.'
 """
 
-from init import pd, show, fuels
+from init import pd, show, fuels, Mt, GWh, g, kWh
 
 #%%  List of planned new plants
 
@@ -115,3 +115,8 @@ fuel_use_PDP7A = pd.read_csv("data/PDP7A/Objectives.csv", header=38, nrows=3, in
 
 show("Coal consumption, PDP7A (Mt)")
 show(fuel_use_PDP7A.Coal)
+
+coal_intensity_PDP7A = (fuel_use_PDP7A.Coal * Mt) / (production_PDP7A.Coal * GWh) / (g / kWh)
+
+show("Coal intensity, PDP7A (g / kWh)")
+show(coal_intensity_PDP7A.round())

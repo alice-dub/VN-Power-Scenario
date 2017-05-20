@@ -110,6 +110,12 @@ class Run():
         self.emissions["Total"] = self.emissions.sum(axis=1)
         self.total_emissions = self.emissions["Total"].sum() * kt / Gt
 
+        self.capture = (plan.production * GWh
+                        * parameter.capture_factor * g / kWh
+                        / kt)
+        self.capture["Total"] = self.capture.sum(axis=1) * kt / Mt
+        self.total_capture = self.capture["Total"].sum() * Mt / Gt
+
         self.external_cost = (self.emissions["Total"] * kt
                               * parameter.carbon_price * USD / t
                               / MUSD)
@@ -125,6 +131,7 @@ class Run():
         print(self.parameter)
         print("System LCOE: ", round(100 * self.lcoe, 2), " US cent / kWh")
         print("CO2 emissions", round(self.total_emissions, 1), "Gt CO2eq")
+        print("CO2 capture", round(self.total_capture, 1), "Gt CO2")
 
     def print_total(self):
         print(self, " - Totals")
@@ -147,6 +154,7 @@ class Run():
         d[" O&M"] = f(self.total_fixed_OM_cost + self.total_variable_OM_cost)
         d[" Salvage value"] = f(-self.total_salvage_value)
         d["CO2 emissions"] = [round(self.total_emissions, 1), "GtCO2eq"]
+        d["CO2 capture"] = [round(self.total_capture, 1), "GtCO2"]
         d["CO2 cost"] = f(self.total_external_cost)
         d["Cost with CO2"] = f(self.total_cost + self.total_external_cost)
         d = d.transpose()
@@ -162,6 +170,12 @@ class Run():
         intensity = (e * kt) / (p * GWh) / (g / kWh)
         intensity.name = str(self)
         return intensity.round()
+
+    def carbon_captured(self):
+        key_years = [2025, 2030, 2035, 2040, 2050]
+        captured = self.capture.loc[key_years, "Total"]
+        captured.name = str(self)
+        return captured.round()
 
     def emission_sum(self):
         s = self.emissions[sources].sum() * kt / Mt
@@ -190,6 +204,9 @@ class Run():
         print()
         print("GHG emissions (ktCO2eq including CO2, CH4 and N20)")
         print(self.emissions.loc[start_year:, sources + ["Total"]].round())
+        print()
+        print("CO2 capture (kt CO2)")
+        print(self.capture.loc[start_year:, ["CoalCCS", "GasCCS", "BioCCS", "Total"]].round())
 
 
 class RunPair():
@@ -230,6 +247,14 @@ class RunPair():
         d.columns = ['BAU', 'ALT', 'difference']
         return d
 
+    def carbon_captured(self):
+        ci_BAU = self.BAU.carbon_captured()
+        ci_ALT = self.ALT.carbon_captured()
+        ci_diff = ci_ALT - ci_BAU
+        d = pd.concat([ci_BAU, ci_ALT, ci_diff], axis=1)
+        d.columns = ['BAU', 'ALT', 'difference']
+        return d
+
     def carbon_value(self):
         s = self.total()['difference']
         return - s['Total cost'] / s['CO2 emissions']
@@ -247,6 +272,9 @@ class RunPair():
         s += '\n\n'
         s += 'Average Carbon Intensity (g/kWh)\n'
         s += str(self.carbon_intensity())
+        s += '\n\n'
+        s += 'Carbon Captured (Mt)\n'
+        s += str(self.carbon_captured())
         return s
 
 

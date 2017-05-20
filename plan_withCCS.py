@@ -39,10 +39,26 @@ from plan_baseline import baseline
 
 additions, retirement = baseline.additions.copy(), baseline.retirement.copy()
 
-retrofit_start_year = 2035
-retrofit_period = range(retrofit_start_year, end_year + 1)
+#%%
 
-# Retire old plants as in the baseline, and
+pilot1_year = 2024
+pilot1_size = 250  # MW of gas-fired generation
+assert(additions.at[pilot1_year, "Gas"] > pilot1_size)
+additions.at[pilot1_year, "Gas"] -= pilot1_size
+additions.at[pilot1_year, "GasCCS"] += pilot1_size
+
+pilot2_year = 2029
+pilot2_size = 750  # MW of gas-fired generation
+assert(additions.at[pilot2_year, "Gas"] > pilot2_size)
+additions.at[pilot2_year, "Gas"] -= pilot2_size
+additions.at[pilot2_year, "GasCCS"] += pilot2_size
+
+#%%
+
+retrofit_start_year = 2035
+assert(retrofit_start_year > pilot2_year)
+
+retrofit_period = range(retrofit_start_year, end_year + 1)
 
 # Convert all other coal capacity to Coal CCS on 2035 - 2050
 retrofit_rate_coal = baseline.capacities.at[end_year, "Coal"] / len(retrofit_period)
@@ -50,8 +66,8 @@ retirement.loc[retrofit_period, "Coal"] += retrofit_rate_coal
 additions.loc[retrofit_period, "CoalCCS"] = retrofit_rate_coal
 
 # Convert all other Gas capacity to Gas CCS on 2035 - 2050
-retrofit_rate_gas = ((baseline.capacities.at[end_year, "Gas"] -
-                      additions.loc[retrofit_period, "Gas"].sum()
+retrofit_rate_gas = ((baseline.capacities.at[end_year, "Gas"] - pilot1_size - pilot2_size
+                     - additions.loc[retrofit_period, "Gas"].sum()
                       ) / len(retrofit_period))
 retirement.loc[retrofit_period, "Gas"] += retrofit_rate_gas
 additions.loc[retrofit_period, "GasCCS"] = retrofit_rate_gas

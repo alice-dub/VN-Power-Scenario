@@ -9,7 +9,7 @@
 import sys
 import numpy as np
 
-from init import pd, years, start_year, end_year
+from init import pd, show, years, start_year, end_year, n_year, sources
 from Parameter import Parameter
 
 from data_OpenEI import (construction_cost, fixed_operating_cost, variable_operating_cost,
@@ -18,6 +18,67 @@ from data_OpenEI import (construction_cost, fixed_operating_cost, variable_opera
 from data_IPCC import emission_factor
 
 from plan_baseline import plant_life as plant_accounting_life
+
+
+#%% CCS technologies
+
+start_penalty = 0.30
+end_penalty = 0.20
+energy_penalty = np.linspace(start_penalty, end_penalty, n_year)
+heat_rate["CoalCCS"] = heat_rate["Coal"] * (1 + energy_penalty)
+heat_rate["GasCCS"] = heat_rate["Gas"] * (1 + energy_penalty)
+heat_rate["BioCCS"] = heat_rate["Biomass"] * (1 + energy_penalty)
+
+show("Heat rate  (Btu/kWh)")
+show(heat_rate.round())
+show()
+
+heat_price["CoalCCS"] = heat_price["Coal"]
+heat_price["GasCCS"] = heat_price["Gas"]
+heat_price["BioCCS"] = heat_price["Biomass"]
+
+
+#%%
+"""
+Without CCS:
+   CO2_emitted = emission_factor_noCCS * production
+
+   CO2_produced = CO2_factor_of_heat * heat_used
+   heat_used = production * heat_rate_noCCS
+   CO2_produced = CO2_factor_of_heat * production * heat_rate_noCCS
+
+   CO2_produced = CO2_emitted
+   CO2_factor_of_heat * production * heat_rate_noCCS = emission_factor_noCCS * production
+   CO2_factor_of_heat = emission_factor_noCCS / heat_rate_noCCS
+
+Assume the CO2_factor_of_heat deponds on the fuel only. It is the same with or without CCS.
+
+With CCS:
+   CO2_captured = CO2_produced - CO2_emitted
+
+   CO2_emitted = emission_factor_withCCS * production
+
+   CO2_produced = CO2_factor_of_heat * heat_used
+   CO2_produced = CO2_factor_of_heat * production * heat_rate_CCS
+   CO2_produced = CO2_factor_of_heat * production * heat_rate_noCCS * (1 + energy_penalty)
+   CO2_produced = production * emission_factor_noCCS * (1 + energy_penalty)
+
+   CO2_captured = production * capture_factor
+   capture_factor = emission_factor_noCCS * (1 + energy_penalty) - emission_factor_withCCS
+"""
+
+capture_factor = pd.DataFrame(index=years)
+for fuel in sources:
+    capture_factor[fuel] = pd.Series(0, index=years)   # gCO2/ kWh
+
+capture_factor["CoalCCS"] = (emission_factor["Coal"] * (1 + energy_penalty)
+                             - emission_factor["CoalCCS"])
+
+capture_factor["GasCCS"] = (emission_factor["Gas"] * (1 + energy_penalty)
+                            - emission_factor["GasCCS"])
+
+capture_factor["BioCCS"] = (emission_factor["Biomass"] * (1 + energy_penalty)
+                            - emission_factor["BioCCS"])
 
 #%%
 
@@ -58,6 +119,7 @@ reference = Parameter(("Reference - median values from OpenEI and IPCC reviews, 
                       heat_rate,
                       heat_price,
                       emission_factor,
+                      capture_factor,
                       carbon_price)
 
 if (len(sys.argv) == 2) and (sys.argv[0] == "param_reference.py"):

@@ -22,6 +22,7 @@ class Parameter():
                  heat_rate,
                  heat_price,
                  emission_factor,
+                 capture_factor,
                  carbon_price):
         self.docstring = docstring
         self.discount_rate = discount_rate
@@ -32,6 +33,7 @@ class Parameter():
         self.heat_rate = heat_rate
         self.heat_price = heat_price
         self.emission_factor = emission_factor
+        self.capture_factor = capture_factor
         self.carbon_price = carbon_price
 
     def __str__(self):
@@ -41,13 +43,16 @@ class Parameter():
         print(self)
         print()
         summary = pd.DataFrame()
-        s = self.plant_accounting_life[sources]
+        s = self.plant_accounting_life[sources].round(2)
         s.name = "Plant accounting life (year)"
         summary = summary.append(s)
-        s = self.emission_factor[sources]
+        s = self.emission_factor[sources].round(2)
         s.name = "Emission factor (gCO2eq/kWh)"
         summary = summary.append(s)
-        s = self.construction_cost.loc[start_year].round()
+        s = self.capture_factor[sources].round(2)
+        s.name = "Capture factor (gCO2/kWh)"
+        summary = summary.append(s)
+        s = self.construction_cost.loc[start_year].round(2)
         s.name = "Overnight construction costs ($/kW)"
         summary = summary.append(s)
         s = self.construction_cost.diff().loc[start_year + 1].round(2)
@@ -85,6 +90,9 @@ class Parameter():
                 + "\n\n"
                 + "Emission factor (gCO2eq/kWh)"
                 + repr(self.emission_factor[sources])
+                + "\n\n"
+                + "Capture factor (gCO2/kWh)"
+                + repr(self.capture_factor[sources])
                 + "\n\n"
                 + "Overnight construction costs ($/kW)"
                 + repr(self.construction_cost.round())

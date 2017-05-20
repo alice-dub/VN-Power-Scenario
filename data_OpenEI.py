@@ -294,16 +294,6 @@ set_heat_rate("Solar", as_zero)
 set_heat_rate("Wind", as_zero)
 set_heat_rate("Import", as_zero)
 
-start_penalty = 0.30
-end_penalty = 0.15
-energy_penalty = np.linspace(start_penalty, end_penalty, n_year)
-heat_rate["CoalCCS"] = heat_rate["Coal"] * (1 + energy_penalty)
-heat_rate["GasCCS"] = heat_rate["Gas"] * (1 + energy_penalty)
-heat_rate["BioCCS"] = heat_rate["Biomass"] * (1 + energy_penalty)
-
-show(heat_rate.round())
-show()
-
 
 #%% Fuel prices
 
@@ -312,14 +302,11 @@ heat_price = pd.DataFrame(index=years)
 # $/MBtu, http://en.openei.org/apps/TCDB/levelized_cost_calculations.html
 # One line each, because later on we may assume trend
 heat_price["Coal"] = 2.34
-heat_price["CoalCCS"] = 2.34
 heat_price["Gas"] = 4.4
-heat_price["GasCCS"] = 4.4
 heat_price["Oil"] = 4.4
 heat_price["BigHydro"] = 0
 heat_price["SmallHydro"] = 0
 heat_price["Biomass"] = 2.27
-heat_price["BiomassCCS"] = 2.27
 heat_price["Wind"] = 0
 heat_price["Solar"] = 0
 heat_price["Import"] = 0

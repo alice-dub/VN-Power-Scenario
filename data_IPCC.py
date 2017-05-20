@@ -23,7 +23,7 @@ Median of the literature reviewed for Coal to Solar.
 emission_factor = pd.Series({"Coal": 1001, "Gas": 469, "Oil": 840, "BigHydro": 4,
                              "SmallHydro": 4, "Biomass": 18, "Wind": 12, "Solar": 46,
                              "CoalCCS": (98 + 396) / 2, "GasCCS": (65 + 245) / 2,
-                             "BioCCS": (- 1368 + (-594)) / 2})
+                             "BioCCS": (- 1368 + (-594)) / 2})  # gCO2eq / kWh
 
 #Assumption: VN imports from China and Lao
 emission_factor["Import"] = 0.5 * emission_factor["Coal"] + 0.5 * emission_factor["BigHydro"]
