@@ -16,6 +16,12 @@ From 2016 onwards, based on future capacity additions listed in PDP7A
 Nuclear replaced by Coal
 
 Renewable4 includes small hydro
+
+
+Usage:
+
+python3 plan_baseline.py summarize
+python3 plan_baseline.py plot filename.[pdf|png|...]
 """
 import sys
 
@@ -163,14 +169,11 @@ net_import = extend("Import", 7000, "Import", production_past, production_PDP7A)
 
 baseline = PowerPlan("Baseline - PDP7A extended", additions, retirement, capacityfactor, net_import)
 
-if (len(sys.argv) == 2) and (sys.argv[0] == "plan_baseline.py"):
-    if sys.argv[1] == "summarize":
+if __name__ == '__main__':
+    if (len(sys.argv) == 2) and (sys.argv[1] == "summarize"):
         baseline.summarize()
-    elif sys.argv[1] == "plot":
-        baseline.plot_plan("plan_baseline.pdf")
-    else:
-        print('Call this script with "summarize" or "plot" argument')
-
+    if (len(sys.argv) == 3) and (sys.argv[1] == "plot"):
+        baseline.plot_plan(sys.argv[2])
 
 #%% Validation: compares to PDP7A
 

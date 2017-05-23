@@ -26,11 +26,17 @@ are implemented, as soon as 2020 for R&D, to setup a pilot project, with the goa
 a commercial scale demonstrator by 2035. In parallel, the government announces that
 coal fired power plants build after 2020 will have to be capture-ready.
 The electricity generation sector is an active player for CO2 transport activities.
+
+Usage:
+
+python3 plan_withCCS.py summarize
+python3 plan_withCCS.py plot filename.[pdf|png|...]
+
 """
 
 import sys
 
-from init import pd, end_year, fuels, technologies
+from init import pd, end_year, technologies
 from PowerPlan import PowerPlan
 
 from plan_baseline import baseline
@@ -96,14 +102,11 @@ withCCS = PowerPlan("With CCS",
                     baseline.capacity_factor,
                     baseline.net_import)
 
-if (len(sys.argv) == 2) and (sys.argv[0] == "plan_withCCS.py"):
-    if sys.argv[1] == "summarize":
+if __name__ == '__main__':
+    if (len(sys.argv) == 2) and (sys.argv[1] == "summarize"):
         withCCS.summarize()
-    elif sys.argv[1] == "plot":
-        withCCS.plot_plan("plan_withCCS.pdf")
-    else:
-        print('Call this script with "summarize" or "plot" argument')
-
+    if (len(sys.argv) == 3) and (sys.argv[1] == "plot"):
+        withCCS.plot_plan(sys.argv[2])
 
 #print(withCCS)
 #

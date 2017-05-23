@@ -12,7 +12,7 @@ tablepyfiles = plan_baseline.py plan_withCCS.py param_reference.py Run.py analys
 tables = $(patsubst %.py,%.txt,$(tablepyfiles))
 diffs  = $(patsubst %.py,%.diff,$(tablepyfiles))
 
-figures = plan_baseline.pdf plan_withCCS.pdf
+figures = plan_baseline.pdf plan_withCCS.pdf figure-capacities.pdf figure-capacities.png
 
 all: $(tables) $(figures)
 
@@ -24,7 +24,10 @@ all: $(tables) $(figures)
 	$(PYTHON) $< summarize > $@
 
 %.pdf: %.py
-	$(PYTHON) $< plot > $@
+	$(PYTHON) $< plot $@
+
+%.png: %.py
+	$(PYTHON) $< plot $@
 
 %.diff: %.txt tables.tocompare/%.txt
 	@diff $^  > $@
