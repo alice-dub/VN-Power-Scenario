@@ -39,6 +39,7 @@ def residual_value(additions, plant_accounting_life, fuel):
 
 #%%
 
+#TODO: Account for age of plant at retrofit and residual value
 
 class Run():
 
@@ -205,59 +206,59 @@ class RunPair():
         s += "ALT = " + str(self.ALT.plan)
         return s
 
-    def total(self):
+    def total(self, headers):
         units = self.BAU.total().iloc[:, 1]
         total_BAU = self.BAU.total().iloc[:, 0]    # Only the values
         total_ALT = self.ALT.total().iloc[:, 0]
         total_diff = total_ALT - total_BAU
         d = pd.concat([total_BAU, total_ALT, total_diff, units], axis=1)
-        d.columns = ['BAU', 'ALT', 'difference', 'Units']
+        d.columns = headers + ['Units']
         return d
 
-    def emission_sum(self):
+    def emission_sum(self, headers):
         es_BAU = self.BAU.emission_sum()
         es_ALT = self.ALT.emission_sum()
         es_diff = es_ALT - es_BAU
         d = pd.concat([es_BAU, es_ALT, es_diff], axis=1)
-        d.columns = ['BAU', 'ALT', 'difference']
+        d.columns = headers
         return d
 
-    def carbon_intensity(self):
+    def carbon_intensity(self, headers):
         ci_BAU = self.BAU.carbon_intensity()
         ci_ALT = self.ALT.carbon_intensity()
         ci_diff = ci_ALT - ci_BAU
         d = pd.concat([ci_BAU, ci_ALT, ci_diff], axis=1)
-        d.columns = ['BAU', 'ALT', 'difference']
+        d.columns = headers
         return d
 
-    def carbon_captured(self):
+    def carbon_captured(self, headers):
         ci_BAU = self.BAU.carbon_captured()
         ci_ALT = self.ALT.carbon_captured()
         ci_diff = ci_ALT - ci_BAU
         d = pd.concat([ci_BAU, ci_ALT, ci_diff], axis=1)
-        d.columns = ['BAU', 'ALT', 'difference']
+        d.columns = headers
         return d
 
-    def carbon_value(self):
-        s = self.total()['difference']
+    def carbon_value(self, headers):
+        s = self.total(headers)['difference']
         return - s['Total cost'] / s['CO2 emissions']
 
-    def summary(self):
+    def summary(self, headers):
         s = "*******************\n\n"
         s += str(self) + '\n\n'
         s += 'Present value cost of avoided emissions: '
-        s += str(round(self.carbon_value(), 1)) + " USD/tCO2eq"
+        s += str(round(self.carbon_value(headers), 1)) + " USD/tCO2eq"
         s += '\n\n'
-        s += str(self.total())
+        s += str(self.total(headers))
         s += '\n\n'
         s += 'Emissions by source (ktCO2eq)\n'
-        s += str(self.emission_sum())
+        s += str(self.emission_sum(headers))
         s += '\n\n'
         s += 'Average Carbon Intensity (g/kWh)\n'
-        s += str(self.carbon_intensity())
+        s += str(self.carbon_intensity(headers))
         s += '\n\n'
         s += 'Carbon Captured (Mt)\n'
-        s += str(self.carbon_captured())
+        s += str(self.carbon_captured(headers))
         return s
 
 
@@ -269,6 +270,6 @@ if (len(sys.argv) == 2) and (sys.argv[0] == "Run.py"):
 ******************************************
 """)
         pair = RunPair(baseline, withCCS, reference)
-        print(pair.summary())
+        print(pair.summary(["Baseline", "High CCS", "difference"]))
     else:
         print('Call this script with "summarize" to print the summary')

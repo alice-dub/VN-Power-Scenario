@@ -70,6 +70,6 @@ if (len(sys.argv) == 2) and (sys.argv[0] == "analysis.py"):
 ******************************************
 """)
         for run in runs:
-            print(run.summary(), "\n\n")
+            print(run.summary(["BAU", "ALT", "difference"]), "\n\n")
     else:
         print('Call this script with "summarize" to print the summary')
