@@ -42,7 +42,23 @@ loCoalPrice.heat_price["Coal"] *= discountor(0.03)
 loCoalPrice.heat_price["Gas"] *= discountor(0.03)
 loCoalPrice.docstring = "Coal and Gas price fall by 3% per year"
 
-ensemble = [reference, hidiscount, lodiscount, hiCarbonPrice, loCoalPrice]
+# Cost decrease in CCS technologies 1% per year (refernce assumes constant costs)
+#  -> in 2050 they are 71% of today's cost
+# CoalCCS construction costs becomes equal to Coal construction cost in 2039
+#
+loCCSCost = copy.deepcopy(reference)
+loCCSCost.construction_cost["CoalCCS"] *= discountor(0.01)
+loCCSCost.fixed_operating_cost["CoalCCS"] *= discountor(0.01)
+loCCSCost.variable_operating_cost["CoalCCS"] *= discountor(0.01)
+loCCSCost.construction_cost["GasCCS"] *= discountor(0.01)
+loCCSCost.fixed_operating_cost["GasCCS"] *= discountor(0.01)
+loCCSCost.variable_operating_cost["GasCCS"] *= discountor(0.01)
+loCCSCost.construction_cost["BioCCS"] *= discountor(0.01)
+loCCSCost.fixed_operating_cost["BioCCS"] *= discountor(0.01)
+loCCSCost.variable_operating_cost["BioCCS"] *= discountor(0.01)
+loCCSCost.docstring = "CCS construction and OM costs fall by 1% per year"
+
+ensemble = [reference, hidiscount, lodiscount, hiCarbonPrice, loCoalPrice, loCCSCost]
 
 runs = [RunPair(baseline, withCCS, parameter) for parameter in ensemble]
 

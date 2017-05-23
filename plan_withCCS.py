@@ -30,7 +30,7 @@ The electricity generation sector is an active player for CO2 transport activiti
 
 import sys
 
-from init import pd, end_year
+from init import pd, end_year, fuels, technologies
 from PowerPlan import PowerPlan
 
 from plan_baseline import baseline
@@ -92,7 +92,7 @@ additions.loc[retrofit_period, "GasCCS"] -= savedGasCCS
 
 withCCS = PowerPlan("With CCS",
                     additions,
-                    retirement,
+                    retirement[technologies],
                     baseline.capacity_factor,
                     baseline.net_import)
 
