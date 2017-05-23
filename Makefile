@@ -9,7 +9,7 @@ PYTHON = python3
 
 
 tablepyfiles = plan_baseline.py plan_withCCS.py param_reference.py Run.py analysis.py
-tables = $(patsubst %.py,%.txt,$(tablepyfiles))
+tables = $(patsubst %.py,%.txt,$(tablepyfiles)) table-parameters.fwf
 diffs  = $(patsubst %.py,%.diff,$(tablepyfiles))
 
 figures = plan_baseline.pdf plan_withCCS.pdf figure-capacities.pdf figure-capacities.png
@@ -18,6 +18,10 @@ all: $(tables) $(figures)
 
 %.py: %-generator.py
 	$(PYTHON) $< > $@
+
+table-parameters.fwf: param_reference.txt
+	head -13 $< | tail -11 > $@
+
 
 %.txt: %.py
 	@-sed -i "s/VERBOSE = True/VERBOSE = False/" init.py

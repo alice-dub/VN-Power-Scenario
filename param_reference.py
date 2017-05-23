@@ -122,8 +122,6 @@ reference = Parameter(("Reference - median values from OpenEI and IPCC reviews, 
                       capture_factor,
                       carbon_price)
 
-if (len(sys.argv) == 2) and (sys.argv[0] == "param_reference.py"):
-    if sys.argv[1] == "summarize":
+if __name__ == '__main__':
+    if (len(sys.argv) == 2) and (sys.argv[1] == "summarize"):
         reference.summarize()
-    else:
-        print('Call this script with "summarize" to print the summary')

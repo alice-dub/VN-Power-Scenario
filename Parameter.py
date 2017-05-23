@@ -43,28 +43,28 @@ class Parameter():
         print(self)
         print()
         summary = pd.DataFrame()
-        s = self.plant_accounting_life[sources].round(2)
+        s = self.plant_accounting_life[sources]
         s.name = "Plant accounting life (year)"
         summary = summary.append(s)
-        s = self.emission_factor[sources].round(2)
+        s = self.emission_factor[sources]
         s.name = "Emission factor (gCO2eq/kWh)"
         summary = summary.append(s)
-        s = self.capture_factor[sources].round(2)
+        s = self.capture_factor.loc[start_year, sources]
         s.name = "Capture factor (gCO2/kWh)"
         summary = summary.append(s)
-        s = self.construction_cost.loc[start_year].round(2)
+        s = self.construction_cost.loc[start_year]
         s.name = "Overnight construction costs ($/kW)"
         summary = summary.append(s)
-        s = self.construction_cost.diff().loc[start_year + 1].round(2)
+        s = self.construction_cost.diff().loc[start_year + 1]
         s.name = "Overnight construction costs trend ($/kW/y)"
         summary = summary.append(s)
-        s = self.fixed_operating_cost.loc[start_year].round(2)
+        s = self.fixed_operating_cost.loc[start_year]
         s.name = "Fixed operating costs ($/kW)"
         summary = summary.append(s)
-        s = self.fixed_operating_cost.diff().loc[start_year + 1].round(2)
+        s = self.fixed_operating_cost.diff().loc[start_year + 1]
         s.name = "Fixed operating costs trend ($/kW/yr)"
         summary = summary.append(s)
-        s = self.variable_operating_cost.loc[start_year].round(2)
+        s = self.variable_operating_cost.loc[start_year]
         s.name = "Variable operating costs ($/kWh)"
         summary = summary.append(s)
         s = self.heat_rate.loc[start_year]
@@ -73,7 +73,7 @@ class Parameter():
         s = self.heat_price.loc[start_year]
         s.name = "Heat price ($/MBtu)"
         summary = summary.append(s)
-        print(summary[sources])
+        print(summary[sources].round(1))
         print()
         print("Carbon price ($/tCO2eq)")
         print(self.carbon_price.loc[[start_year, 2030, 2040, 2050]])
