@@ -66,3 +66,5 @@ Profile
 Optimize
 
 Parallelize
+
+Split  Run.py  into Run.py  and  run_marker.py. Rename file analyze  run_all.py

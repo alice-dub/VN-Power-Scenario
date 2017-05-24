@@ -31,9 +31,9 @@
     because the capacity factors are not comparable, neither are the investment costs
 """
 
+from functools import lru_cache
 import pandas as pd
 import numpy as np
-from functools import lru_cache
 
 pd.set_option('display.max_rows', 100)
 pd.set_option('display.max_columns', 20)
@@ -54,16 +54,18 @@ n_year = len(years)
 
 @lru_cache(maxsize=32)
 def discountor(discount_rate):
+    """A vector V such that the scalar product A.V is the present value of series A."""
     return pd.Series(data=np.logspace(0, n_year - 1, n_year, base=1 / (1 + discount_rate)),
                      index=years)
 
 
 def present_value(series, discount_rate):
-    """series can be a series or a dataframe"""
+    """Intertemporal total present value. Applies to a series or a dataframe's columns."""
     return series.mul(discountor(discount_rate), axis=0).sum()
 
 
 def discount(value, year, discount_rate):
+    """Present value of a scalar cash flow"""
     return value * discountor(discount_rate).loc[year]
 
 
@@ -80,12 +82,15 @@ sources = fuels + ["Import"]
 technologies = sources + ["PumpedStorage"]
 
 
-def addcol_Renewable(s):
-    s["Renewable"] = s["Biomass"] + s["Wind"] + s["Solar"]
+def addcol_Renewable(container):
+    """We define Renewable excluding hydro. The container can be a dict, Series, DataFrame"""
+    container["Renewable"] = container["Biomass"] + container["Wind"] + container["Solar"]
 
 
-def addcol_Renewable4(s):
-    s["Renewable4"] = s["Biomass"] + s["Wind"] + s["Solar"] + s["SmallHydro"]
+def addcol_Renewable4(container):
+    """We define Renewable4 including hydro. The container can be a dict, Series, DataFrame"""
+    container["Renewable4"] = (container["Biomass"] + container["Wind"] + container["Solar"]
+                               + container["SmallHydro"])
 
 
 #%% Units
@@ -110,4 +115,3 @@ t = 1000
 kt = 10**6
 Mt = 10**9
 Gt = 10**12
-

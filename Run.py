@@ -41,6 +41,7 @@ def residual_value(additions, plant_accounting_life, fuel):
 
 #TODO: Account for age of plant at retrofit and residual value
 
+
 class Run():
 
     def __init__(self, plan, parameter):
@@ -196,9 +197,9 @@ class Run():
 class RunPair():
     """Two courses of action, compared in one environment"""
 
-    def __init__(self, baseline, alternate, parameter):
-        self.BAU = Run(baseline, parameter)
-        self.ALT = Run(alternate, parameter)
+    def __init__(self, bau, alt, parameter):
+        self.BAU = Run(bau, parameter)
+        self.ALT = Run(alt, parameter)
 
     def __str__(self):
         s = str(self.BAU.parameter) + '\n\n'
@@ -261,9 +262,8 @@ class RunPair():
         s += str(self.carbon_captured(headers))
         return s
 
-
-if (len(sys.argv) == 2) and (sys.argv[0] == "Run.py"):
-    if sys.argv[1] == "summarize":
+if __name__ == '__main__':
+    if (len(sys.argv) == 2) and (sys.argv[1] == "summarize"):
         print("""
 ******************************************
 ***             Results                ***
@@ -271,5 +271,3 @@ if (len(sys.argv) == 2) and (sys.argv[0] == "Run.py"):
 """)
         pair = RunPair(baseline, withCCS, reference)
         print(pair.summary(["Baseline", "High CCS", "difference"]))
-    else:
-        print('Call this script with "summarize" to print the summary')
