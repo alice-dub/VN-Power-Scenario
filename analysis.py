@@ -47,16 +47,16 @@ loCoalPrice.docstring = "Coal and Gas price fall by 3% per year"
 # CoalCCS construction costs becomes equal to Coal construction cost in 2039
 #
 loCCSCost = copy.deepcopy(reference)
-loCCSCost.construction_cost["CoalCCS"] *= discountor(0.01)
-loCCSCost.fixed_operating_cost["CoalCCS"] *= discountor(0.01)
-loCCSCost.variable_operating_cost["CoalCCS"] *= discountor(0.01)
-loCCSCost.construction_cost["GasCCS"] *= discountor(0.01)
-loCCSCost.fixed_operating_cost["GasCCS"] *= discountor(0.01)
-loCCSCost.variable_operating_cost["GasCCS"] *= discountor(0.01)
-loCCSCost.construction_cost["BioCCS"] *= discountor(0.01)
-loCCSCost.fixed_operating_cost["BioCCS"] *= discountor(0.01)
-loCCSCost.variable_operating_cost["BioCCS"] *= discountor(0.01)
-loCCSCost.docstring = "CCS construction and OM costs fall by 1% per year"
+loCCSCost.construction_cost["CoalCCS"] *= discountor(0.018)
+loCCSCost.fixed_operating_cost["CoalCCS"] *= discountor(0.018)
+loCCSCost.variable_operating_cost["CoalCCS"] *= discountor(0.018)
+loCCSCost.construction_cost["GasCCS"] *= discountor(0.018)
+loCCSCost.fixed_operating_cost["GasCCS"] *= discountor(0.018)
+loCCSCost.variable_operating_cost["GasCCS"] *= discountor(0.018)
+loCCSCost.construction_cost["BioCCS"] *= discountor(0.018)
+loCCSCost.fixed_operating_cost["BioCCS"] *= discountor(0.018)
+loCCSCost.variable_operating_cost["BioCCS"] *= discountor(0.018)
+loCCSCost.docstring = "CCS construction and OM costs fall by 1.8% per year"
 
 ensemble = [reference, hidiscount, lodiscount, hiCarbonPrice, loCoalPrice, loCCSCost]
 
