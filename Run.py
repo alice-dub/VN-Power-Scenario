@@ -24,18 +24,20 @@ from param_reference import reference
 
 #%% Accounting functions
 
-
-def residual_value(additions, plant_accounting_life, fuel):
-    lifetime = plant_accounting_life[fuel]
+def residual_value(additions, plant_accounting_life, technology):
+    """ Residual value of the generation capacity at model end year
+    Returns a Series, 0 for all years except at the end.
+    """
+    lifetime = plant_accounting_life[technology]
     idx = additions.index
     n = len(idx)
     remaining_fraction = pd.Series(0, index=idx)
     for i in range(min(lifetime, n)):
         # On average, plant opens middle of the year
         remaining_fraction.iloc[n - i - 1] = 1 - (i + 0.5) / lifetime
-    s = pd.Series(0, index=years, name=fuel)
-    s[2050] = (remaining_fraction * additions[fuel]).sum()
-    return s
+    result = pd.Series(0, index=years, name=technology)
+    result[2050] = (remaining_fraction * additions[technology]).sum()
+    return result
 
 #%%
 
@@ -43,6 +45,11 @@ def residual_value(additions, plant_accounting_life, fuel):
 
 
 class Run():
+    """A run of the model. Computes LCOE and CO2 emissions based on:
+         plan       contains the policy control variable, a power generation plan
+         parameter  describes the technical and economic environment
+      Immutable object, all the (linear) algebra is done in the initializer
+    """
 
     def __init__(self, plan, parameter):
         self.plan = plan
@@ -168,7 +175,7 @@ class Run():
         s.name = str(self)
         return s
 
-#TODO: use __repr__ returns a string
+#TODO: use __repr__ and returns a string, once I figure out how to prevent iPython from spamming it
     def detail(self):
         print(str(self), " - Detailed results tables")
         print()
@@ -225,42 +232,42 @@ class RunPair():
         return d
 
     def carbon_intensity(self, headers):
-        ci_BAU = self.BAU.carbon_intensity()
-        ci_ALT = self.ALT.carbon_intensity()
-        ci_diff = ci_ALT - ci_BAU
-        d = pd.concat([ci_BAU, ci_ALT, ci_diff], axis=1)
-        d.columns = headers
-        return d
+        ci_bau = self.BAU.carbon_intensity()
+        ci_alt = self.ALT.carbon_intensity()
+        ci_diff = ci_alt - ci_bau
+        table = pd.concat([ci_bau, ci_alt, ci_diff], axis=1)
+        table.columns = headers
+        return table
 
     def carbon_captured(self, headers):
-        ci_BAU = self.BAU.carbon_captured()
-        ci_ALT = self.ALT.carbon_captured()
-        ci_diff = ci_ALT - ci_BAU
-        d = pd.concat([ci_BAU, ci_ALT, ci_diff], axis=1)
-        d.columns = headers
-        return d
+        cc_bau = self.BAU.carbon_captured()
+        cc_alt = self.ALT.carbon_captured()
+        cc_diff = cc_alt - cc_bau
+        table = pd.concat([cc_bau, cc_alt, cc_diff], axis=1)
+        table.columns = headers
+        return table
 
     def carbon_value(self, headers):
-        s = self.total(headers)['difference']
-        return - s['Total cost'] / s['CO2 emissions']
+        difference = self.total(headers)['difference']
+        return - difference['Total cost'] / difference['CO2 emissions']
 
     def summary(self, headers):
-        s = "*******************\n\n"
-        s += str(self) + '\n\n'
-        s += 'Present value cost of avoided emissions: '
-        s += str(round(self.carbon_value(headers), 1)) + " USD/tCO2eq"
-        s += '\n\n'
-        s += str(self.total(headers))
-        s += '\n\n'
-        s += 'Emissions by source (ktCO2eq)\n'
-        s += str(self.emission_sum(headers))
-        s += '\n\n'
-        s += 'Average Carbon Intensity (g/kWh)\n'
-        s += str(self.carbon_intensity(headers))
-        s += '\n\n'
-        s += 'Carbon Captured (Mt)\n'
-        s += str(self.carbon_captured(headers))
-        return s
+        result = "*******************\n\n"
+        result += str(self) + '\n\n'
+        result += 'Present value cost of avoided emissions: '
+        result += str(round(self.carbon_value(headers), 1)) + " USD/tCO2eq"
+        result += '\n\n'
+        result += str(self.total(headers))
+        result += '\n\n'
+        result += 'Emissions by source (ktCO2eq)\n'
+        result += str(self.emission_sum(headers))
+        result += '\n\n'
+        result += 'Average Carbon Intensity (g/kWh)\n'
+        result += str(self.carbon_intensity(headers))
+        result += '\n\n'
+        result += 'Carbon Captured (Mt)\n'
+        result += str(self.carbon_captured(headers))
+        return result
 
 if __name__ == '__main__':
     if (len(sys.argv) == 2) and (sys.argv[1] == "summarize"):
@@ -269,5 +276,5 @@ if __name__ == '__main__':
 ***             Results                ***
 ******************************************
 """)
-        pair = RunPair(baseline, withCCS, reference)
-        print(pair.summary(["Baseline", "High CCS", "difference"]))
+        PAIR = RunPair(baseline, withCCS, reference)
+        print(PAIR.summary(["Baseline", "High CCS", "difference"]))

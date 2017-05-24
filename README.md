@@ -7,6 +7,12 @@ All files licensed under the  Creative Commons Attribution-ShareAlike 4.0 Intern
 see file LICENSE.TXT unless noted otherwise
 
 
+Reproductibility in three steps:
+  git clone https://github.com/MinhHaDuong/VN-CSS-Scenario.git
+  cd VN-CCS-Scenario/ 
+  make
+
+
 Installation and use:
 
  The code is in Python 3.5
@@ -49,17 +55,13 @@ Expand the time horizon to two generations of coal power plants, about 80 years
 
 Compute average age of early scrapping in CCS scenario 
 
-Model retrofitting
+Modelize the economics of retrofitting plants
 
 Check earlier Python 3 versions
 
 Consider SCons and Waf
 
-Check the github archive from scratch
-
 Revise docstrings
-
-Tag release
 
 Profile
 
@@ -67,4 +69,3 @@ Optimize
 
 Parallelize
 
-Split  Run.py  into Run.py  and  run_marker.py. Rename file analyze  run_all.py
