@@ -74,7 +74,7 @@ def smooth(s):
        Returns a Pandas series like s, with the value spread linearly
        Values are and remain integers, for example:
 
-       >>> smooth(pd.Series[[0, 0, 0, 10}])
+       >>> smooth(pd.Series([0, 0, 0, 10]))
        0    2
        1    2
        2    2

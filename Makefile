@@ -14,6 +14,8 @@ diffs  = $(patsubst %.py,%.diff,$(tablepyfiles))
 
 figures = plan_baseline.pdf plan_withCCS.pdf figure-capacities.pdf figure-capacities.png
 
+doc_tests = data_past.doctest
+
 all: $(tables) $(figures)
 
 %.py: %-generator.py
@@ -62,5 +64,5 @@ clean:
 
 cleaner: clean
 	find . -type f -name '*.pyc' -delete
-	rm -f data.py
 	rm -rf __pycache__
+	rm -f *.bak
