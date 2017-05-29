@@ -16,6 +16,9 @@ figures = plan_baseline.pdf plan_withCCS.pdf figure-capacities.pdf figure-capaci
 
 doc_tests = data_past.doctest
 
+all-parallel:
+	make all -j
+
 all: $(tables) $(figures)
 
 %.py: %-generator.py

@@ -63,9 +63,4 @@ Consider SCons and Waf
 
 Revise docstrings
 
-Profile
-
-Optimize
-
-Parallelize
 
