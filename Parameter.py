@@ -7,6 +7,9 @@
 #
 
 import hashlib
+#from zlib import adler32
+from functools import lru_cache
+
 from init import pd, sources, start_year
 
 
@@ -38,6 +41,48 @@ class Parameter():
 
     def __str__(self):
         return ("Parameters #" + self.digest() + ": " + self.docstring)
+
+    @lru_cache(maxsize=32)
+    def digest(self):
+        """The cache is necessary for performance.
+            We are all responsible users, do not modify attributes after checksumming.
+        """
+        return hashlib.md5(self.string().encode('utf-8')).hexdigest()[0:6]
+#        return hex(adler32(self.string().encode('utf-8')))
+
+    def string(self):
+        """Detailed object contents"""
+        return ("Parameters: " + self.docstring + "\n"
+                + "\n\n"
+                + "Discount rate:" + str(self.discount_rate)
+                + "\n\n"
+                + "Plant accounting life (year)"
+                + repr(self.plant_accounting_life[sources])
+                + "\n\n"
+                + "Emission factor (gCO2eq/kWh)"
+                + repr(self.emission_factor[sources])
+                + "\n\n"
+                + "Capture factor (gCO2/kWh)"
+                + repr(self.capture_factor[sources])
+                + "\n\n"
+                + "Overnight construction costs ($/kW)"
+                + repr(self.construction_cost.round())
+                + "\n\n"
+                + "Fixed operating costs ($/kW)"
+                + repr(self.fixed_operating_cost.round(2))
+                + "\n\n"
+                + "Variable operating costs ($/kWh)"
+                + repr(self.variable_operating_cost.round(2))
+                + "\n\n"
+                + "Heat rate (Btu/kWh)"
+                + repr(self.heat_rate)
+                + "\n\n"
+                + "Heat price ($/MBtu)"
+                + repr(self.heat_price)
+                + "\n\n"
+                + "Carbon price ($/tCO2eq)"
+                + repr(self.carbon_price)
+                )
 
     def summarize(self):
         print(self)
@@ -79,39 +124,3 @@ class Parameter():
         print(self.carbon_price.loc[[start_year, 2030, 2040, 2050]])
         print()
         print("Discount rate:", self.discount_rate)
-
-    def represent(self):
-        return ("Parameters: " + self.docstring + "\n"
-                + "\n\n"
-                + "Discount rate:" + str(self.discount_rate)
-                + "\n\n"
-                + "Plant accounting life (year)"
-                + repr(self.plant_accounting_life[sources])
-                + "\n\n"
-                + "Emission factor (gCO2eq/kWh)"
-                + repr(self.emission_factor[sources])
-                + "\n\n"
-                + "Capture factor (gCO2/kWh)"
-                + repr(self.capture_factor[sources])
-                + "\n\n"
-                + "Overnight construction costs ($/kW)"
-                + repr(self.construction_cost.round())
-                + "\n\n"
-                + "Fixed operating costs ($/kW)"
-                + repr(self.fixed_operating_cost.round(2))
-                + "\n\n"
-                + "Variable operating costs ($/kWh)"
-                + repr(self.variable_operating_cost.round(2))
-                + "\n\n"
-                + "Heat rate (Btu/kWh)"
-                + repr(self.heat_rate)
-                + "\n\n"
-                + "Heat price ($/MBtu)"
-                + repr(self.heat_price)
-                + "\n\n"
-                + "Carbon price ($/tCO2eq)"
-                + repr(self.carbon_price)
-                )
-
-    def digest(self):
-        return hashlib.md5(self.represent().encode('utf-8')).hexdigest()[0:6]

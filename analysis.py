@@ -15,6 +15,7 @@ Assess an Ensemble of scenarios
 import copy
 import sys
 
+#from init import timefunc
 from init import discountor
 from plan_baseline import baseline
 from plan_withCCS import withCCS
@@ -60,7 +61,7 @@ LOCCSCOST.docstring = "CCS construction and OM costs fall by 1.8% per year"
 
 ENSEMBLE = [reference, HIDISCOUNT, LODISCOUNT, HICARBONPRICE, LOCOALPRICE, LOCCSCOST]
 
-RUNS = [RunPair(baseline, withCCS, parameter) for parameter in ENSEMBLE]
+RUNPAIRS = [RunPair(baseline, withCCS, parameter) for parameter in ENSEMBLE]
 
 
 if __name__ == '__main__':
@@ -70,5 +71,14 @@ if __name__ == '__main__':
 ***       Ensemble of Results          ***
 ******************************************
 """)
-        for run in RUNS:
-            print(run.summary(["BAU", "ALT", "difference"]), "\n\n")
+        for runpair in RUNPAIRS:
+            print(runpair.summary(["BAU", "ALT", "difference"]), "\n\n")
+
+
+#@timefunc
+#def speedtest():
+#    for runpair in RUNPAIRS:
+#        runpair.summary(["BAU", "ALT", "difference"])
+#
+#print()
+#speedtest()

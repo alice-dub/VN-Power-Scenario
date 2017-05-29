@@ -32,6 +32,7 @@
 """
 
 from functools import lru_cache
+#import time
 import pandas as pd
 import numpy as np
 
@@ -115,3 +116,13 @@ t = 1000
 kt = 10**6
 Mt = 10**9
 Gt = 10**12
+
+#
+#def timefunc(f):
+#    def f_timer(*args, **kwargs):
+#        start = time.time()
+#        result = f(*args, **kwargs)
+#        end = time.time()
+#        print(f.__name__, 'took', end - start, 'time')
+#        return result
+#    return f_timer

@@ -21,8 +21,8 @@ from plan_baseline import baseline
 from plan_withCCS import withCCS
 from param_reference import reference
 
-
 #%% Accounting functions
+
 
 def residual_value(additions, plant_accounting_life, technology):
     """ Residual value of the generation capacity at model end year
@@ -113,12 +113,14 @@ class Run():
                               / MUSD)
         self.total_external_cost = pv(self.external_cost)
 
+        self.signature = '#' + plan.digest() + "-" + parameter.digest()
+
     def __str__(self):
-        return '#' + self.plan.digest() + "-" + self.parameter.digest()
+        return self.signature
 
     def summarize(self):
         print(self, " - Summary")
-        print()
+        print("\n\n")
         print(self.plan)
         print(self.parameter)
         print("System LCOE: ", round(100 * self.lcoe, 2), " US cent / kWh")
@@ -175,30 +177,32 @@ class Run():
         s.name = str(self)
         return s
 
-#TODO: use __repr__ and returns a string, once I figure out how to prevent iPython from spamming it
-    def detail(self):
-        print(str(self), " - Detailed results tables")
-        print()
-        print("Construction costs (M$)")
-        print(self.investment.loc[start_year:, fuels].round())
-        print()
-        print("Fixed operating costs (M$)")
-        print(self.fixed_OM_cost.loc[start_year:, fuels].round())
-        print()
-        print("Variable operating costs (M$)")
-        print(self.variable_OM_cost.loc[start_year:, sources].round())
-        print()
-        print("Heat used (TBtu)")
-        print(self.heat_used.loc[start_year:, sources].round())
-        print()
-        print("Fuel costs (M$)")
-        print(self.fuel_cost.loc[start_year:, sources].round())
-        print()
-        print("GHG emissions (ktCO2eq including CO2, CH4 and N20)")
-        print(self.emissions.loc[start_year:, sources + ["Total"]].round())
-        print()
-        print("CO2 capture (kt CO2)")
-        print(self.capture.loc[start_year:, ["CoalCCS", "GasCCS", "BioCCS", "Total"]].round())
+    def string(self):
+        """Detailed object contents"""
+        return (str(self) + " - Detailed results tables"
+                + "\n\n"
+                + "Construction costs (M$)\n"
+                + str(self.investment.loc[start_year:, fuels].round())
+                + "\n\n"
+                + "Fixed operating costs (M$)\n"
+                + str(self.fixed_OM_cost.loc[start_year:, fuels].round())
+                + "\n\n"
+                + "Variable operating costs (M$)\n"
+                + str(self.variable_OM_cost.loc[start_year:, sources].round())
+                + "\n\n"
+                + "Heat used (TBtu)\n"
+                + str(self.heat_used.loc[start_year:, sources].round())
+                + "\n\n"
+                + "Fuel costs (M$)\n"
+                + str(self.fuel_cost.loc[start_year:, sources].round())
+                + "\n\n"
+                + "GHG emissions (ktCO2eq including CO2, CH4 and N20)\n"
+                + str(self.emissions.loc[start_year:, sources + ["Total"]].round())
+                + "\n\n"
+                + "CO2 capture (kt CO2)\n"
+                + str(self.capture.loc[start_year:,
+                                       ["CoalCCS", "GasCCS", "BioCCS", "Total"]].round())
+                )
 
 
 class RunPair():

@@ -5,9 +5,10 @@
 # Creative Commons Attribution-ShareAlike 4.0 International
 #
 #
-
 import hashlib
+#from zlib import adler32
 import matplotlib.pyplot as plt
+from functools import lru_cache
 
 from init import fuels, sources, technologies, start_year, end_year
 from init import GWh, TWh, MW, GW
@@ -34,6 +35,11 @@ class PowerPlan:
         """Includes a digest of the content"""
         return ("Power development program #" + self.digest() + ": " + self.docstring)
 
+    @lru_cache(maxsize=32)
+    def digest(self):
+        return hashlib.md5(self.string().encode('utf-8')).hexdigest()[0:4]
+#        return hex(adler32(self.string().encode('utf-8')))
+
     def summarize(self):
         print(self)
         print()
@@ -54,8 +60,10 @@ class PowerPlan:
         print(self.capacity_factor.loc[milestones].round(2))
         print()
 
-    def __repr__(self):
-        return ("Power development program: " + self.docstring
+    def string(self):
+        """Detailed object contents"""
+        return ("Power development program: "
+                + self.docstring
                 + "\n\n"
                 + "Annual generation capacity addition by fuel type (MW)\n"
                 + repr(self.additions[technologies].round())
@@ -72,9 +80,6 @@ class PowerPlan:
                 + "Capacity factors\n"
                 + repr(self.capacity_factor.round(2))
                 )
-
-    def digest(self):
-        return hashlib.md5(repr(self).encode('utf-8')).hexdigest()[0:4]
 
     def plot_additions(self, ax, l=True):
         self.additions[sources].plot(ax=ax, title="Added capacity (MW)",
