@@ -105,6 +105,7 @@ def myplot(data, fuel, col, s, method):
         # Magenta box and whiskers showing quartiles of observed costs
         plot_boxwhisker(data[data.Year < data.PublicationYear], col)
 
+
 description = dict()
 description["OnghtCptlCostDolPerKw"] = " generation capacity overnight construction cost\n$/kW"
 description["FixedOMDolPerKw"] = " fixed operating cost\n$/kW"
@@ -148,6 +149,7 @@ def by_regression(fuel, col):
 def set_construction_cost(fuel, method):
     construction_cost[fuel] = method(fuel, "OnghtCptlCostDolPerKw")
 
+
 construction_cost = pd.DataFrame(index=years)
 
 set_construction_cost("Coal", by_median)
@@ -171,20 +173,20 @@ construction_cost["BioCCS"] = construction_cost["Biomass"] * cost_multiplier
 
 
 # http://www.chinadaily.com.cn/bizchina/2007-04/29/content_863786.htm
-"""The Wenshan-Ha Giang power transmission line is 300 kilometers long,
-its extension will transmit an average 1 billion kwh of electricity a year
-and was built at a cost of 413 million yuan (53 million U.S. dollars).
-==>
-10^12 Wh / 8760 = 114 MW
-53 / 114 = 0.465 $/W = 465 $ per kW
-"""
-
+# The Wenshan-Ha Giang power transmission line is 300 kilometers long,
+# its extension will transmit an average 1 billion kwh of electricity a year
+# and was built at a cost of 413 million yuan (53 million U.S. dollars).
+# ==>
+# 10^12 Wh / 8760 = 114 MW
+# 53 / 114 = 0.465 $/W = 465 $ per kW
+#
+#
 # http://news.xinhuanet.com/english/2017-04/19/c_136220293.htm
-"""PREY VENG, Cambodia, April 19 (Xinhua) : The 160-km project... line
-is capable of transmitting 150 megawatts (MW) electric power
-at the cost of 75 million U.S. dollars
-==>
-500 $ per kW"""
+# PREY VENG, Cambodia, April 19 (Xinhua) : The 160-km project... line
+# is capable of transmitting 150 megawatts (MW) electric power
+# at the cost of 75 million U.S. dollars
+# ==>
+# 500 $ per kW
 
 construction_cost_start_year_import = 500
 construction_cost["Import"] = pd.Series(construction_cost_start_year_import,
@@ -205,6 +207,7 @@ show(construction_cost[sources].round())
 
 def set_fixed_operating_cost(fuel, method):
     fixed_operating_cost[fuel] = method(fuel, "FixedOMDolPerKw")
+
 
 fixed_operating_cost = pd.DataFrame(index=years)
 
@@ -245,6 +248,7 @@ show(fixed_operating_cost[sources].round())
 def set_variable_operating_cost(fuel, method=by_median):
     variable_operating_cost[fuel] = method(fuel, "VariableOMDolPerMwh")
 
+
 variable_operating_cost = pd.DataFrame(index=years)
 
 set_variable_operating_cost("Coal")
@@ -281,6 +285,7 @@ show()
 
 def set_heat_rate(fuel, method=by_median):
     heat_rate[fuel] = method(fuel, "HeatRate")
+
 
 heat_rate = pd.DataFrame(index=years)
 

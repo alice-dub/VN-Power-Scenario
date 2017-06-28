@@ -5,9 +5,6 @@
 # Creative Commons Attribution-ShareAlike 4.0 International
 #
 #
-
-from init import pd
-
 """Emission factors
 
 Source : IPCC SRREN Methodology Annex II, Methodology
@@ -19,6 +16,8 @@ from electricity generation technologies (g CO2eq/kWh)"
 Median of the literature reviewed for Coal to Solar.
 (Min + Max)/2 for CCS technologies
 """
+
+from init import pd
 
 emission_factor = pd.Series({"Coal": 1001, "Gas": 469, "Oil": 840, "BigHydro": 4,
                              "SmallHydro": 4, "Biomass": 18, "Wind": 12, "Solar": 46,

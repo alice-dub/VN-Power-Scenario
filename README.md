@@ -52,6 +52,7 @@ Directory organization:
 TODO:
 
 Expand the time horizon to two generations of coal power plants, about 80 years
+/home/haduong/model-play/data_OpenEI.py:207: FutureWarning: The pandas.stats.ols module is deprecated and will be removed in a future version. We refer to external packages like statsmodels, see some examples here: http://www.statsmodels.org/stable/regression.html
 
 Compute average age of early scrapping in CCS scenario 
 
@@ -59,8 +60,22 @@ Modelize the economics of retrofitting plants
 
 Check earlier Python 3 versions
 
-Consider SCons and Waf
+Consider SCons : NOT AVAILABLE FOR PYTHON 3
 
-Revise docstrings
+Consider Waf : OVERKILL
 
+Revise docstrings/home/haduong/model-play/data_OpenEI.py:207: FutureWarning: The pandas.stats.ols module is deprecated and will be removed in a future version. We refer to external packages like statsmodels, see some examples here: http://www.statsmodels.org/stable/regression.html
+
+
+Parameter and PowerPlan immutable
+
+Parameter and PowerPlan with alternate constructor  create(reference, patch, docstring)
+
+Fix warning:
+/home/haduong/model-play/data_OpenEI.py:207: FutureWarning: The pandas.stats.ols module is deprecated and will be removed in a future version. We refer to external packages like statsmodels, see some examples here: http://www.statsmodels.org/stable/regression.html
+
+Fix warning:
+/home/haduong/model-play/plan_baseline.py:116: FutureWarning: pd.rolling_mean is deprecated for DataFrame and will be removed in a future version, replace with 
+	DataFrame.rolling(center=False,window=2).mean()
+  retirement = pd.rolling_mean(retirement, 2)
 

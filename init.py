@@ -41,7 +41,7 @@ pd.set_option('display.max_columns', 20)
 pd.set_option('display.width', 1000)
 
 
-VERBOSE = False
+VERBOSE = True
 
 show = print if VERBOSE else lambda *a, **k: None
 
