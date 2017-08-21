@@ -40,7 +40,7 @@ class Parameter():
         self.carbon_price = carbon_price
 
     def __str__(self):
-        return ("Parameters #" + self.digest() + ": " + self.docstring)
+        return "Parameters #" + self.digest() + ": " + self.docstring
 
     @lru_cache(maxsize=32)
     def digest(self):

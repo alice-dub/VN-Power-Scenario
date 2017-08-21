@@ -90,7 +90,6 @@ def smooth(s):
     return pd.Series(data, s.index)
 
 
-#TODO: Find the installation year of intermediate size dams
 capacity_past.InterHydro = smooth(capacity_past.InterHydro)
 capacity_past.SmallHydro = smooth(capacity_past.SmallHydro)
 capacity_past.Oil = smooth(capacity_past.Oil)

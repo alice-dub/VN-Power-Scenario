@@ -231,7 +231,6 @@ Some coal, gas, oil and hydro capacities listed in the EVN report historical tab
 not accounted for in the PDP7A current capacity total
 The order of magnitude corresponds to capacities installed before 1985,
 which in all probability are already closed or will be before 2030.
-#TODO: Check the operational status of these plants:
 
 Gas capacity in EVN report includes the Tu Duc and Can Tho oil-fired gas turbines (264 MW)
 """)
@@ -280,4 +279,3 @@ if VERBOSE:
 #show(fuel_use_PDP7A.Coal)
 #show(coal_use_baseline)
 #
-##TODO: Check against statistics

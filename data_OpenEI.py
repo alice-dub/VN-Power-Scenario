@@ -81,29 +81,29 @@ view["Solar"] = OpenEI.query(q)
 
 
 def plot_boxwhisker(data, col):
-        x_min = data.Year.min()
-        x_max = data.Year.max()
-        x_med = (x_min + x_max) / 2
-        y_median = data[col].median()
-        y_quartile1 = data[col].quantile(0.25)
-        y_quartile3 = data[col].quantile(0.75)
-        y_max = data[col].max()
-        y_min = data[col].min()
-        plt.plot([x_min, x_max], [y_median, y_median], 'm', linewidth=3)
-        plt.plot([x_min, x_max], [y_quartile1, y_quartile1], 'm-', linewidth=2)
-        plt.plot([x_min, x_max], [y_quartile3, y_quartile3], 'm-', linewidth=2)
-        plt.plot([x_min, x_min], [y_quartile1, y_quartile3], 'm-', linewidth=2)
-        plt.plot([x_max, x_max], [y_quartile1, y_quartile3], 'm-', linewidth=2)
-        plt.plot([x_med, x_med], [y_quartile3, y_max], 'm-', linewidth=1)
-        plt.plot([x_med, x_med], [y_min, y_quartile1], 'm-', linewidth=1)
+    x_min = data.Year.min()
+    x_max = data.Year.max()
+    x_med = (x_min + x_max) / 2
+    y_median = data[col].median()
+    y_quartile1 = data[col].quantile(0.25)
+    y_quartile3 = data[col].quantile(0.75)
+    y_max = data[col].max()
+    y_min = data[col].min()
+    plt.plot([x_min, x_max], [y_median, y_median], 'm', linewidth=3)
+    plt.plot([x_min, x_max], [y_quartile1, y_quartile1], 'm-', linewidth=2)
+    plt.plot([x_min, x_max], [y_quartile3, y_quartile3], 'm-', linewidth=2)
+    plt.plot([x_min, x_min], [y_quartile1, y_quartile3], 'm-', linewidth=2)
+    plt.plot([x_max, x_max], [y_quartile1, y_quartile3], 'm-', linewidth=2)
+    plt.plot([x_med, x_med], [y_quartile3, y_max], 'm-', linewidth=1)
+    plt.plot([x_med, x_med], [y_min, y_quartile1], 'm-', linewidth=1)
 
 
 def myplot(data, fuel, col, s, method):
-        data.plot.scatter("Year", col, title=fuel + description[col] + method)
-        # Red line showing the variable_operating costs used in model
-        plt.plot(s.index, s.values, "r-", linewidth=2.0)
-        # Magenta box and whiskers showing quartiles of observed costs
-        plot_boxwhisker(data[data.Year < data.PublicationYear], col)
+    data.plot.scatter("Year", col, title=fuel + description[col] + method)
+    # Red line showing the variable_operating costs used in model
+    plt.plot(s.index, s.values, "r-", linewidth=2.0)
+    # Magenta box and whiskers showing quartiles of observed costs
+    plot_boxwhisker(data[data.Year < data.PublicationYear], col)
 
 
 description = dict()
@@ -230,7 +230,6 @@ set_fixed_operating_cost("GasCCS", by_median)
 cost_multiplier = fixed_operating_cost["CoalCCS"] / fixed_operating_cost["Coal"]
 fixed_operating_cost["BioCCS"] = fixed_operating_cost["Biomass"] * cost_multiplier
 
-# TODO: get data on maintenance costs for the transboundary transmission lines !
 set_fixed_operating_cost("Import", as_zero)
 
 show("Fixed operating costs, $/kW ", start_year)

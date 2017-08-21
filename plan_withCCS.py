@@ -62,7 +62,7 @@ additions.at[pilot2_year, "GasCCS"] += pilot2_size
 #%%
 
 retrofit_start_year = 2035
-assert(retrofit_start_year > pilot2_year)
+assert retrofit_start_year > pilot2_year
 
 retrofit_period = range(retrofit_start_year, end_year + 1)
 

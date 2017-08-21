@@ -6,9 +6,10 @@
 #
 #
 import hashlib
-#from zlib import adler32
-import matplotlib.pyplot as plt
 from functools import lru_cache
+#from zlib import adler32
+
+import matplotlib.pyplot as plt
 
 from init import fuels, sources, technologies, start_year, end_year
 from init import GWh, TWh, MW, GW
@@ -32,8 +33,8 @@ class PowerPlan:
         self.production["Total"] = self.production.sum(axis=1)
 
     def __str__(self):
-        """Includes a digest of the content"""
-        return ("Power development program #" + self.digest() + ": " + self.docstring)
+        """Include a digest of the content."""
+        return "Power development program #" + self.digest() + ": " + self.docstring
 
     @lru_cache(maxsize=32)
     def digest(self):

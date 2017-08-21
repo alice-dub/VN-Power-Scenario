@@ -41,8 +41,6 @@ def residual_value(additions, plant_accounting_life, technology):
 
 #%%
 
-#TODO: Account for age of plant at retrofit and residual value
-
 
 class Run():
     """A run of the model. Computes LCOE and CO2 emissions based on:
