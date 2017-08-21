@@ -167,7 +167,8 @@ net_import = extend("Import", 7000, "Import", production_past, production_PDP7A)
 
 #%% Main statement
 
-baseline = PowerPlan("Baseline - PDP7A extended", additions, retirement, capacityfactor, net_import)
+baseline = PowerPlan("Baseline - PDP7A extended",
+                     additions, retirement, capacityfactor, net_import)
 
 if __name__ == '__main__':
     if (len(sys.argv) == 2) and (sys.argv[1] == "summarize"):

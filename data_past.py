@@ -167,7 +167,8 @@ followed by hydropower (30.4%) and gas (30%). Apart from large-scale hydropower,
 renewable energy - including small-scale hydropower - represented only a minor part
 of the electricity production (3.7%).
 The figure adds that: Imports represented 1.5%, we infer that the production number is the total
-domestic supply. The Gas cheese slice label is "Gas Turbine" which includes Oil fueled gas turbines.
+domestic supply.
+The Gas cheese slice label is "Gas Turbine" which includes Oil fueled gas turbines.
 """
 # This implies a total production of 164310 * 0.985 = 161.8 TWh
 # which compares to  159.7 TWh given in EVN 2016 report page 16
@@ -218,4 +219,3 @@ Vietnam historical capacity factors by fuel type
 Source: author
 """)
 show(capacity_factor_past[fuels].drop("Solar", axis=1))
-

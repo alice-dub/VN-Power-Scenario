@@ -81,26 +81,26 @@ class PowerPlan:
                 + repr(self.capacity_factor.round(2))
                 )
 
-    def plot_additions(self, ax, l=True):
+    def plot_additions(self, ax, legend=True):
         self.additions[sources].plot(ax=ax, title="Added capacity (MW)",
-                                     linestyle='', marker='o', legend=l)
+                                     linestyle='', marker='o', legend=legend)
         ax.axvline(2015, color="k")
         ax.axvline(2030, color="k")
 
-    def plot_retirement(self, ax, l=True):
-        self.retirement[sources].plot(ax=ax, title="Retired capacity (MW)", legend=l)
+    def plot_retirement(self, ax, legend=True):
+        self.retirement[sources].plot(ax=ax, title="Retired capacity (MW)", legend=legend)
         ax.axvline(2015, color="k")
         ax.axvline(2030, color="k")
 
-    def plot_capacity_mix(self, ax, l=True):
+    def plot_capacity_mix(self, ax, legend=True):
         mix = (self.capacities[sources] * MW / GW)
-        mix.plot(ax=ax, title="Total generation capacity (GW)", legend=l)
+        mix.plot(ax=ax, title="Total generation capacity (GW)", legend=legend)
         ax.axvline(2015, color="k")
         ax.axvline(2030, color="k")
 
-    def plot_production_mix(self, ax, l=True):
+    def plot_production_mix(self, ax, legend=True):
         mix = (self.production[sources] * GWh / TWh)
-        mix.plot(ax=ax, title="Electricity production (TWh)", legend=l)
+        mix.plot(ax=ax, title="Electricity production (TWh)", legend=legend)
         ax.axvline(2015, color="k")
         ax.axvline(2030, color="k")
 

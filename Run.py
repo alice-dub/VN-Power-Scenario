@@ -273,6 +273,7 @@ class RunPair():
         result += str(self.carbon_captured(headers))
         return result
 
+
 if __name__ == '__main__':
     if (len(sys.argv) == 2) and (sys.argv[1] == "summarize"):
         print("""
