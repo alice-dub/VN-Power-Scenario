@@ -7,32 +7,33 @@ All files licensed under the  Creative Commons Attribution-ShareAlike 4.0 Intern
 see file LICENSE.TXT unless noted otherwise
 
 
-Reproductibility in three steps:
-  git clone https://github.com/MinhHaDuong/VN-CSS-Scenario.git
-  cd VN-CCS-Scenario/ 
-  make
+## Reproductibility in three steps:
+```bash
+git clone https://github.com/MinhHaDuong/VN-CSS-Scenario.git
+cd VN-CCS-Scenario/ 
+make
+```
 
-
-Installation and use:
+## Installation and use:
 
  The code is in Python 3.5
 it imports  hashlib, sys, copy, functools  from the standard library
 it imports  pandas, mathplotlib, numpy  from the scientific python core packages
 
-The builds uses a standard  Makefile  with
+The builds uses a standard  `Makefile`  with
 
-  make         run the model, all sensitivity analysis to build all tables and figures.
++  `make`         run the model, all sensitivity analysis to build all tables and figures.
 
-  make test    perform regression tests, docstests, and scripted tests (if any)
++  `make test`    perform regression tests, docstests, and scripted tests (if any)
 
-  make reg_tests_reset   copy results tables from the current dir into tables.tocompare/
++  `make reg_tests_reset`   copy results tables from the current dir into tables.tocompare/
 
-  make clean   delete results files
++  `make clean`   delete results files
 
-  make cleaner delete results files and Python cache files
++  `make cleaner` delete results files and Python cache files
 
 
-Directory organization:
+## Directory organization:
 
 1. Files in data/ are raw data collected (PDF, XLS, web pages) from the web.
 
@@ -49,33 +50,15 @@ Directory organization:
 7. Files in  tables.tocompare are used for regression testing. Use "make reg_tests_reset" to populate/update it.
 
 
-TODO:
+## TODO:
 
 Expand the time horizon to two generations of coal power plants, about 80 years
-/home/haduong/model-play/data_OpenEI.py:207: FutureWarning: The pandas.stats.ols module is deprecated and will be removed in a future version. We refer to external packages like statsmodels, see some examples here: http://www.statsmodels.org/stable/regression.html
 
 Compute average age of early scrapping in CCS scenario 
 
 Modelize the economics of retrofitting plants
 
-Check earlier Python 3 versions
-
-Consider SCons : NOT AVAILABLE FOR PYTHON 3
-
-Consider Waf : OVERKILL
-
-Revise docstrings/home/haduong/model-play/data_OpenEI.py:207: FutureWarning: The pandas.stats.ols module is deprecated and will be removed in a future version. We refer to external packages like statsmodels, see some examples here: http://www.statsmodels.org/stable/regression.html
-
-
 Parameter and PowerPlan immutable
 
 Parameter and PowerPlan with alternate constructor  create(reference, patch, docstring)
-
-Fix warning:
-/home/haduong/model-play/data_OpenEI.py:207: FutureWarning: The pandas.stats.ols module is deprecated and will be removed in a future version. We refer to external packages like statsmodels, see some examples here: http://www.statsmodels.org/stable/regression.html
-
-Fix warning:
-/home/haduong/model-play/plan_baseline.py:116: FutureWarning: pd.rolling_mean is deprecated for DataFrame and will be removed in a future version, replace with 
-	DataFrame.rolling(center=False,window=2).mean()
-  retirement = pd.rolling_mean(retirement, 2)
 
