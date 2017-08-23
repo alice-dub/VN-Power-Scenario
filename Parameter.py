@@ -4,7 +4,8 @@
 # minh.haduong@gmail.com
 # Creative Commons Attribution-ShareAlike 4.0 International
 #
-#
+"""Parameter  describes a technical and economic environment."""
+
 
 import hashlib
 #from zlib import adler32
@@ -14,6 +15,10 @@ from init import pd, sources, start_year
 
 
 class Parameter():
+    """Parameter  describes a technical and economic environment.
+
+    Bundle a power generation technology database, carbon price trajectory and discount rate.
+    """
 
     def __init__(self,
                  docstring,
@@ -51,7 +56,7 @@ class Parameter():
 #        return hex(adler32(self.string().encode('utf-8')))
 
     def string(self):
-        """Detailed object contents"""
+        """Detail object contents as a string."""
         return ("Parameters: " + self.docstring + "\n"
                 + "\n\n"
                 + "Discount rate:" + str(self.discount_rate)
@@ -85,6 +90,7 @@ class Parameter():
                 )
 
     def summarize(self):
+        """Detail object contents as a DataFrame."""
         print(self)
         print()
         summary = pd.DataFrame()

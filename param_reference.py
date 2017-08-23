@@ -4,7 +4,7 @@
 # minh.haduong@gmail.com
 # Creative Commons Attribution-ShareAlike 4.0 International
 #
-#
+"""reference is a Parameter  describing the reference technical and economic environment."""
 
 import sys
 import numpy as np

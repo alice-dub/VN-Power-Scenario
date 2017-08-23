@@ -5,7 +5,7 @@
 #     Creative Commons Attribution-ShareAlike 4.0 International
 #
 #
-""" Plot Generation capacity by technology, 1975 - 2050 for both scenarios
+"""Plot Generation capacity by technology, 1975 - 2050 for both scenarios.
 
 Usage:
    python3 figure-capacities.py plot filename.[pdf|png|...]
@@ -22,6 +22,10 @@ from plan_withCCS import withCCS
 
 
 def plot_capacity_mix(plan, ax, sources_toshow):
+    """Line plot a power development history.
+
+    History includes past <2015, plan up to 2030 and scenario up to 2050.
+    """
     mix = (plan.capacities[sources_toshow] * MW / GW)
     colors = ["k", '0.75', "y", "b", "c", "g", "m", "r", "k", "0.75", "g"]
     lines = ["-", '-', "-", "-", "-", "-", "-", "-", "--", "--", "--"]

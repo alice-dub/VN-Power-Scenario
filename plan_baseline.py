@@ -7,8 +7,7 @@
 #
 
 
-"""
-Defines the baseline power plan
+"""Define the baseline power plan.
 
 Up to 2015-12-31, based on historical installed capacity listed in EVN 2016 report
 From 2016 onwards, based on future capacity additions listed in PDP7A
@@ -16,7 +15,6 @@ From 2016 onwards, based on future capacity additions listed in PDP7A
 Nuclear replaced by Coal
 
 Renewable4 includes small hydro
-
 
 Usage:
 
@@ -39,8 +37,9 @@ from PowerPlan import PowerPlan
 
 
 def fill_in(serie):
-    """Returns the investments needed to reach the capacity objectives
-    approximately because cast as integer
+    """Return the investments needed to reach the capacity objectives.
+
+    Approximately because cast as integer
     """
     capacity_2015 = capacity_past.cumsum().loc[2015, serie.name]
     a = (serie[2020] - capacity_2015) / 15
@@ -120,10 +119,7 @@ retirement.loc[1974] = 0
 
 
 def extend(serie, endpoint, newname, past=capacity_factor_past, future=capacity_factor_PDP7A):
-    """Extends the  past   series
-       going through the 2020, 2025, 2030 values defined in the  future  series
-       and then to the 2050 endpoint value
-    """
+    """Extend a series by interpolating between 2020, 2025, 2030 and a 2050 endpoint."""
     r = past[serie]
     a = (r.loc[2013] + r.loc[2014] + r.loc[2015]) / 15
     b = future.loc[2020, serie] / 5

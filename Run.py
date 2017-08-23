@@ -4,13 +4,8 @@
 # minh.haduong@gmail.com
 # Creative Commons Attribution-ShareAlike 4.0 International
 #
-#
+"""Assess the scenarios."""
 
-
-"""
-Assess the scenarios
-
-"""
 import sys
 
 from init import pd, fuels, sources
