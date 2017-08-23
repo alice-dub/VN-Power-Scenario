@@ -7,17 +7,16 @@
 """Parameter  describes a technical and economic environment."""
 
 
-import hashlib
-#from zlib import adler32
-from functools import lru_cache
-
-from init import pd, sources, start_year
+from init import pd, sources, start_year, digest
 
 
 class Parameter():
     """Parameter  describes a technical and economic environment.
 
     Bundle a power generation technology database, carbon price trajectory and discount rate.
+    __str__     content digest, a short checksum
+    summary()   contents summary, time series represented by initial level and trend.
+    string()    contents, time series fully shown.
     """
 
     def __init__(self,
@@ -45,15 +44,7 @@ class Parameter():
         self.carbon_price = carbon_price
 
     def __str__(self):
-        return "Parameters #" + self.digest() + ": " + self.docstring
-
-    @lru_cache(maxsize=32)
-    def digest(self):
-        """The cache is necessary for performance.
-            We are all responsible users, do not modify attributes after checksumming.
-        """
-        return hashlib.md5(self.string().encode('utf-8')).hexdigest()[0:6]
-#        return hex(adler32(self.string().encode('utf-8')))
+        return "Parameters #" + digest(self, 6) + ": " + self.docstring
 
     def string(self):
         """Detail object contents as a string."""
@@ -89,10 +80,8 @@ class Parameter():
                 + repr(self.carbon_price)
                 )
 
-    def summarize(self):
-        """Detail object contents as a DataFrame."""
-        print(self)
-        print()
+    def summary(self):
+        """Summarize object contents, time series are defined by initial level and trend."""
         summary = pd.DataFrame()
         s = self.plant_accounting_life[sources]
         s.name = "Plant accounting life (year)"
@@ -124,9 +113,14 @@ class Parameter():
         s = self.heat_price.loc[start_year]
         s.name = "Heat price ($/MBtu)"
         summary = summary.append(s)
-        print(summary[sources].round(1))
-        print()
-        print("Carbon price ($/tCO2eq)")
-        print(self.carbon_price.loc[[start_year, 2030, 2040, 2050]])
-        print()
-        print("Discount rate:", self.discount_rate)
+
+        return (
+            str(self) + '\n\n'
+            + str(summary[sources].round(1)) + '\n\n'
+            + "Carbon price ($/tCO2eq)\n"
+            + str(self.carbon_price.loc[[start_year, 2030, 2040, 2050]]) + '\n\n'
+            + "Discount rate: " + str(self.discount_rate))
+
+    def summarize(self):
+        """Print object's summary."""
+        print(self.summary())

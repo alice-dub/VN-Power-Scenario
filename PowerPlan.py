@@ -5,13 +5,10 @@
 # Creative Commons Attribution-ShareAlike 4.0 International
 #
 #
-import hashlib
-from functools import lru_cache
-#from zlib import adler32
 
 import matplotlib.pyplot as plt
 
-from init import fuels, sources, technologies, start_year, end_year
+from init import fuels, sources, technologies, start_year, end_year, digest
 from init import GWh, TWh, MW, GW
 
 #%%
@@ -34,35 +31,30 @@ class PowerPlan:
 
     def __str__(self):
         """Include a digest of the content."""
-        return "Power development program #" + self.digest() + ": " + self.docstring
-
-    @lru_cache(maxsize=32)
-    def digest(self):
-        return hashlib.md5(self.string().encode('utf-8')).hexdigest()[0:4]
-#        return hex(adler32(self.string().encode('utf-8')))
+        return "Power development program #" + digest(self, 4) + ": " + self.docstring
 
     def summarize(self):
-        print(self)
-        print()
+        """Print object's summary."""
+        print(self.summary())
+
+    def summary(self):
+        """Summary of a power development plan, time series shown for key years only."""
         milestones = [start_year, 2020, 2025, 2030, 2040, end_year]
-        print("Annual generation capacity addition by fuel type (MW)")
-        print(self.additions.loc[milestones, technologies].round())
-        print()
-        print("Old capacity retirement by fuel type (MW)")
-        print(self.retirement.loc[milestones, fuels].round())
-        print()
-        print("Generation capacity by fuel type (MW)")
-        print(self.capacities.loc[milestones, technologies].round())
-        print()
-        print("Electricity production (GWh)")
-        print(self.production.loc[milestones].round())
-        print()
-        print("Capacity factors")
-        print(self.capacity_factor.loc[milestones].round(2))
-        print()
+        return (
+            str(self) + '\n\n'
+            + "Annual generation capacity addition by fuel type (MW)\n"
+            + str(self.additions.loc[milestones, technologies].round()) + '\n\n'
+            + "Old capacity retirement by fuel type (MW)\n"
+            + str(self.retirement.loc[milestones, fuels].round()) + '\n\n'
+            + "Generation capacity by fuel type (MW)\n"
+            + str(self.capacities.loc[milestones, technologies].round()) + '\n\n'
+            + "Electricity production (GWh)\n"
+            + str(self.production.loc[milestones].round()) + '\n\n'
+            + "Capacity factors\n"
+            + str(self.capacity_factor.loc[milestones].round(2)) + '\n')
 
     def string(self):
-        """Detailed object contents"""
+        """Return detailed object contents."""
         return ("Power development program: "
                 + self.docstring
                 + "\n\n"

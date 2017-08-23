@@ -9,7 +9,7 @@
 import sys
 
 from init import pd, fuels, sources
-from init import start_year, end_year, years, present_value
+from init import start_year, end_year, years, present_value, digest
 from init import kW, MW, USD, MUSD, GUSD, GWh, MWh, TWh, kWh, Btu, MBtu, TBtu, g, t, kt, Mt, Gt
 
 from plan_baseline import baseline
@@ -106,7 +106,7 @@ class Run():
                               / MUSD)
         self.total_external_cost = pv(self.external_cost)
 
-        self.signature = '#' + plan.digest() + "-" + parameter.digest()
+        self.signature = '#' + digest(plan, 6) + "-" + digest(parameter, 4)
 
     def __str__(self):
         return self.signature
@@ -171,7 +171,7 @@ class Run():
         return s
 
     def string(self):
-        """Detailed object contents"""
+        """Detail results tables."""
         return (str(self) + " - Detailed results tables"
                 + "\n\n"
                 + "Construction costs (M$)\n"
