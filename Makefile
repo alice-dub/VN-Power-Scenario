@@ -8,9 +8,7 @@
 PYTHON = python3
 
 
-tablepyfiles = analysis.py
-tables = $(patsubst %.py,%.txt,$(tablepyfiles)) table-parameters.fwf table-comparison.fwf
-diffs  = $(patsubst %.py,%.diff,$(tablepyfiles))
+tables = table-parameters.fwf table-comparison.fwf
 
 figures = plan_baseline.pdf plan_withCCS.pdf figure-capacities.pdf figure-capacities.png
 
@@ -26,7 +24,6 @@ table-parameters.fwf: param_reference.txt
 table-comparison.fwf: Run.txt
 	head -26 $< | tail -16 > $@
 
-
 %.txt: %.py
 	@-sed -i "s/VERBOSE = True/VERBOSE = False/" init.py
 	$(PYTHON) $< summarize > $@
@@ -37,10 +34,6 @@ table-comparison.fwf: Run.txt
 %.png: %.py
 	$(PYTHON) $< plot $@
 
-%.diff: %.txt tables.tocompare/%.txt
-	@diff $^  > $@
-	@if [ -s $@ ]; then exit 1; fi;
-
 test: cleaner
 	py.test-3 --doctest-modules
 
@@ -50,9 +43,6 @@ coverage: coverage.xml
 
 coverage.xml:
 	py.test-3 --doctest-modules --cov=. --cov-report term-missing --cov-report xml
-
-codacy-update: coverage.xml
-	export CODACY_PROJECT_TOKEN=e69e0e5c845f4e2dbc1c13fbaa35aeab; python-codacy-coverage -r coverage.xml
 
 regtest-reset:
 	py.test-3 --regtest-reset
@@ -70,20 +60,12 @@ docstyle:
 codestyle:
 	pycodestyle
 
-.PHONY: test reg_tests reg_tests_reset clean cleaner
+.PHONY: test regtest-reset lint docstyle codestyle clean cleaner
 
-test: $(doc_tests) $(script_tests) reg_tests
-
-reg_tests: $(diffs)
-	@cat $^
-
-reg_tests_reset: $(tables)
-	cp $^ tables.tocompare
 
 clean:
 	rm -f $(tables)
 	rm -f $(figures)
-	rm -f $(diffs)
 
 cleaner: clean
 	find . -type f -name '*.pyc' -delete

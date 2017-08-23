@@ -264,6 +264,7 @@ class RunPair():
         result += '\n\n'
         result += 'Carbon Captured (Mt)\n'
         result += str(self.carbon_captured(headers))
+        result += '\n\n'
         return result
 
 

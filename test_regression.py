@@ -13,6 +13,7 @@ from param_reference import reference
 from plan_baseline import baseline
 from plan_withCCS import withCCS
 from Run import RunPair
+from analysis import RUNPAIRS
 # pylint and pytest known compatibility bug
 # pylint: disable=redefined-outer-name
 
@@ -56,3 +57,8 @@ def test_baseline_string(regtest):
 def test_runpair_summary(regtest):
     pair = RunPair(baseline, withCCS, reference)
     regtest.write(pair.summary(["Baseline", "High CCS", "difference"]))
+
+
+def test_analysis(regtest):
+    analysis = '\n'.join([runpair.summary(["BAU", "ALT", "difference"]) for runpair in RUNPAIRS])
+    regtest.write(analysis)
