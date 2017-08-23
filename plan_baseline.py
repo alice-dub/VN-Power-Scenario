@@ -112,7 +112,8 @@ retirement.loc[2018, "Oil"] = 100
 retirement.loc[2019, "Oil"] = 100
 
 # Smooth the retirement program a bit, especially Gas 2025
-retirement = pd.rolling_mean(retirement, 2)
+retirement = retirement.rolling(window=2, center=False).mean()
+
 retirement.loc[1974] = 0
 
 #%%

@@ -19,6 +19,7 @@ http://en.openei.org/apps/TCDB/#blank
 
 import numpy as np
 import matplotlib.pyplot as plt
+import statsmodels.api as sm
 
 from init import pd, show, VERBOSE, start_year, end_year, n_year, years, sources
 
@@ -132,15 +133,20 @@ def by_median(fuel, col):
 
 def by_regression(fuel, col):
     data = view[fuel]
-    lm = pd.ols(x=data.Year - start_year, y=data[col])
-    show(fuel, lm)
-    level = lm.beta.intercept
-    trend = lm.beta.x if lm.p_value.x < 0.05 else 0
+    explaining = data.Year - start_year
+    explaining = sm.add_constant(explaining)
+    model = sm.OLS(data[col], explaining, missing='drop')
+    results = model.fit()
+
+    show(fuel, results.summary())
+    level = results.params.const
+    trend = results.params.Year if results.pvalues.Year < 0.05 else 0
     s = pd.Series(np.linspace(level, level + trend * n_year, n_year),
                   index=years,
                   name=fuel)
     if VERBOSE:
         myplot(data, fuel, col, s, " (regression on " + str(len(data)) + ") ")
+
     return s
 
 
