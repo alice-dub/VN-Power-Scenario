@@ -4,7 +4,7 @@
 # minh.haduong@gmail.com
 # Creative Commons Attribution-ShareAlike 4.0 International
 #
-#
+"""Represent a power development program including history, plan and our extension."""
 
 import matplotlib.pyplot as plt
 
@@ -15,6 +15,7 @@ from init import GWh, TWh, MW, GW
 
 
 class PowerPlan:
+    """A power development program."""
 
     def __init__(self, docstring, additions, retirement, capacity_factor, net_import):
         self.docstring = docstring
@@ -38,7 +39,7 @@ class PowerPlan:
         print(self.summary())
 
     def summary(self):
-        """Summary of a power development plan, time series shown for key years only."""
+        """Summary of a power development program, time series shown for key years only."""
         milestones = [start_year, 2020, 2025, 2030, 2040, end_year]
         return (
             str(self) + '\n\n'
@@ -98,6 +99,7 @@ class PowerPlan:
         ax.axvline(2030, color="k")
 
     def plot_plan(self, filename):
+        """Three panels plot of a power development program: production, capacity, additions."""
         fig, axarr = plt.subplots(3, 1, figsize=[10, 15], sharex=True)
         fig.suptitle(str(self), fontsize=15)
         self.plot_additions(axarr[2], True)

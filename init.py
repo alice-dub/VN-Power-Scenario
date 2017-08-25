@@ -70,7 +70,7 @@ def present_value(series, discount_rate):
 
 
 def discount(value, year, discount_rate):
-    """Present value of a scalar cash flow"""
+    """Return the present value of a future cash flow."""
     return value * discountor(discount_rate).loc[year]
 
 
@@ -88,12 +88,12 @@ technologies = sources + ["PumpedStorage"]
 
 
 def addcol_Renewable(container):
-    """We define Renewable excluding hydro. The container can be a dict, Series, DataFrame"""
+    """Define Renewable excluding hydro. The container can be a dict, Series, DataFrame."""
     container["Renewable"] = container["Biomass"] + container["Wind"] + container["Solar"]
 
 
 def addcol_Renewable4(container):
-    """We define Renewable4 including hydro. The container can be a dict, Series, DataFrame"""
+    """Define Renewable4 including hydro. The container can be a dict, Series, DataFrame."""
     container["Renewable4"] = (container["Biomass"] + container["Wind"] + container["Solar"]
                                + container["SmallHydro"])
 
@@ -134,7 +134,9 @@ Gt = 10**12
 
 @lru_cache(maxsize=32)
 def digest(obj, length=6):
-    """The cache is necessary for performance.
+    """Checksum an object using its string() method.
+
+    The cache is necessary for performance.
     We are all responsible users, do not modify attributes after checksumming.
     """
     return hashlib.md5(obj.string().encode('utf-8')).hexdigest()[0:length]

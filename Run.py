@@ -116,15 +116,19 @@ class Run():
         return self.signature
 
     def summarize(self):
-        print(self, " - Summary")
-        print("\n\n")
-        print(self.plan)
-        print(self.parameter)
-        print("System LCOE: ", round(100 * self.lcoe, 2), " US cent / kWh")
-        print("CO2 emissions", round(self.total_emissions, 1), "Gt CO2eq")
-        print("CO2 capture", round(self.total_capture, 1), "Gt CO2")
+        print(self.summary())
+
+    def summary(self):
+        """Key results."""
+        return (str(self) + " - Summary\n\n"
+                + str(self.plan) + '\n'
+                + str(self.parameter) + '\n'
+                + "System LCOE: {:.2f} US cent / kWh\n".format(100 * self.lcoe)
+                + "CO2 emissions {:.2f} Gt CO2eq\n".format(self.total_emissions)
+                + "CO2 capture {:.2f} Gt CO2\n".format(self.total_capture))
 
     def print_total(self):
+        """Print the run economic results and the run GHG emissions by technology."""
         print(self, " - Totals")
         print()
         print(self.total())
@@ -134,6 +138,7 @@ class Run():
         print(self.emission_sum())
 
     def total(self):
+        """Dataframe tabulating the run economic results."""
         def f(cost):
             return [round(cost * MUSD / GUSD), "bn USD"]
         d = pd.DataFrame()
@@ -153,6 +158,7 @@ class Run():
         return d
 
     def carbon_intensity(self):
+        """Dataframe tabulating the CO2 intensity of electricity (g/kWh)."""
         key_years = [start_year, 2030, 2050]
         p = self.plan.production.loc[key_years, 'Total']
         p.name = "GWh"
@@ -163,12 +169,14 @@ class Run():
         return intensity.round()
 
     def carbon_captured(self):
+        """Dataframe tabulating the quantities of CO2 captured."""
         key_years = [2025, 2030, 2035, 2040, 2050]
         captured = self.capture.loc[key_years, "Total"]
         captured.name = str(self)
         return captured.round()
 
     def emission_sum(self):
+        """Dataframe tabulating the total emissions by technology during the model run."""
         s = self.emissions[sources].sum() * kt / Mt
         s = s.round()
         s.name = str(self)
@@ -253,23 +261,17 @@ class RunPair():
         return - difference['Total cost'] / difference['CO2 emissions']
 
     def summary(self, headers):
-        result = "*******************\n\n"
-        result += str(self) + '\n\n'
-        result += 'Present value cost of avoided emissions: '
-        result += str(round(self.carbon_value(headers), 1)) + " USD/tCO2eq"
-        result += '\n\n'
-        result += str(self.total(headers))
-        result += '\n\n'
-        result += 'Emissions by source (ktCO2eq)\n'
-        result += str(self.emission_sum(headers))
-        result += '\n\n'
-        result += 'Average Carbon Intensity (g/kWh)\n'
-        result += str(self.carbon_intensity(headers))
-        result += '\n\n'
-        result += 'Carbon Captured (Mt)\n'
-        result += str(self.carbon_captured(headers))
-        result += '\n\n'
-        return result
+        return ("*******************\n\n"
+                + str(self) + '\n\n'
+                + 'Present value cost of avoided emissions: '
+                + str(round(self.carbon_value(headers), 1)) + ' USD/tCO2eq\n\n'
+                + str(self.total(headers)) + '\n\n'
+                + 'Emissions by source (ktCO2eq)\n'
+                + str(self.emission_sum(headers)) + '\n\n'
+                + 'Average Carbon Intensity (g/kWh)\n'
+                + str(self.carbon_intensity(headers)) + '\n\n'
+                + 'Carbon Captured (Mt)\n'
+                + str(self.carbon_captured(headers)) + '\n\n')
 
 
 if __name__ == '__main__':

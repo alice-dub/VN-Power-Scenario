@@ -138,6 +138,7 @@ description["HeatRate"] = " heat rate\nBtu/kWh"
 
 
 def as_zero(fuel, _):
+    """A series of zero."""
     show(fuel + " set as zero for all years")
     return pd.Series(0, index=years, name=fuel)
 
@@ -177,6 +178,7 @@ def by_regression(fuel, col):
 #%%  Construction costs
 
 def set_construction_cost(fuel, method):
+    """Update the construction_cost dataframe for the  fuel  technology, using given  method."""
     construction_cost[fuel] = method(fuel, "OnghtCptlCostDolPerKw")
 
 
@@ -236,6 +238,7 @@ show(construction_cost[sources].round())
 #%%  Fixed operating costs
 
 def set_fixed_operating_cost(fuel, method):
+    """Update the fixed operating cost dataframe for the  fuel  technology, using given  method."""
     fixed_operating_cost[fuel] = method(fuel, "FixedOMDolPerKw")
 
 
@@ -275,6 +278,7 @@ show(fixed_operating_cost[sources].round())
 #%%  Variable operating costs
 
 def set_variable_operating_cost(fuel, method=by_median):
+    """Update the variabale operating cost dataframe for the  fuel  technology, using  method."""
     variable_operating_cost[fuel] = method(fuel, "VariableOMDolPerMwh")
 
 
@@ -313,6 +317,7 @@ show()
 #%% Heat rate
 
 def set_heat_rate(fuel, method=by_median):
+    """Update the heat_rate dataframe for the  fuel  technology."""
     heat_rate[fuel] = method(fuel, "HeatRate")
 
 

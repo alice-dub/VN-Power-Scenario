@@ -69,17 +69,20 @@ capacity_past.drop("Dummy", axis=1, inplace=True)
 
 
 def smooth(s):
-    """Argument  s  is a numerical series with a numerical value on the last index, 0 elsewhere
-       Returns a Pandas series like s, with the value spread linearly
-       Values are and remain integers, for example:
+    """The benjamin shares apples with all his previous siblings.
 
-       >>> smooth(pd.Series([0, 0, 0, 10]))
-       0    2
-       1    2
-       2    2
-       3    4
-       dtype: int64
-       """
+    Argument  s  is a numerical series with a numerical value in last position.
+    Values are and remain integers;
+    Assume for example there are 4 brothers and the last one has 10 apples.
+    Then he should give each brother 2 apples, keeping 4 for himself.
+
+    >>> smooth(pd.Series([0, 0, 0, 10]))
+    0    2
+    1    2
+    2    2
+    3    4
+    dtype: int64
+    """
     n = len(s)
     total = s.iloc[-1]
     annual = int(total // n)
