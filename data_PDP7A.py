@@ -6,8 +6,7 @@
 #
 #
 
-"""
-Read the prepared data files corresponding to Vietnam's Power Development Plan 7 Adjusted (PDP7A)
+"""Read the prepared data files corresponding to Vietnam's Power Development Plan 7 Adjusted.
 
 PDP7A groups Oil-fired gas turbines (same technology as aircraft jet engines) with "Gas"
 

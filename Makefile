@@ -58,7 +58,7 @@ docstyle:
 	pydocstyle --ignore=D102,D105,D203 *py
 
 codestyle:
-	pycodestyle
+	pycodestyle *py
 
 .PHONY: test regtest-reset lint docstyle codestyle clean cleaner
 

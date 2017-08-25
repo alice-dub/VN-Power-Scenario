@@ -5,12 +5,7 @@
 # Creative Commons Attribution-ShareAlike 4.0 International
 #
 #
-
-
-"""
-Assess an Ensemble of scenarios
-
-"""
+"""Assess an Ensemble of scenarios."""
 
 import copy
 import sys

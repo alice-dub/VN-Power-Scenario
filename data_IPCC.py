@@ -5,7 +5,7 @@
 # Creative Commons Attribution-ShareAlike 4.0 International
 #
 #
-"""Emission factors
+"""Emission factors.
 
 Source : IPCC SRREN Methodology Annex II, Methodology
 Lead Authors: William Moomaw (USA), Peter Burgherr (Switzerland), Garvin Heath (USA),

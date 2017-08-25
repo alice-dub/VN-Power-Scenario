@@ -20,8 +20,9 @@ from param_reference import reference
 
 
 def residual_value(additions, plant_accounting_life, technology):
-    """ Residual value of the generation capacity at model end year
-    Returns a Series, 0 for all years except at the end.
+    """Return the residual value of the generation capacity at model end year.
+
+    A Series equal 0 for all years except at the end.
     """
     lifetime = plant_accounting_life[technology]
     idx = additions.index
@@ -38,10 +39,13 @@ def residual_value(additions, plant_accounting_life, technology):
 
 
 class Run():
-    """A run of the model. Computes LCOE and CO2 emissions based on:
+    """A run of the model.
+
+    Computes LCOE and CO2 emissions based on:
          plan       contains the policy control variable, a power generation plan
          parameter  describes the technical and economic environment
-      Immutable object, all the (linear) algebra is done in the initializer
+
+    The model run is an immutable object, all the (linear) algebra is done in the initializer.
     """
 
     def __init__(self, plan, parameter):
@@ -199,7 +203,7 @@ class Run():
 
 
 class RunPair():
-    """Two courses of action, compared in one environment"""
+    """Compare two power development plans, for the same technico-economic parameters."""
 
     def __init__(self, bau, alt, parameter):
         self.BAU = Run(bau, parameter)

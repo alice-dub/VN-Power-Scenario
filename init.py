@@ -7,8 +7,9 @@
 # minh.haduong@gmail.com
 # Creative Commons Attribution-ShareAlike 4.0 International
 #
-#
-"""To clarify column names.
+"""Common functions, units.
+
+To clarify column names.
 
  1/ Some include Imports in electricity "Production". We don't.
     Imports are part of "Domestic Supply". We use these column names:

@@ -7,8 +7,7 @@
 #
 
 
-"""
-Defines a power plan with CCS
+"""Define a power plan with CCS.
 
 Coal-fired power plants do dominate the generation sector of Vietnam from 2020 onward.
 The total capacity of coal-fired power plants would increase to 55 GW by 2030.
@@ -31,7 +30,6 @@ Usage:
 
 python3 plan_withCCS.py summarize
 python3 plan_withCCS.py plot filename.[pdf|png|...]
-
 """
 
 import sys

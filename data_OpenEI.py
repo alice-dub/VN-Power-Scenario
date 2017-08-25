@@ -6,7 +6,19 @@
 #
 #
 
-"""
+"""Populate the technology database.
+
+Each generation technology has:
+- overnight construction cost
+- fixed operating cost
+- variable operating cost
+- heat rate
+which can be either
+- zero
+- a constant based on the median of past data
+- a linear function of time based on forecasts data
+The choice between these 3 methods is visual.
+
 Energy data from OpenEI's Transparent Cost Database
 + newspaper sources for Import capacity costs
 + newspaper source Import electricity price
@@ -82,6 +94,7 @@ view["Solar"] = OpenEI.query(q)
 
 
 def plot_boxwhisker(data, col):
+    """Box and whisker plot in Magenta, meant to be overlaid on the (x=Year, y=col) plot."""
     x_min = data.Year.min()
     x_max = data.Year.max()
     x_med = (x_min + x_max) / 2
@@ -100,10 +113,20 @@ def plot_boxwhisker(data, col):
 
 
 def myplot(data, fuel, col, s, method):
+    """Validate graphically our derivation of technology costs from the literature.
+
+    data: rows of the database relative to a given technology
+    fuel: string, name of that technology
+    col:  column of data to be plot, a kind of cost
+    s:    Series, the values actually used in the model
+    method: by_regression, by_median, as_zero. How  s  was derived from data[col].
+
+    Trend line shows the costs as used in model.
+    Box and whiskers shows quartiles of distribution of past costs.
+    Past being relative to the date of publication of the cost.
+    """
     data.plot.scatter("Year", col, title=fuel + description[col] + method)
-    # Red line showing the variable_operating costs used in model
     plt.plot(s.index, s.values, "r-", linewidth=2.0)
-    # Magenta box and whiskers showing quartiles of observed costs
     plot_boxwhisker(data[data.Year < data.PublicationYear], col)
 
 
@@ -114,13 +137,13 @@ description["VariableOMDolPerMwh"] = " variable operating cost\n$/MWh"
 description["HeatRate"] = " heat rate\nBtu/kWh"
 
 
-def as_zero(fuel, col):
+def as_zero(fuel, _):
     show(fuel + " set as zero for all years")
     return pd.Series(0, index=years, name=fuel)
 
 
 def by_median(fuel, col):
-    """Median of observed costs, defined as 'refering to a year prior year of publication'"""
+    """Median of observed costs, defined as 'refering to a year prior year of publication'."""
     data = view[fuel]
     past_data = data[data.Year < data.PublicationYear]
     s = pd.Series(past_data[col].median(),
@@ -132,6 +155,7 @@ def by_median(fuel, col):
 
 
 def by_regression(fuel, col):
+    """Regression, when the literature forecasts cost saving technical progress."""
     data = view[fuel]
     explaining = data.Year - start_year
     explaining = sm.add_constant(explaining)

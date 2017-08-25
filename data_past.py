@@ -6,35 +6,34 @@
 #
 #
 
-"""
-Read the prepared data files
+"""Read the prepared data files.
 
 There are 3 data sources (PDP7A, EVN 2016 report, IEA statistics)
 so we need to clarify column names.
 
- 1/ Some include Imports in electricity "Production"
-    Here we don't --it's clearly wrong-- and use these column names:
+1/ Some include Imports in electricity "Production"
+Here we don't --it's clearly wrong-- and use these column names:
       Supply = Production + Imports
 
- 2/ Another ambiguity is whether SmallHydro is included in "Hydro" or "Renewable"
-    Here we do the former and use these column names:
+2/ Another ambiguity is whether SmallHydro is included in "Hydro" or "Renewable"
+Here we do the former and use these column names:
       Hydro = BigHydro + SmallHydro
       BigHydro = LargeHydro + InterHydro
       Renewable = Wind + Solar + Biomass
       Renewable4 = Renewable + Small hydro
 
- 3/ We do NOT include PumpedStorage in Hydro capacities
+3/ We do NOT include PumpedStorage in Hydro capacities
 
- 4/ We define Import as net of Exports
+4/ We define Import as net of Exports
 
- 5/ In VN capacity stats, generation from fuel oil and from diesel is not clearly accounted for
+5/ In VN capacity stats, generation from fuel oil and from diesel is not clearly accounted for
 
- 6/ Column "capacities" means nameplate capacity.
-    Adding up capacities across columns is generally misleading,
-    since the capacity factors are not comparable, neither are the investment costs
+6/ Column "capacities" means nameplate capacity.
+Adding up capacities across columns is generally misleading,
+since the capacity factors are not comparable, neither are the investment costs
 
- 7/ Column "capacities" is in terms of net electric power.
-    "Coal CCS" has a lower efficiency (higher heat rate) than "Coal" of same capacity
+7/ Column "capacities" is in terms of net electric power.
+"Coal CCS" has a lower efficiency (higher heat rate) than "Coal" of same capacity
 """
 
 from init import pd, show, fuels, sources, addcol_Renewable, addcol_Renewable4
