@@ -1,4 +1,4 @@
-Parameters #f2e76b: Reference - median values from OpenEI and IPCC reviews, d=6%, CO2=100$ in 2050
+Parameters #47e724: Reference - median values from OpenEI and IPCC reviews, d=6%, CO2=100$ in 2050
 
                                                Coal     Gas     Oil  BigHydro  SmallHydro  Biomass    Wind   Solar  CoalCCS  GasCCS   BioCCS  Import
 Plant accounting life (year)                   40.0    25.0    30.0     100.0        60.0     25.0    20.0    25.0     40.0    25.0     25.0   100.0

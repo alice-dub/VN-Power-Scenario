@@ -1,6 +1,6 @@
 *******************
 
-Parameters #f2e76b: Reference - median values from OpenEI and IPCC reviews, d=6%, CO2=100$ in 2050
+Parameters #47e724: Reference - median values from OpenEI and IPCC reviews, d=6%, CO2=100$ in 2050
 
 BAU = Power development program #037d: Baseline - PDP7A extended
 ALT = Power development program #a092: With CCS
@@ -52,7 +52,7 @@ Carbon Captured (Mt)
 
 *******************
 
-Parameters #e97bae: Discount 8%
+Parameters #3810f4: Discount 8%
 
 BAU = Power development program #037d: Baseline - PDP7A extended
 ALT = Power development program #a092: With CCS
@@ -104,7 +104,7 @@ Carbon Captured (Mt)
 
 *******************
 
-Parameters #5a4961: Discount 4%
+Parameters #c2e6b1: Discount 4%
 
 BAU = Power development program #037d: Baseline - PDP7A extended
 ALT = Power development program #a092: With CCS
@@ -156,7 +156,7 @@ Carbon Captured (Mt)
 
 *******************
 
-Parameters #99c9ef: 175% carbon price
+Parameters #236f46: 175% carbon price
 
 BAU = Power development program #037d: Baseline - PDP7A extended
 ALT = Power development program #a092: With CCS
@@ -208,7 +208,7 @@ Carbon Captured (Mt)
 
 *******************
 
-Parameters #b1a838: Coal and Gas price fall by 3% per year
+Parameters #2ea22b: Coal and Gas price fall by 3% per year.
 
 BAU = Power development program #037d: Baseline - PDP7A extended
 ALT = Power development program #a092: With CCS
@@ -260,7 +260,7 @@ Carbon Captured (Mt)
 
 *******************
 
-Parameters #542664: CCS construction and OM costs fall by 1.8% per year
+Parameters #5ef723: CCS construction and OM costs fall by 1.8% per year.
 
 BAU = Power development program #037d: Baseline - PDP7A extended
 ALT = Power development program #a092: With CCS

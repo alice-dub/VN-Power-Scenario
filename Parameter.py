@@ -6,79 +6,39 @@
 #
 """Parameter  describes a technical and economic environment."""
 
+from collections import namedtuple
+import hashlib
 
-from init import pd, sources, start_year, digest
+from init import pd, sources, start_year
 
 
-class Parameter():
+class Parameter(namedtuple('Parameter',
+                           ['discount_rate',
+                            'plant_accounting_life',
+                            'construction_cost',
+                            'fixed_operating_cost',
+                            'variable_operating_cost',
+                            'heat_rate',
+                            'heat_price',
+                            'emission_factor',
+                            'capture_factor',
+                            'carbon_price'])):
     """Parameter  describes a technical and economic environment.
 
     Bundle a power generation technology database, carbon price trajectory and discount rate.
-    __str__     content digest, a short checksum
+    digest      content digest, a short checksum
     summary()   contents summary, time series represented by initial level and trend.
-    string()    contents, time series fully shown.
+    __new__()   constructor, default not extended
+    __repr__()  detailed representation as  string, default not extended
+
     """
 
-    def __init__(self,
-                 docstring,
-                 discount_rate,
-                 plant_accounting_life,
-                 construction_cost,
-                 fixed_operating_cost,
-                 variable_operating_cost,
-                 heat_rate,
-                 heat_price,
-                 emission_factor,
-                 capture_factor,
-                 carbon_price):
-        self.docstring = docstring
-        self.discount_rate = discount_rate
-        self.plant_accounting_life = plant_accounting_life
-        self.construction_cost = construction_cost[sources]
-        self.fixed_operating_cost = fixed_operating_cost[sources]
-        self.variable_operating_cost = variable_operating_cost[sources]
-        self.heat_rate = heat_rate
-        self.heat_price = heat_price
-        self.emission_factor = emission_factor
-        self.capture_factor = capture_factor
-        self.carbon_price = carbon_price
+    @property
+    def digest(self):
+        return hashlib.md5(self.__repr__().encode('utf-8')).hexdigest()[0:6]
 
     def __str__(self):
-        return "Parameters #" + digest(self, 6) + ": " + self.docstring
-
-    def string(self):
-        """Detail object contents as a string."""
-        return ("Parameters: " + self.docstring + "\n"
-                + "\n\n"
-                + "Discount rate:" + str(self.discount_rate)
-                + "\n\n"
-                + "Plant accounting life (year)"
-                + repr(self.plant_accounting_life[sources])
-                + "\n\n"
-                + "Emission factor (gCO2eq/kWh)"
-                + repr(self.emission_factor[sources])
-                + "\n\n"
-                + "Capture factor (gCO2/kWh)"
-                + repr(self.capture_factor[sources])
-                + "\n\n"
-                + "Overnight construction costs ($/kW)"
-                + repr(self.construction_cost.round())
-                + "\n\n"
-                + "Fixed operating costs ($/kW)"
-                + repr(self.fixed_operating_cost.round(2))
-                + "\n\n"
-                + "Variable operating costs ($/kWh)"
-                + repr(self.variable_operating_cost.round(2))
-                + "\n\n"
-                + "Heat rate (Btu/kWh)"
-                + repr(self.heat_rate)
-                + "\n\n"
-                + "Heat price ($/MBtu)"
-                + repr(self.heat_price)
-                + "\n\n"
-                + "Carbon price ($/tCO2eq)"
-                + repr(self.carbon_price)
-                )
+        return "Parameters #" + self.digest + ": " + self.__doc__
 
     def summary(self):
         """Summarize object contents, time series are defined by initial level and trend."""

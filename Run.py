@@ -110,7 +110,7 @@ class Run():
                               / MUSD)
         self.total_external_cost = pv(self.external_cost)
 
-        self.signature = '#' + digest(plan, 6) + "-" + digest(parameter, 4)
+        self.signature = '#' + digest(plan.string(), 6) + "-" + parameter.digest
 
     def __str__(self):
         return self.signature

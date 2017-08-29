@@ -32,7 +32,7 @@ class PowerPlan:
 
     def __str__(self):
         """Include a digest of the content."""
-        return "Power development program #" + digest(self, 4) + ": " + self.docstring
+        return "Power development program #" + digest(self.string(), 4) + ": " + self.docstring
 
     def summarize(self):
         """Print object's summary."""

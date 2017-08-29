@@ -108,19 +108,20 @@ carbon_price = pd.Series(data=carbon_price, index=years)
 
 #%%
 
-reference = Parameter(("Reference - median values from OpenEI and IPCC reviews, "
-                       + "d=" + str(round(100 * discount_rate)) + "%, "
-                       + "CO2=" + str(end_carbon_price) + "$ in 2050"),
-                      discount_rate,
+reference = Parameter(discount_rate,
                       plant_accounting_life,
-                      construction_cost,
-                      fixed_operating_cost,
-                      variable_operating_cost,
+                      construction_cost[sources],
+                      fixed_operating_cost[sources],
+                      variable_operating_cost[sources],
                       heat_rate,
                       heat_price,
                       emission_factor,
                       capture_factor,
                       carbon_price)
+
+reference.__doc__ = ("Reference - median values from OpenEI and IPCC reviews, "
+                     + "d=" + str(round(100 * discount_rate)) + "%, "
+                     + "CO2=" + str(end_carbon_price) + "$ in 2050")
 
 if __name__ == '__main__':
     if (len(sys.argv) == 2) and (sys.argv[1] == "summarize"):

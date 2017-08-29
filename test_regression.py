@@ -26,10 +26,6 @@ def test_reference_summary(regtest):
     regtest.write(reference.summary())
 
 
-def test_reference_string(regtest):
-    regtest.write(reference.string())
-
-
 def test_withCCS_str(regtest):
     regtest.write(str(withCCS))
 

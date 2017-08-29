@@ -133,11 +133,11 @@ Gt = 10**12
 
 
 @lru_cache(maxsize=32)
-def digest(obj, length=6):
-    """Checksum an object using its string() method.
+def digest(string, length=6):
+    """Checksum a string method.
 
     The cache is necessary for performance.
     We are all responsible users, do not modify attributes after checksumming.
     """
-    return hashlib.md5(obj.string().encode('utf-8')).hexdigest()[0:length]
+    return hashlib.md5(string.encode('utf-8')).hexdigest()[0:length]
 #        return hex(adler32(self.string().encode('utf-8')))
