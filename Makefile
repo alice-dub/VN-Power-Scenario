@@ -72,4 +72,4 @@ cleaner: clean
 	rm -f Run.txt param_reference.txt 
 	rm -rf __pycache__
 	rm -f *.bak
-	rm -rf .coverage .coverage.xml htmlcov
+	rm -rf .coverage coverage.xml htmlcov

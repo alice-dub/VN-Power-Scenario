@@ -10,7 +10,8 @@
 
 git stash -q --keep-index
 make cleaner
-pycodestyle *py
+make docstyle
+make codestyle
 make test
 RESULT=$?
 git stash pop -q
