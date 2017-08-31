@@ -2,8 +2,8 @@
 
 Parameters #47e724: Reference - median values from OpenEI and IPCC reviews, d=6%, CO2=100$ in 2050
 
-BAU = Power development program #037d: Baseline - PDP7A extended
-ALT = Power development program #a092: With CCS
+BAU = Power development program #090f: Baseline - PDP7A extended
+ALT = Power development program #2732: With CCS
 
 Present value cost of avoided emissions: 27.3 USD/tCO2eq
 
@@ -54,8 +54,8 @@ Carbon Captured (Mt)
 
 Parameters #3810f4: Discount 8%
 
-BAU = Power development program #037d: Baseline - PDP7A extended
-ALT = Power development program #a092: With CCS
+BAU = Power development program #090f: Baseline - PDP7A extended
+ALT = Power development program #2732: With CCS
 
 Present value cost of avoided emissions: 17.3 USD/tCO2eq
 
@@ -106,8 +106,8 @@ Carbon Captured (Mt)
 
 Parameters #c2e6b1: Discount 4%
 
-BAU = Power development program #037d: Baseline - PDP7A extended
-ALT = Power development program #a092: With CCS
+BAU = Power development program #090f: Baseline - PDP7A extended
+ALT = Power development program #2732: With CCS
 
 Present value cost of avoided emissions: 43.6 USD/tCO2eq
 
@@ -158,8 +158,8 @@ Carbon Captured (Mt)
 
 Parameters #236f46: 175% carbon price
 
-BAU = Power development program #037d: Baseline - PDP7A extended
-ALT = Power development program #a092: With CCS
+BAU = Power development program #090f: Baseline - PDP7A extended
+ALT = Power development program #2732: With CCS
 
 Present value cost of avoided emissions: 27.3 USD/tCO2eq
 
@@ -210,8 +210,8 @@ Carbon Captured (Mt)
 
 Parameters #2ea22b: Coal and Gas price fall by 3% per year.
 
-BAU = Power development program #037d: Baseline - PDP7A extended
-ALT = Power development program #a092: With CCS
+BAU = Power development program #090f: Baseline - PDP7A extended
+ALT = Power development program #2732: With CCS
 
 Present value cost of avoided emissions: 31.4 USD/tCO2eq
 
@@ -262,8 +262,8 @@ Carbon Captured (Mt)
 
 Parameters #5ef723: CCS construction and OM costs fall by 1.8% per year.
 
-BAU = Power development program #037d: Baseline - PDP7A extended
-ALT = Power development program #a092: With CCS
+BAU = Power development program #090f: Baseline - PDP7A extended
+ALT = Power development program #2732: With CCS
 
 Present value cost of avoided emissions: 15.5 USD/tCO2eq
 

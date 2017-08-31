@@ -32,9 +32,7 @@ To clarify column names.
     because the capacity factors are not comparable, neither are the investment costs
 """
 
-import hashlib
 from functools import lru_cache
-#from zlib import adler32
 
 #import time
 import pandas as pd
@@ -130,14 +128,3 @@ Gt = 10**12
 #        print(f.__name__, 'took', end - start, 'time')
 #        return result
 #    return f_timer
-
-
-@lru_cache(maxsize=32)
-def digest(string, length=6):
-    """Checksum a string method.
-
-    The cache is necessary for performance.
-    We are all responsible users, do not modify attributes after checksumming.
-    """
-    return hashlib.md5(string.encode('utf-8')).hexdigest()[0:length]
-#        return hex(adler32(self.string().encode('utf-8')))

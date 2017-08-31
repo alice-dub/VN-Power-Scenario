@@ -5,38 +5,38 @@
 # Creative Commons Attribution-ShareAlike 4.0 International
 #
 """Represent a power development program including history, plan and our extension."""
+from collections import namedtuple
+import hashlib
 
 import matplotlib.pyplot as plt
 
-from init import fuels, sources, technologies, start_year, end_year, digest
+from init import fuels, sources, technologies, start_year, end_year
 from init import GWh, TWh, MW, GW
 
 #%%
 
 
-class PowerPlan:
+class PowerPlan(namedtuple('PowerPlan',
+                           ['additions', 'retirement', 'capacity_factor', 'net_import',
+                            'capacities', 'production'])):
     """A power development program."""
 
-    def __init__(self, docstring, additions, retirement, capacity_factor, net_import):
-        self.docstring = docstring
-        self.additions = additions
-        self.retirement = retirement
-        self.capacity_factor = capacity_factor
-        self.net_import = net_import
+    def __new__(cls, additions, retirement, capacity_factor, net_import):
+        capacities = (additions - retirement).cumsum()
+        production = capacities * capacity_factor * 8760 / 1000
+        production["Import"] = net_import
+        production = production[sources].fillna(0)
+        production["Total"] = production.sum(axis=1)
+        return super().__new__(cls, additions, retirement, capacity_factor, net_import,
+                               capacities, production)
 
-        self.capacities = (additions - retirement).cumsum()
-        self.production = self.capacities * capacity_factor * 8760 / 1000
-        self.production["Import"] = net_import
-        self.production = self.production[sources].fillna(0)
-        self.production["Total"] = self.production.sum(axis=1)
+    @property
+    def digest(self):
+        return hashlib.md5(self.__repr__().encode('utf-8')).hexdigest()[0:4]
 
     def __str__(self):
         """Include a digest of the content."""
-        return "Power development program #" + digest(self.string(), 4) + ": " + self.docstring
-
-    def summarize(self):
-        """Print object's summary."""
-        print(self.summary())
+        return "Power development program #" + self.digest + ": " + self.__doc__
 
     def summary(self):
         """Summary of a power development program, time series shown for key years only."""
@@ -54,26 +54,9 @@ class PowerPlan:
             + "Capacity factors\n"
             + str(self.capacity_factor.loc[milestones].round(2)) + '\n')
 
-    def string(self):
-        """Return detailed object contents."""
-        return ("Power development program: "
-                + self.docstring
-                + "\n\n"
-                + "Annual generation capacity addition by fuel type (MW)\n"
-                + repr(self.additions[technologies].round())
-                + "\n\n"
-                + "Old capacity retirement by fuel type (MW)\n"
-                + repr(self.retirement[fuels].round())
-                + "\n\n"
-                + "Generation capacity by fuel type (MW)\n"
-                + repr(self.capacities[technologies].round())
-                + "\n\n"
-                + "Electricity production (GWh)\n"
-                + repr(self.production.round())
-                + "\n\n"
-                + "Capacity factors\n"
-                + repr(self.capacity_factor.round(2))
-                )
+    def summarize(self):
+        """Print object's summary."""
+        print(self.summary())
 
     def plot_additions(self, ax, legend=True):
         self.additions[sources].plot(ax=ax, title="Added capacity (MW)",

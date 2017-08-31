@@ -34,20 +34,12 @@ def test_withCCS_summary(regtest):
     regtest.write(withCCS.summary())
 
 
-def test_withCCS_string(regtest):
-    regtest.write(withCCS.string())
-
-
 def test_baseline_str(regtest):
     regtest.write(str(baseline))
 
 
 def test_baseline_summary(regtest):
     regtest.write(baseline.summary())
-
-
-def test_baseline_string(regtest):
-    regtest.write(baseline.string())
 
 
 def test_runpair_summary(regtest):

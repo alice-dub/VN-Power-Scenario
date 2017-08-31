@@ -9,7 +9,7 @@
 import sys
 
 from init import pd, fuels, sources
-from init import start_year, end_year, years, present_value, digest
+from init import start_year, end_year, years, present_value
 from init import kW, MW, USD, MUSD, GUSD, GWh, MWh, TWh, kWh, Btu, MBtu, TBtu, g, t, kt, Mt, Gt
 
 from plan_baseline import baseline
@@ -110,7 +110,7 @@ class Run():
                               / MUSD)
         self.total_external_cost = pv(self.external_cost)
 
-        self.signature = '#' + digest(plan.string(), 6) + "-" + parameter.digest
+        self.signature = '#' + plan.digest + "-" + parameter.digest
 
     def __str__(self):
         return self.signature
@@ -138,7 +138,7 @@ class Run():
         print(self.emission_sum())
 
     def total(self):
-        """Dataframe tabulating the run economic results."""
+        """Dataframe tabulating the key results."""
         def f(cost):
             return [round(cost * MUSD / GUSD), "bn USD"]
         d = pd.DataFrame()
@@ -224,6 +224,7 @@ class RunPair():
         return s
 
     def total(self, headers):
+        """Dataframe comparing the key results of the two runs."""
         units = self.BAU.total().iloc[:, 1]
         total_BAU = self.BAU.total().iloc[:, 0]    # Only the values
         total_ALT = self.ALT.total().iloc[:, 0]
@@ -233,6 +234,7 @@ class RunPair():
         return d
 
     def emission_sum(self, headers):
+        """Dataframe comparing total intertemporal CO2 emissions of the two runs, by technology."""
         es_BAU = self.BAU.emission_sum()
         es_ALT = self.ALT.emission_sum()
         es_diff = es_ALT - es_BAU
@@ -241,6 +243,7 @@ class RunPair():
         return d
 
     def carbon_intensity(self, headers):
+        """Dataframe comparing the CO2 intensity of electricity in the two runs, for key years."""
         ci_bau = self.BAU.carbon_intensity()
         ci_alt = self.ALT.carbon_intensity()
         ci_diff = ci_alt - ci_bau
@@ -249,6 +252,7 @@ class RunPair():
         return table
 
     def carbon_captured(self, headers):
+        """Dataframe comparing the carbon captured in the two runs, for key years."""
         cc_bau = self.BAU.carbon_captured()
         cc_alt = self.ALT.carbon_captured()
         cc_diff = cc_alt - cc_bau

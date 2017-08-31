@@ -94,11 +94,9 @@ savedGasCCS = (bioCCS_ramp
 additions.loc[retrofit_period, "GasCCS"] -= savedGasCCS
 
 
-withCCS = PowerPlan("With CCS",
-                    additions,
-                    retirement[technologies],
-                    baseline.capacity_factor,
-                    baseline.net_import)
+withCCS = PowerPlan(additions, retirement[technologies],
+                    baseline.capacity_factor, baseline.net_import)
+withCCS.__doc__ = "With CCS"
 
 if __name__ == '__main__':
     if (len(sys.argv) == 2) and (sys.argv[1] == "summarize"):
