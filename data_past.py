@@ -69,10 +69,12 @@ capacity_past.drop("Dummy", axis=1, inplace=True)
 
 
 def smooth(s):
-    """The benjamin shares apples with all his previous siblings.
+    """Redistribute over time equally a mass concentrated in the last period.
 
     Argument  s  is a numerical series with a numerical value in last position.
     Values are and remain integers;
+
+    Metaphor: the benjamin shares apples with all his previous siblings.
     Assume for example there are 4 brothers and the last one has 10 apples.
     Then he should give each brother 2 apples, keeping 4 for himself.
 
