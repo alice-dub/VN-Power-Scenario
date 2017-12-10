@@ -19,6 +19,10 @@ make
  The code is in Python 3.5
 it imports  hashlib, sys, copy, functools  from the standard library
 it imports  pandas, mathplotlib, numpy  from the scientific python core packages
+it uses statsmodels from the PyPI
+
+To install dependencies:
+sudo -H pip3 install -r requirements.txt
 
 The builds uses a standard  `Makefile`  with
 
