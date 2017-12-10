@@ -57,7 +57,7 @@ n_year = len(years)
 
 @lru_cache(maxsize=32)
 def discountor(discount_rate):
-    """A vector V such that the scalar product A.V is the present value of series A."""
+    """Return a vector V such that the scalar product A.V is the present value of series A."""
     return pd.Series(data=np.logspace(0, n_year - 1, n_year, base=1 / (1 + discount_rate)),
                      index=years)
 

@@ -52,10 +52,11 @@ lint:
 
 docstyle:
 	# Ignored messages:
-	# D102: Missing docstring in public method             too many positives
-	# D105: Missing docstring in magic method              why does it need a docstring ?
-	# D203: 1 blank line required before class docstring   bug in the tool
-	pydocstyle --ignore=D102,D105,D203 *py
+	# D102: Missing docstring in public method                              too many positives
+	# D105: Missing docstring in magic method                               why does it need a docstring ?
+	# D203: 1 blank line required before class docstring                    bug in the tool
+	# D213: Multi-line docstring summary should start at the second line    """We choose D212 ;)
+	pydocstyle --ignore=D102,D105,D203,D213 *py
 
 codestyle:
 	pycodestyle *py

@@ -138,7 +138,7 @@ description["HeatRate"] = " heat rate\nBtu/kWh"
 
 
 def as_zero(fuel, _):
-    """A series of zero."""
+    """Return a time series of zero."""
     show(fuel + " set as zero for all years")
     return pd.Series(0, index=years, name=fuel)
 
