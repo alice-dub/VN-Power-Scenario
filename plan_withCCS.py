@@ -39,11 +39,11 @@ from PowerPlan import PowerPlan
 
 from plan_baseline import baseline
 
-#%%
+# %%
 
 additions, retirement = baseline.additions.copy(), baseline.retirement.copy()
 
-#%%
+# %%
 
 pilot1_year = 2024
 pilot1_size = 250  # MW of gas-fired generation
@@ -57,7 +57,7 @@ assert(additions.at[pilot2_year, "Gas"] > pilot2_size)
 additions.at[pilot2_year, "Gas"] -= pilot2_size
 additions.at[pilot2_year, "GasCCS"] += pilot2_size
 
-#%%
+# %%
 
 retrofit_start_year = 2035
 assert retrofit_start_year > pilot2_year

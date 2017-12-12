@@ -16,7 +16,7 @@ from plan_baseline import baseline
 from plan_withCCS import withCCS
 from param_reference import reference
 
-#%% Accounting functions
+# %% Accounting functions
 
 
 def residual_value(additions, plant_accounting_life, technology):
@@ -35,7 +35,7 @@ def residual_value(additions, plant_accounting_life, technology):
     result[2050] = (remaining_fraction * additions[technology]).sum()
     return result
 
-#%%
+# %%
 
 
 class Run():
@@ -53,7 +53,7 @@ class Run():
         self.parameter = parameter
 
         def pv(variable):
-            return present_value(variable, parameter.discount_rate).sum()
+            return present_value(variable, parameter.discount_rate).sum()  # Sum on technologies
 
         self.total_production = pv(plan.production[sources])
 

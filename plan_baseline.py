@@ -33,7 +33,7 @@ from data_PDP7A import (PDP7A_annex1, capacities_PDP7A, capacity_total_plan, pro
 
 from PowerPlan import PowerPlan
 
-#%%
+# %%
 
 
 def fill_in(serie):
@@ -53,7 +53,7 @@ def fill_in(serie):
                      dtype="int64")
 
 
-#%%  Capacity additions
+# %%  Capacity additions
 
 # 2016 - 2030 capacity additions for Coal, Gas, Oil, BigHydro
 
@@ -87,7 +87,7 @@ for y in range(2031, 2051):
     additions.loc[y] = increment
 
 
-#%% Old plant retirement program
+# %% Old plant retirement program
 
 plant_life = pd.Series({"Coal": 40, "Gas": 25, "Oil": 30,
                         "BigHydro": 100, "SmallHydro": 60, "Biomass": 25, "Wind": 20, "Solar": 25,
@@ -116,7 +116,7 @@ retirement = retirement.rolling(window=2, center=False).mean()
 
 retirement.loc[1974] = 0
 
-#%%
+# %%
 
 
 def extend(serie, endpoint, newname, past=capacity_factor_past, future=capacity_factor_PDP7A):
@@ -140,7 +140,7 @@ def extend(serie, endpoint, newname, past=capacity_factor_past, future=capacity_
     return r.append(s)
 
 
-#%% Electricity production
+# %% Electricity production
 
 capacityfactor = pd.DataFrame()
 
@@ -162,7 +162,7 @@ capacityfactor = capacityfactor.where(capacityfactor < 1)
 net_import = extend("Import", 7000, "Import", production_past, production_PDP7A)
 
 
-#%% Main statement
+# %% Main statement
 
 baseline = PowerPlan(additions, retirement, capacityfactor, net_import)
 baseline.__doc__ = "Baseline - PDP7A extended"
@@ -173,7 +173,7 @@ if __name__ == '__main__':
     if (len(sys.argv) == 3) and (sys.argv[1] == "plot"):
         baseline.plot_plan(sys.argv[2])
 
-#%% Validation: compares to PDP7A
+# %% Validation: compares to PDP7A
 
 show("""
 *****************************************************
@@ -203,7 +203,7 @@ show(relerror)
 show("Note: Gas 2030 is larger in baseline because we replace nuclear with gas")
 
 
-#%% Compares PDP7A
+# %% Compares PDP7A
 
 cap_2015_implicit = capacities_PDP7A.loc[2030] - capacity_total_plan
 
@@ -253,7 +253,7 @@ if VERBOSE:
 #show("Relative error")
 #show(relerr)
 
-#%% Fuel use
+# %% Fuel use
 #
 #MtCoal_per_GWh = fuel_use_PDP7A.Coal / production_PDP7A.Coal
 #
