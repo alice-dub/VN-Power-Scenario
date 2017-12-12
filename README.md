@@ -16,7 +16,7 @@ make
 
 ## Installation and use:
 
- The code is in Python 3.5
+ The code is in Python 3.6
 it imports  hashlib, sys, copy, functools  from the standard library
 it imports  pandas, mathplotlib, numpy  from the scientific python core packages
 it uses statsmodels from the PyPI
@@ -36,6 +36,13 @@ The builds uses a standard  `Makefile`  with
 
 +  `make cleaner` delete results files and Python cache files
 
+## Development:
+
+Under Linux, spyder3 reads editor configuration from `~/.config/pep8`
+```[pep8]
+max-line-length = 100
+ignore=W503,E402
+```
 
 ## Directory organization:
 
