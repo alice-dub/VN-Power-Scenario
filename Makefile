@@ -6,6 +6,7 @@
 #
 
 PYTHON = python3
+COVERAGE = python3-coverage
 
 
 tables = table-parameters.fwf table-comparison.fwf table-price-run.fwf table-past-data.fwf table-LCOE-prices.fwf
@@ -44,7 +45,7 @@ test: cleaner
 	py.test --doctest-modules
 
 coverage: coverage.xml
-	python3.5-coverage html
+	$(COVERAGE) html
 	see htmlcov/index.html
 
 coverage.xml:
