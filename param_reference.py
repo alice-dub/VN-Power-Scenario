@@ -20,7 +20,7 @@ from data_IPCC import emission_factor
 from plan_baseline import plant_life as plant_accounting_life
 
 
-#%% CCS technologies
+# %% CCS technologies
 
 start_penalty = 0.30
 end_penalty = 0.20
@@ -38,7 +38,7 @@ heat_price["GasCCS"] = heat_price["Gas"]
 heat_price["BioCCS"] = heat_price["Biomass"]
 
 
-#%%
+# %%
 """
 Without CCS:
    CO2_emitted = emission_factor_noCCS * production
@@ -80,7 +80,7 @@ capture_factor["GasCCS"] = (emission_factor["Gas"] * (1 + energy_penalty)
 capture_factor["BioCCS"] = (emission_factor["Biomass"] * (1 + energy_penalty)
                             - emission_factor["BioCCS"])
 
-#%%
+# %%
 
 discount_rate = 0.06
 
@@ -106,7 +106,7 @@ carbon_price = np.concatenate([np.linspace(start_carbon_price,
 carbon_price = pd.Series(data=carbon_price, index=years)
 
 
-#%%
+# %%
 
 reference = Parameter(discount_rate,
                       plant_accounting_life,

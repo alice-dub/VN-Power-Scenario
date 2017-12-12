@@ -35,7 +35,7 @@ import statsmodels.api as sm
 
 from init import pd, show, VERBOSE, start_year, end_year, n_year, years, sources
 
-#%% Functions to build series from OpenEI data file
+# %% Functions to build series from OpenEI data file
 
 OpenEI = pd.read_csv("data/OpenEI/generation.lcoe.20170510_650.csv",
                      skiprows=[0, 2],
@@ -175,7 +175,7 @@ def by_regression(fuel, col):
     return s
 
 
-#%%  Construction costs
+# %%  Construction costs
 
 def set_construction_cost(fuel, method):
     """Update the construction_cost dataframe for the  fuel  technology, using given  method."""
@@ -235,7 +235,7 @@ show("Overnight construction costs, $/kW")
 show(construction_cost[sources].round())
 
 
-#%%  Fixed operating costs
+# %%  Fixed operating costs
 
 def set_fixed_operating_cost(fuel, method):
     """Update the fixed operating cost dataframe for the  fuel  technology, using given  method."""
@@ -275,7 +275,7 @@ show("Fixed operating costs, $/kW")
 show(fixed_operating_cost[sources].round())
 
 
-#%%  Variable operating costs
+# %%  Variable operating costs
 
 def set_variable_operating_cost(fuel, method=by_median):
     """Update the variabale operating cost dataframe for the  fuel  technology, using  method."""
@@ -314,7 +314,7 @@ show(variable_operating_cost.loc[start_year].round(2))
 show()
 
 
-#%% Heat rate
+# %% Heat rate
 
 def set_heat_rate(fuel, method=by_median):
     """Update the heat_rate dataframe for the  fuel  technology."""
@@ -334,7 +334,7 @@ set_heat_rate("Wind", as_zero)
 set_heat_rate("Import", as_zero)
 
 
-#%% Fuel prices
+# %% Fuel prices
 
 heat_price = pd.DataFrame(index=years)
 

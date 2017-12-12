@@ -36,7 +36,7 @@ To clarify column names.
 
 from functools import lru_cache
 
-#import time
+# import time
 import pandas as pd
 import numpy as np
 
@@ -49,7 +49,7 @@ VERBOSE = False
 
 show = print if VERBOSE else lambda *a, **k: None
 
-#%% Rows
+# %% Rows
 
 start_year = 2016
 end_year = 2050
@@ -74,7 +74,7 @@ def discount(value, year, discount_rate):
     return value * discountor(discount_rate).loc[year]
 
 
-#%% Columns
+# %% Columns
 # Nuclear is presently out of the power planning discussion in Vietnam
 # CCS also, but that's the point of our study.
 
@@ -98,7 +98,7 @@ def addcol_Renewable4(container):
                                + container["SmallHydro"])
 
 
-#%% Units
+# %% Units
 
 W = 1
 kW = 1000
@@ -132,3 +132,14 @@ calorific_power = {}
 calorific_power["Coal_local"] = 5500 * Mkal / t
 calorific_power["Coal_international"] = 6700 * Mkal / t
 calorific_power["Gas_local"] = 35700
+
+#
+# def timefunc(f):
+#    def f_timer(*args, **kwargs):
+#        start = time.time()
+#        result = f(*args, **kwargs)
+#        end = time.time()
+#        print(f.__name__, 'took', end - start, 'time')
+#        return result
+#    return f_timer
+
