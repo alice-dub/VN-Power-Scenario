@@ -6,6 +6,8 @@
 # (c) Minh Ha-Duong, 2017
 # minh.haduong@gmail.com
 # Creative Commons Attribution-ShareAlike 4.0 International
+# Modified by Alice Duval, 2018
+#Energy converter used is: www.iea.org/statistics/resources/unitconverter/
 #
 """Common functions, units.
 
@@ -109,6 +111,9 @@ TWh = 10**12
 Btu = 1
 MBtu = 10**6
 TBtu = 10**12
+Mkal = 3969
+TOE = 39.7 * 10**6
+
 USD = 1
 MUSD = 10**6
 GUSD = 10**9
@@ -119,12 +124,11 @@ kt = 10**6
 Mt = 10**9
 Gt = 10**12
 
-#
-#def timefunc(f):
-#    def f_timer(*args, **kwargs):
-#        start = time.time()
-#        result = f(*args, **kwargs)
-#        end = time.time()
-#        print(f.__name__, 'took', end - start, 'time')
-#        return result
-#    return f_timer
+MM3 = 10**6
+
+#%% Calorific power
+
+calorific_power = {}
+calorific_power["Coal_local"] = 5500 * Mkal / t
+calorific_power["Coal_international"] = 6700 * Mkal / t
+calorific_power["Gas_local"] = 35700

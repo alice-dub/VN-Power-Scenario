@@ -8,7 +8,7 @@
 PYTHON = python3
 
 
-tables = table-parameters.fwf table-comparison.fwf
+tables = table-parameters.fwf table-comparison.fwf table-price-run.fwf
 
 figures = plan_baseline.pdf plan_withCCS.pdf figure-capacities.pdf figure-capacities.png
 
@@ -24,6 +24,8 @@ table-parameters.fwf: param_reference.txt
 table-comparison.fwf: Run.txt
 	head -26 $< | tail -16 > $@
 
+table-price-run.fwf: production_needed_baseline.txt
+
 %.txt: %.py
 	@-sed -i "s/VERBOSE = True/VERBOSE = False/" init.py
 	$(PYTHON) $< summarize > $@
@@ -35,17 +37,17 @@ table-comparison.fwf: Run.txt
 	$(PYTHON) $< plot $@
 
 test: cleaner
-	py.test-3 --doctest-modules
+	py.test --doctest-modules
 
 coverage: coverage.xml
 	python3.5-coverage html
 	see htmlcov/index.html
 
 coverage.xml:
-	py.test-3 --doctest-modules --cov=. --cov-report term-missing --cov-report xml
+	py.test --doctest-modules --cov=. --cov-report term-missing --cov-report xml
 
 regtest-reset:
-	py.test-3 --regtest-reset
+	py.test --regtest-reset
 
 lint:
 	pylint3 *py
@@ -69,7 +71,7 @@ clean:
 
 cleaner: clean
 	find . -type f -name '*.pyc' -delete
-	rm -f Run.txt param_reference.txt 
+	rm -f Run.txt param_reference.txt table-price-run.txt
 	rm -rf __pycache__
 	rm -f *.bak
 	rm -rf .coverage coverage.xml htmlcov

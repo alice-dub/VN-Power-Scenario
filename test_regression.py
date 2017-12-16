@@ -14,6 +14,7 @@ from plan_baseline import baseline
 from plan_withCCS import withCCS
 from Run import RunPair
 from analysis import RUNPAIRS
+from production_needed_baseline import average_price, run_model
 # pylint and pytest known compatibility bug
 # pylint: disable=redefined-outer-name
 
@@ -50,3 +51,9 @@ def test_runpair_summary(regtest):
 def test_analysis(regtest):
     analysis = '\n'.join([runpair.summary(["BAU", "ALT", "difference"]) for runpair in RUNPAIRS])
     regtest.write(analysis)
+
+def test_prices_summary(regtest):
+    regtest.write(average_price.summary())
+
+def updated_model(regtest):
+    regtest.write(run_model.summary())
