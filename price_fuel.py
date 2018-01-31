@@ -131,17 +131,17 @@ class Fuel_Price(namedtuple('Fuel_Price',
                                     'Coal locally produced': self.local_production['Coal']/10**8,
                                     'Coal needs': self.needed_production['Coal']/10**8})
 
-        prices_coal = pd.DataFrame({'Average coal price': self.average_price['Coal'],
-                                    'Local coal price': self.local_prices['Coal'],
-                                    'Imported coal price': self.international_prices["Coal"]})
+        prices_coal = pd.DataFrame({'Average coal price': self.average_price['Coal']*MBtu,
+                                    'Local coal price': self.local_prices['Coal']*MBtu,
+                                    'Imported coal price': self.international_prices["Coal"]*MBtu})
 
         supply_gas = pd.DataFrame({'Gas needs': self.needed_production['Gas']/10**8,
                                    'Gas locally produced': self.local_production['Gas']/10**8,
                                    'Gas imported': self.needed_importation['Gas']/10**8})
 
-        prices_gas = pd.DataFrame({'Average gas price': self.average_price['Gas'],
-                                   'Local gas price': self.local_prices['Gas'],
-                                   'Imported gas price': self.international_prices["Gas"]})
+        prices_gas = pd.DataFrame({'Average gas price': self.average_price['Gas']*MBtu,
+                                   'Local gas price': self.local_prices['Gas']*MBtu,
+                                   'Imported gas price': self.international_prices["Gas"]*MBtu})
 
         return (
             "Coal supply (in E+8 MMBtu)\n"

@@ -8,7 +8,7 @@ Energy unit (for Gas and Coal) is Btu
 
 """
 import sys
-from init import pd, start_year, end_year, sources
+from init import pd, start_year, end_year, sources, MBtu
 from plan_baseline import baseline
 from param_reference import discount_rate, plant_accounting_life, construction_cost,\
 fixed_operating_cost, variable_operating_cost, heat_rate, heat_price,\
@@ -42,7 +42,7 @@ updated_heat_price = pd.DataFrame(columns=heat_price.columns, index=heat_price.i
 
 for fuel in sources:
     if fuel == "Coal" or fuel == "Gas":
-        updated_heat_price[fuel] = average_price.average_price[fuel]
+        updated_heat_price[fuel] = average_price.average_price[fuel]*MBtu
     else:
         updated_heat_price[fuel] = heat_price[fuel]
 
@@ -62,8 +62,9 @@ run_model = Run(baseline, updated_parameter)
 if __name__ == '__main__':
     if (len(sys.argv) == 2) and (sys.argv[1] == "summarize"):
         average_price.summarize()
+        updated_parameter.summarize()
         run_model.summarize()
-        print(run_model.string())
+        #print(run_model.string())
 
     if (len(sys.argv) == 3) and (sys.argv[1] == "plot"):
         average_price.plot_coal_information(sys.argv[2])
