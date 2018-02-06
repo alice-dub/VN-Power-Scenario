@@ -1,0 +1,29 @@
+Coal supply (in E+8 MMBtu)
+      Coal imported  Coal locally produced  Coal needs
+2016            0.0              6650663.0   5911316.0
+2020      3964685.0              7531177.0  11495863.0
+2025     11654130.0              7574836.0  19228966.0
+2030     17370624.0              9255708.0  26626332.0
+
+Coal prices (in $/MMBtu)
+      Average coal price  Imported coal price  Local coal price
+2016                 3.0                  3.0               3.0
+2020                 3.0                  4.0               3.0
+2025                 4.0                  4.0               3.0
+2030                 3.0                  3.0               3.0
+
+Gas supply (in E+8 MMBtu)
+      Gas imported  Gas locally produced  Gas needs
+2016           0.0             3615525.0  3264083.0
+2020           0.0             4812360.0  3051648.0
+2025           0.0             6907950.0  5391927.0
+2030     2363564.0             5301450.0  7665014.0
+
+Gas prices (in $/MMBtu)
+      Average gas price  Imported gas price  Local gas price
+2016                6.0                 7.0              6.0
+2020                8.0                 8.0              8.0
+2025               11.0                13.0             11.0
+2030               12.0                15.0             11.0
+
+

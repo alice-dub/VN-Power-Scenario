@@ -1,0 +1,15 @@
+
+              ******************************************
+              ***   Past data characteristics   ***
+              ******************************************
+              
+Gaz prices
+Drift value : -0.013
+Standard Deviation : 0.19
+
+Coal prices
+Drift value : -0.023
+Standard Deviation : 0.23
+
+Correlation factor between the two series: 0.42
+

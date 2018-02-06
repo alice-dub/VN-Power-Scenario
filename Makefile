@@ -8,9 +8,9 @@
 PYTHON = python3
 
 
-tables = table-parameters.fwf table-comparison.fwf table-price-run.fwf
+tables = table-parameters.fwf table-comparison.fwf table-price-run.fwf table-past-data.fwf table-LCOE-prices.fwf
 
-figures = plan_baseline.pdf plan_withCCS.pdf figure-capacities.pdf figure-capacities.png
+figures = plan_baseline.pdf plan_withCCS.pdf figure-capacities.pdf figure-capacities.png price_fuel.pdf price_LCOE_run.pdf
 
 
 all-parallel:
@@ -24,7 +24,11 @@ table-parameters.fwf: param_reference.txt
 table-comparison.fwf: Run.txt
 	head -26 $< | tail -16 > $@
 
-table-price-run.fwf: production_needed_baseline.txt
+table-price-run.fwf: price_fuel.txt
+
+table-past-data.fwf: prices_data_international.txt
+
+table-LCOE-prices.fwf: price_LCOE_run.txt
 
 %.txt: %.py
 	@-sed -i "s/VERBOSE = True/VERBOSE = False/" init.py
