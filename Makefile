@@ -10,7 +10,7 @@ PYTHON = python3
 
 tables = table-parameters.fwf table-comparison.fwf table-price-run.fwf table-past-data.fwf table-LCOE-prices.fwf
 
-figures = plan_baseline.pdf plan_withCCS.pdf figure-capacities.pdf figure-capacities.png figure_prices.pdf price_fuel.pdf price_LCOE_run.pdf
+figures = plan_baseline.pdf plan_withCCS.pdf plan_baseline_2.pdf figure-capacities.pdf figure-capacities.png figure_prices.pdf price_fuel.pdf price_LCOE_run.pdf
 
 
 all-parallel:

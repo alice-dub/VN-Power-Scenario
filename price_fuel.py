@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 from init import pd, start_year, end_year, sources, MBtu
 
 from plan_baseline import baseline
+from plan_baseline_2 import alternative
 
 from param_reference import discount_rate, plant_accounting_life, construction_cost,\
 fixed_operating_cost, variable_operating_cost, heat_rate, heat_price,\
@@ -105,14 +106,16 @@ class Fuel_Price():
     def plot_coal_supply(self, ax):
         """Describe Coal supply of the electric system."""
         (self.needed_production['Coal'] / MBtu).plot(ax=ax,
-                              title="Coal supply for the electric system (in MMBTu)",
+                              title="Coal supply for the electric system (in MMBTu) in \n"
+                              + str(self.scenario) + '\n',
                               label="Coal needs")
         (self.loc_production["Coal"] / MBtu).plot(ax=ax, label="Coal producted in Vietnam")
         (self.needed_importation["Coal"] / MBtu).plot(ax=ax, label="Coal imported")
 
     def plot_coal_price(self, ax):
         """Describe Coal price of the electric system."""
-        (self.average_price['Coal'] * MBtu).plot(ax=ax, title="Coal price (in USD/MMBTu)",
+        (self.average_price['Coal'] * MBtu).plot(ax=ax, title="Coal price (in USD/MMBTu) in \n"
+                          + str(self.scenario) + '\n',
                           label="Average price of Coal for the electric system")
         (self.loc_prices['Coal'] * MBtu).plot(ax=ax, label="Coal produced in Vietnam")
         (self.international_prices["Coal"] * MBtu).plot(ax=ax, label="Imported Coal (Australia)")
@@ -120,14 +123,16 @@ class Fuel_Price():
     def plot_gas_supply(self, ax):
         """Describe Gas supply of the electric system."""
         (self.needed_production['Gas'] / MBtu).plot(ax=ax,
-                              title="Gas supply for the electric system (in MMBTu)",
+                              title="Gas supply for the electric system (in MMBTu) in \n" +
+                              str(self.scenario) + '\n',
                               label="Gas needs")
         (self.loc_production["Gas"] / MBtu).plot(ax=ax, label="Gas producted in Vietnam")
         (self.needed_importation["Gas"] / MBtu).plot(ax=ax, label="Gas imported")
 
     def plot_gas_price(self, ax):
         """Describe Gas price of the electric system."""
-        (self.average_price['Gas']*MBtu).plot(ax=ax, title="Gas price (in USD/MMBTu)",
+        (self.average_price['Gas']*MBtu).plot(ax=ax, title="Gas price (in USD/MMBTu) in \n" +
+                          str(self.scenario) + '\n',
                           label="Average price of Gas for the electric system")
         (self.loc_prices['Gas']*MBtu).plot(ax=ax, label="Gas produced in Vietnam")
         (self.international_prices["Gas"]*MBtu).plot(ax=ax, label="Imported Gas (Japan)")
@@ -138,12 +143,18 @@ class Fuel_Price():
              figsize=[15, 10])
         self.plot_gas_price(ax1)
         ax1.legend(loc='upper left')
+        ax1.set_ylabel('2010 USD / MMBtu')
         self.plot_gas_supply(ax2)
         ax2.legend(loc='upper left')
+        ax2.set_ylabel('MMBtu')
+        ax2.set_ylim([0,1.6*10**9])
         self.plot_coal_price(ax3)
         ax3.legend(loc='upper left')
+        ax3.set_ylabel('2010 USD / MMBtu')
         self.plot_coal_supply(ax4)
         ax4.legend(loc='upper left')
+        ax4.set_ylabel('MMBtu')
+        ax4.set_ylim([0,3*10**9])
         fig.savefig(filename)
 
     def summarize(self):
@@ -173,6 +184,7 @@ class Fuel_Price():
                                    'Imported gas price': self.international_prices["Gas"]*MBtu})
 
         return (
+            "\n Coal and Gas origin and prices for " + str(self.scenario) + '\n\n'
             "Coal supply (in E+8 MMBtu)\n"
             + str(supply_coal.loc[milestones].round()) + '\n\n'
             +"Coal prices (in $/MMBtu)\n"
@@ -187,8 +199,12 @@ if __name__ == '__main__':
     np.random.seed(0)
     new_param = Fuel_Price(local_prices, price_gas, price_coal, local_production,
                            baseline)
+    np.random.seed(0)
+    new_param_alternative = Fuel_Price(local_prices, price_gas, price_coal, local_production,
+                           alternative)
     if (len(sys.argv) == 2) and (sys.argv[1] == "summarize"):
         new_param.summarize()
+        new_param_alternative.summarize()
 
     if (len(sys.argv) == 3) and (sys.argv[1] == "plot"):
         new_param.plot_information(sys.argv[2])

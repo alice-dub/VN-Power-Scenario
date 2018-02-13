@@ -12,6 +12,7 @@ import numpy as  np
 import matplotlib.pyplot as plt
 
 from plan_baseline import baseline
+from plan_baseline_2 import alternative
 from price_fuel import Fuel_Price
 from prices_data_international import price_gas, price_coal
 from prices_data_local import local_prices
@@ -75,12 +76,15 @@ class multiple_LCOE():
         ax.bar(np.arange(len(lcoe)), lcoe, width=1)
         ax.set_ylabel('LCOE in US cent / kWh')
         ax.set_xticks([])
+        ax.set_ylim([0,10.5])
         fig.savefig(filename)
 
 if __name__ == '__main__':
     if (len(sys.argv) == 2) and (sys.argv[1] == "summarize"):
         LCOE_list = multiple_LCOE(baseline, 100)
         LCOE_list.summarize()
+        LCOE_list_alt = multiple_LCOE(alternative, 100)
+        LCOE_list_alt.summarize()
 
     if (len(sys.argv) == 3) and (sys.argv[1] == "plot"):
         LCOE_list = multiple_LCOE(baseline, 100)

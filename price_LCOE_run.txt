@@ -4,3 +4,9 @@
  Mean value : 6.91
  Median value : 6.77
  5 percentile value : 6.35
+
+ LCOE for 100 gas and coal international prices forecasts in Power development program #37fc: Baseline - Alternative2 scenario 
+
+ Mean value : 7.2
+ Median value : 7.07
+ 5 percentile value : 6.63
