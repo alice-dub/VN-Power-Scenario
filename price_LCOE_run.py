@@ -53,14 +53,14 @@ class multiple_LCOE():
         lcoe_values = self.multiple_run()
         mean_value = np.mean(lcoe_values)
         median_value = np.median(lcoe_values)
-        perc_value = np.percentile(lcoe_values, 5)
+        perc_value = np.percentile(lcoe_values, 95)
         return ("\n LCOE for " +
                 str(self.number_run) +
                 " gas and coal international prices forecasts in " +
                 str(self.scenario) + " scenario \n\n" +
                 " Mean value : " + str(round(mean_value, 2)) + "\n" +
                 " Median value : " + str(round(median_value, 2)) + "\n" +
-                " 5 percentile value : " + str(round(perc_value, 2))
+                " 95 percentile value : " + str(round(perc_value, 2))
                 )
     def summarize(self):
         """Print object's summary."""
