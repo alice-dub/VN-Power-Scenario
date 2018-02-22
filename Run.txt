@@ -1,0 +1,57 @@
+
+******************************************
+***             Results                ***
+******************************************
+
+*******************
+
+Parameters #47e724: Reference - median values from OpenEI and IPCC reviews, d=6%, CO2=100$ in 2050
+
+BAU = Power development program #090f: Baseline - PDP7A extended
+ALT = Power development program #2732: With CCS
+
+Present value cost of avoided emissions: 27.3 USD/tCO2eq
+
+               Baseline High CCS difference    Units
+Power produced     6385     6385          0      Twh
+System LCOE        60.5     69.9        9.4  USD/MWh
+Total cost          386      446         60   bn USD
+ Construction       211      268         57   bn USD
+ Fuel cost          109      113          4   bn USD
+ O&M                 75       80          5   bn USD
+ Salvage value       -9      -15         -6   bn USD
+CO2 emissions      11.1      8.9       -2.2  GtCO2eq
+CO2 capture           0      2.7        2.7    GtCO2
+CO2 cost            173      139        -34   bn USD
+Cost with CO2       559      585         26   bn USD
+
+Emissions by source (ktCO2eq)
+            Baseline  High CCS  difference
+Coal          8983.0    6656.0     -2327.0
+Gas           1840.0    1312.0      -528.0
+Oil             50.0      50.0         0.0
+BigHydro        12.0      12.0         0.0
+SmallHydro       3.0       3.0         0.0
+Biomass          4.0       4.0         0.0
+Wind             9.0       9.0         0.0
+Solar           46.0      46.0         0.0
+CoalCCS          0.0     574.0       574.0
+GasCCS           0.0     172.0       172.0
+BioCCS           0.0     -17.0       -17.0
+Import         128.0     128.0         0.0
+
+Average Carbon Intensity (g/kWh)
+      Baseline  High CCS  difference
+2016     498.0     498.0         0.0
+2030     654.0     651.0        -3.0
+2050     546.0     146.0      -400.0
+
+Carbon Captured (Mt)
+      Baseline  High CCS  difference
+2025       0.0       1.0         1.0
+2030       0.0       2.0         2.0
+2035       0.0      23.0        23.0
+2040       0.0     123.0       123.0
+2050       0.0     311.0       311.0
+
+

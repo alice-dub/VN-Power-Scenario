@@ -147,14 +147,14 @@ class Fuel_Price():
         self.plot_gas_supply(ax2)
         ax2.legend(loc='upper left')
         ax2.set_ylabel('MMBtu')
-        ax2.set_ylim([0,1.6*10**9])
+        ax2.set_ylim([0, 1.6*10**9])
         self.plot_coal_price(ax3)
         ax3.legend(loc='upper left')
         ax3.set_ylabel('2010 USD / MMBtu')
         self.plot_coal_supply(ax4)
         ax4.legend(loc='upper left')
         ax4.set_ylabel('MMBtu')
-        ax4.set_ylim([0,3*10**9])
+        ax4.set_ylim([0, 3*10**9])
         fig.savefig(filename)
 
     def summarize(self):

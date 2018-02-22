@@ -76,7 +76,7 @@ class multiple_LCOE():
         ax.bar(np.arange(len(lcoe)), lcoe, width=1)
         ax.set_ylabel('LCOE in US cent / kWh')
         ax.set_xticks([])
-        ax.set_ylim([0,10.5])
+        ax.set_ylim([0, 10.5])
         fig.savefig(filename)
 
 if __name__ == '__main__':

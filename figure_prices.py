@@ -4,7 +4,8 @@ Created on Mon Feb 12 10:14:30 2018
 
 @author: Alice Duval
 
-Plot different average prices for gas and coal fuels according to different international forecasts. 
+Plot different average prices for gas and coal fuels according to
+different international forecasts.
 
 """
 import sys
@@ -17,24 +18,24 @@ from init import MBtu
 
 
 def plot_average_prices(name, source, ax, num_forecasts):
-    np.random.seed(10000)
-    ax.plot(np.arange(2017-len(source),2017), source, linewidth=2.0, color = 'r',
-             label = 'International past prices')
-    ax.plot(np.arange(2016,2050),local_prices[name].loc[2017:2050]* MBtu,
-             linewidth = 2.0, color = 'b', label = 'Local prices (Khanh N., 2017)')
+    """Plot local prices and first international prices trajectories used in the model"""
+    np.random.seed(0)
+    ax.plot(np.arange(2017-len(source), 2017), source, linewidth=2.0, color='r',
+             label='International past prices')
+    ax.plot(np.arange(2016, 2050), local_prices[name].loc[2017:2050]* MBtu,
+             linewidth=2.0, color='b', label='Local prices (Khanh N., 2017)')
     international_prices = international_prices_path(price_gas, price_coal)\
     .international_prices[name]
-    ax.plot(np.arange(2015,2050), international_prices * MBtu, color='grey', label='International prices forcasts', linewidth = 1.0) 
+    ax.plot(np.arange(2015, 2050), international_prices * MBtu, color='grey',\
+            label='International prices forcasts', linewidth=1.0)
     ax.set_xlabel("Year")
     ax.set_ylabel("2010 USD / MBtu")
     ax.legend(loc='upper left')
-    for i in range(num_forecasts):
+    for _ in range(num_forecasts):
         international_prices = international_prices_path(price_gas, price_coal)\
         .international_prices[name]
-        ax.plot(np.arange(2015,2050), international_prices * MBtu, linewidth = 1.0) 
+        ax.plot(np.arange(2015, 2050), international_prices * MBtu, linewidth=1.0)
     ax.set_title("Evolution of " + name + " prices, 1970 - 2050")
-
-    
 
 fig, axarr = plt.subplots(2, 1, figsize=[8, 12])
 fig.suptitle("Coal and Gas prices forecasts", fontsize=15)
