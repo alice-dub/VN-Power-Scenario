@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from init import fuels, sources, technologies, start_year, end_year
 from init import GWh, TWh, MW, GW
 
-#%%
+# %%
 
 
 class PowerPlan(namedtuple('PowerPlan',

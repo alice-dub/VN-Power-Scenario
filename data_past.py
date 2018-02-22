@@ -39,7 +39,7 @@ since the capacity factors are not comparable, neither are the investment costs
 from init import pd, show, fuels, sources, addcol_Renewable, addcol_Renewable4
 
 
-#%% Read data from EVN 2016 activity report
+# %% Read data from EVN 2016 activity report
 # Historical capacity addition
 
 capacity_additions_past = pd.read_fwf("data/capacity_additions_past.txt")
@@ -69,10 +69,12 @@ capacity_past.drop("Dummy", axis=1, inplace=True)
 
 
 def smooth(s):
-    """The benjamin shares apples with all his previous siblings.
+    """Redistribute over time equally a mass concentrated in the last period.
 
     Argument  s  is a numerical series with a numerical value in last position.
     Values are and remain integers;
+
+    Metaphor: the benjamin shares apples with all his previous siblings.
     Assume for example there are 4 brothers and the last one has 10 apples.
     Then he should give each brother 2 apples, keeping 4 for himself.
 
@@ -142,7 +144,7 @@ show(capacity_past[["Coal", "Gas", "Oil", "Hydro", "Renewable"]].cumsum())
 show()
 
 
-#%% read data from International Energy Agency
+# %% read data from International Energy Agency
 
 production_past = pd.read_csv("data/IEA/ElectricityProduction.csv", header=5, index_col=0)
 
@@ -159,7 +161,7 @@ production_past["GasCCS"] = 0
 production_past["BioCCS"] = 0
 
 
-#%% Estimates 2015 production by fuel type
+# %% Estimates 2015 production by fuel type
 # Source Institute of Energy cited in
 # http://gizenergy.org.vn/en/knowledge-resources/power-sector-vietnam
 """The annual electricity production increased to 164.31 TWh in 2015.
@@ -210,7 +212,7 @@ Imports are net of exports
 show(production_past[sources])
 show()
 
-#%%
+# %%
 
 capacity_factor_past = production_past / capacity_past.cumsum() * 1000 / 8760
 capacity_factor_past = capacity_factor_past.loc[1990:]

@@ -1,211 +1,211 @@
-year  id   fuel   name                                   capacity_MW               owner
-2016  1    TD     Nho Que 2                                   48                    IPP
-2016  2    TD     Nho Que 1                                   32                    IPP
-2016  3    TD     Nam Na 3                                    84                    IPP
-2016  4    TD     Nam Toong                                   34                    IPP
-2016  5    TD     Bac Me                                      45                    IPP
-2016  6    TD     Ba Thuoc 1                                  60                    IPP
-2016  7    TD     Song Tranh 3                                62                    IPP
-2016  8    TD     Hu(li Quang #2                             260                    EVN
-2016  9    TD     Lai Chau #2                                400                    EVN
-2016  9    TD     Lai Chau #3                                400                    EVN
-2016  10   TD     Trung San #1                                65                    EVN
-2016  10   TD     Trung San #2                                65                    EVN
-2016  11   TD     Nh\U1Hl;lC                                  59                    IPP
-2016  12   TD     Song Bung 2                                100                    EVN
+year  id   fuel   name                                   capacity_MW         owner
+2016  1    TD     Nho Que 2                                   48             IPP
+2016  2    TD     Nho Que 1                                   32             IPP
+2016  3    TD     Nam Na 3                                    84             IPP
+2016  4    TD     Nam Toong                                   34             IPP
+2016  5    TD     Bac Me                                      45             IPP
+2016  6    TD     Ba Thuoc 1                                  60             IPP
+2016  7    TD     Song Tranh 3                                62             IPP
+2016  8    TD     Hu(li Quang #2                             260             EVN
+2016  9    TD     Lai Chau #2                                400             EVN
+2016  9    TD     Lai Chau #3                                400             EVN
+2016  10   TD     Trung San #1                                65             EVN
+2016  10   TD     Trung San #2                                65             EVN
+2016  11   TD     Nh\U1Hl;lC                                  59             IPP
+2016  12   TD     Song Bung 2                                100             EVN
 2016  13   TD     Sekaman 1 (Lao)                            290           Cty Dien Viêt Lào
-2016  14   TD     Song Tranh 4                                48                    IPP
-2016  15   TD     D1ikMi 2                                    98                    IPP
-2016  16   ND     Formosa Hà Tinh #2                         150          IPP - nhien lieu than
-2016  17   ND     Formosa Hà Tinh #3                         100          IPP - nhien lieu khi lo cao
-2016  17   ND     Formosa Hà Tinh #4                         100          IPP - nhien lieu khi lo cao
-2016  18   ND     Formosa Hà Tinh #5                         150          IPP - nhien lieu than
-2016  19   TD     D1ikMi 3                                    45                    IPP
-2016  20   ND     Formosa Dong Nai #3                        150                    IPP
-2016  21   ND     than Ve Dan                                 60            IPP (dong phat)
-2016  22   ND     Duyen Hai III #1                           600                    EVN
-2016  23   NMDSK  sinh khoi KCP #1                            30                IPP (Phu Yen)
-2016  24   NLTT   Năng lượng tái tạo                         260                  <empty>
-2017  1    TD     ChiKM                                       41                    IPP
-2017  2    TD     LOng T;;to                                  42                    IPP
-2017  3    TD     Trung San #3                                65                    EVN
-2017  3    TD     Trung San #4                                65                    EVN
-2017  4    TD     YenSon                                      70      Cty Co phan Tap doan XD & DL Binh Minh
-2017  5    TD     TrflKMc 1                                   36                    IPP
-2017  6    TD     Sekaman Xanxay (Lao)                        32            Cty CP Diên Viet Lào
-2017  7    TD     Thac Ma rna r(lng                           75                    EVN
-2017  8    ND     Thai Binh I #1                             300                    EVN
-2017  8    ND     Thai Binh I #2                             300                    EVN
-2017  9    ND     Thai Binh II #1                            600                    PVN
-2017  10   ND     Duyen Hlli III #2                          600                    EVN
-2017  11   NDHD   Long Son #1                                 75               IPP (dong phat)
-2017  12   NMDSK  Dien sinh khoi An Khe #1                    55       Cty CP Buang Quang Ngai
-2017  13   NLTT   Năng lượng tái tạo                         360                  <empty>
-2018  1    TD     Song Lo 6                                   44       Cty TNHH Xuan Thien Hà Giang
-2018  2    TD     Hoi Xuan                                   102                    IPP
-2018  3    TD     Song Mi~n 4                                 38                    IPP
-2018  4    TD     La Ngau                                     36       Cty CP thuy dien La Ngau
-2018  5    TD     Dak Mi 1                                    54                    IPP
-2018  6    TD     Da Nhim rna r(lng                          100                    EVN
-2018  7    TD     Sekaman 4 (Lao)                             80       Cty CP Dien Viet Lao
-2018  8    TD     A Lin                                       62                    IPP
-2018  9    ND     Thang Long #1                              300       Cty CP Nhiet dien  Thang Long
-2018  10   ND     Thai Binh II #2                            600                    PVN
-2018  11   ND     Vinh Tan IV #1                             600                    EVN
-2018  11   ND     Vinh Tan IV #2                             600                    EVN
-2018  12   ND     Long Phil I #1                             600                    PVN
+2016  14   TD     Song Tranh 4                                48             IPP
+2016  15   TD     D1ikMi 2                                    98             IPP
+2016  16   ND     Formosa Hà Tinh #2                         150              IPP - nhien lieu than
+2016  17   ND     Formosa Hà Tinh #3                         100              IPP - nhien lieu khi lo cao
+2016  17   ND     Formosa Hà Tinh #4                         100              IPP - nhien lieu khi lo cao
+2016  18   ND     Formosa Hà Tinh #5                         150              IPP - nhien lieu than
+2016  19   TD     D1ikMi 3                                    45              IPP
+2016  20   ND     Formosa Dong Nai #3                        150              IPP
+2016  21   ND     than Ve Dan                                 60              IPP (dong phat)
+2016  22   ND     Duyen Hai III #1                           600              EVN
+2016  23   NMDSK  sinh khoi KCP #1                            30              IPP (Phu Yen)
+2016  24   NLTT   Năng lượng tái tạo                         260              <empty>
+2017  1    TD     ChiKM                                       41              IPP
+2017  2    TD     LOng T;;to                                  42              IPP
+2017  3    TD     Trung San #3                                65              EVN
+2017  3    TD     Trung San #4                                65              EVN
+2017  4    TD     YenSon                                      70              Cty Co phan Tap doan XD & DL Binh Minh
+2017  5    TD     TrflKMc 1                                   36              IPP
+2017  6    TD     Sekaman Xanxay (Lao)                        32              Cty CP Diên Viet Lào
+2017  7    TD     Thac Ma rna r(lng                           75              EVN
+2017  8    ND     Thai Binh I #1                             300              EVN
+2017  8    ND     Thai Binh I #2                             300              EVN
+2017  9    ND     Thai Binh II #1                            600              PVN
+2017  10   ND     Duyen Hlli III #2                          600              EVN
+2017  11   NDHD   Long Son #1                                 75              IPP (dong phat)
+2017  12   NMDSK  Dien sinh khoi An Khe #1                    55              Cty CP Buang Quang Ngai
+2017  13   NLTT   Năng lượng tái tạo                         360              <empty>
+2018  1    TD     Song Lo 6                                   44              Cty TNHH Xuan Thien Hà Giang
+2018  2    TD     Hoi Xuan                                   102              IPP
+2018  3    TD     Song Mi~n 4                                 38              IPP
+2018  4    TD     La Ngau                                     36              Cty CP thuy dien La Ngau
+2018  5    TD     Dak Mi 1                                    54              IPP
+2018  6    TD     Da Nhim rna r(lng                          100              EVN
+2018  7    TD     Sekaman 4 (Lao)                             80              Cty CP Dien Viet Lao
+2018  8    TD     A Lin                                       62              IPP
+2018  9    ND     Thang Long #1                              300              Cty CP Nhiet dien  Thang Long
+2018  10   ND     Thai Binh II #2                            600              PVN
+2018  11   ND     Vinh Tan IV #1                             600              EVN
+2018  11   ND     Vinh Tan IV #2                             600              EVN
+2018  12   ND     Long Phil I #1                             600              PVN
 2018  13   NDHD   Long Son #2                                 75              IPP (dong phat)
 2018  13   NDHD   Long Son #3                                 75              IPP (dong phat)
 2018  14   NMDSK  sinh khoi KCP #2                            30              IPP (Phu Yen)
-2018  15   NMDSK  Dien sinh khoi An Khe #2                    55       Cty CP Duong Quang Ngai
-2018  16   NMDSK  sinh khoi Lee&Man                          125       Cty TNHH Giay Lee & Man  Viet Nam
-2018  17   DG     Dien gio Khai Long (Cit Mau)               100       Cty TNHH XD - TM - DL  Cong Ly
-2018  18   DG     Bac Lieu giai dO?l1 III                    142       Cty TNHH XD - TM - DL  Cong Ly
-2018  19   NLTT   Năng lượng tái tạo                         520                 <empty>
-2019  1    TD     Bao Lam 3                                   46                IPP
-2019  2    TD     Pac Ma                                     140       Cty CP thuy dien Pac Ma
-2019  3    TD     Thugng Kon Tum #1                          110                EVN           
-2019  3    TD     Thugng Kon Tum #2                          110                EVN                             
-2019  4    ND     Thang Long #2                              300       Cty CP Nhiet dien Thang Long
-2019  5    ND     d6ng phat Hai Hit 1                         50               IPP (trong KCN)
-2019  5    ND     d6ng phat Hai Hit 1                         50               IPP (trong KCN)
-2019  5    ND     d6ng phat Hai Hit 1                         50               IPP (trong KCN)
-2019  6    ND     Na Duong II                                110                 Vinacomin
-2019  7    ND     Long PM I #2                               600                    PVN
-2019  8    ND     Song H~u I #1                              600                    PVN
-2019  8    ND     Song H~u I #2                              600                    PVN
-2019  9    ND     Duyen Hai III rna r9ng                     660                    EVN   
-2019  10   ND     Vinh Tan I #1                              600       CSG - CPIH - Vinacomin  (BOT)
-2019  10   ND     Vinh Tan I #2                              600       CSG - CPIH - Vinacomin  (BOT)
-2019  11   ND     Vinh Tan IV rna r9ng                       600                    EVN
-2019  12   TDN    Cum TDN Nam Cum 1, 4, 5                     65                    IPP
-2019  13   DG     Dien gio Trung - Nam                        90            IPP (Ninh Thuan)
-2019  14   DG     Dien gio Soc Trang                          99          Cty TNHH XD - TM - DL Cong Ly
-2019  15   DMT    Dien mặt trời Thien Tan 1                  300           IPP (Ninh Thuan)
-2019  16   NLTT   Năng lượng tái tạo                         450                 <empty>
-2020  1    TD     N~Pan5                                      35                    IPP
-2020  2    TD     N~ Mo (Vi~t Nam)                            95                    IPP
-2020  3    TD     Ialy rna r9ng                              360                    EVN
-2020  4    ND     Formosa Hà Tinh #6                         150          IPP - nhien lieu than
-2020  4    ND     Formosa Hà Tinh #7                         150          IPP - nhien lieu than
-2020  5    ND     Formosa Hà Tinh #8                         100          IPP - nhien lieu khi lo cao
-2020  5    ND     Formosa Hà Tinh #9                         100          IPP - nhien lieu khi lo cao
-2020  6    ND     Formosa Hà Tinh #10                        150          IPP - nhien lieu than
-2020  7    ND     Hai Duong #1                               600       aks Resources Bbd (BOT)
+2018  15   NMDSK  Dien sinh khoi An Khe #2                    55              Cty CP Duong Quang Ngai
+2018  16   NMDSK  sinh khoi Lee&Man                          125              Cty TNHH Giay Lee & Man  Viet Nam
+2018  17   DG     Dien gio Khai Long (Cit Mau)               100              Cty TNHH XD - TM - DL  Cong Ly
+2018  18   DG     Bac Lieu giai dO?l1 III                    142              Cty TNHH XD - TM - DL  Cong Ly
+2018  19   NLTT   Năng lượng tái tạo                         520              <empty>
+2019  1    TD     Bao Lam 3                                   46              IPP
+2019  2    TD     Pac Ma                                     140              Cty CP thuy dien Pac Ma
+2019  3    TD     Thugng Kon Tum #1                          110              EVN           
+2019  3    TD     Thugng Kon Tum #2                          110              EVN                             
+2019  4    ND     Thang Long #2                              300              Cty CP Nhiet dien Thang Long
+2019  5    ND     d6ng phat Hai Hit 1                         50              IPP (trong KCN)
+2019  5    ND     d6ng phat Hai Hit 1                         50              IPP (trong KCN)
+2019  5    ND     d6ng phat Hai Hit 1                         50              IPP (trong KCN)
+2019  6    ND     Na Duong II                                110              Vinacomin
+2019  7    ND     Long PM I #2                               600              PVN
+2019  8    ND     Song H~u I #1                              600              PVN
+2019  8    ND     Song H~u I #2                              600              PVN
+2019  9    ND     Duyen Hai III rna r9ng                     660              EVN   
+2019  10   ND     Vinh Tan I #1                              600              CSG - CPIH - Vinacomin  (BOT)
+2019  10   ND     Vinh Tan I #2                              600              CSG - CPIH - Vinacomin  (BOT)
+2019  11   ND     Vinh Tan IV rna r9ng                       600              EVN
+2019  12   TDN    Cum TDN Nam Cum 1, 4, 5                     65              IPP
+2019  13   DG     Dien gio Trung - Nam                        90              IPP (Ninh Thuan)
+2019  14   DG     Dien gio Soc Trang                          99              Cty TNHH XD - TM - DL Cong Ly
+2019  15   DMT    Dien mặt trời Thien Tan 1                  300              IPP (Ninh Thuan)
+2019  16   NLTT   Năng lượng tái tạo                         450              <empty>
+2020  1    TD     N~Pan5                                      35              IPP
+2020  2    TD     N~ Mo (Vi~t Nam)                            95              IPP
+2020  3    TD     Ialy rna r9ng                              360              EVN
+2020  4    ND     Formosa Hà Tinh #6                         150              IPP - nhien lieu than
+2020  4    ND     Formosa Hà Tinh #7                         150              IPP - nhien lieu than
+2020  5    ND     Formosa Hà Tinh #8                         100              IPP - nhien lieu khi lo cao
+2020  5    ND     Formosa Hà Tinh #9                         100              IPP - nhien lieu khi lo cao
+2020  6    ND     Formosa Hà Tinh #10                        150              IPP - nhien lieu than
+2020  7    ND     Hai Duong #1                               600              aks Resources Bbd (BOT)
 2020  8    ND     d.m PM III #1                              220              Vinacomin
 2020  8    ND     d.m PM III #2                              220              Vinacomin
-2020  9    ND     Cong Thanh                                 600       Cty Co phan Nhiet diên Cong Thanh
-2020  10   TBKHH  O Mon III                                  750                    EVN
-2020  11   TDN    Cum TDN Nam Cum 2, 3, 6                     54                    IPP
-2020  12   DG     Dien gio Hanbaram                          117                    IPP
-2020  13   DMT    Dien mặt trời Thien Tan 2                  400            IPP (Ninh Thuan)
-2020  14   NLTT   Năng lượng tái tạo                         470                 <empty>
-2021  1    TD     MyLy                                       250                  IPP
-2021  2    TD     Hoa Binh rna rQng #1                       240                  EVN
-2021  3    ND     Nghi Son II #1                             600       Marubeni - Kepco (BOT)
-2021  4    ND     Viing Ang II #1                            600            VAPCO (BOT)
-2021  5    ND     Hai Duong #2                               600       Jaks Resources Bhd (BOT)
-2021  6    ND     Nam Dinh I #1                              600     Taekwang Power Holdings - ACWA Power (BOT)
-2021  7    ND     Quang Tr\l.ch 1#1                          600                  PVN
-2021  8    TBKHH  Kien Giang I                               750                  PVN
-2021  9    TBKHH  6 Mon IV                                   750                  EVN
-2021  10   ND     Duyen Hai II #1                            600       Janakuasa SDN BHD (BOT)
-2021  10   ND     Duyen Hai II #2                            600       Janakuasa SDN BHD (BOT)
-2021  11   ND     Song H~u II #1                            1000           Toyo Ink (BOT)
-2021  12   ND     Long PM II #1                              660          TATA Power (BOT)
-2021  13   ND     Long Phu III #1                            600                  PVN
-2021  14   ND     Uong Bf ngimg philt dien                   105                  EVN
-2021  15   DMT    Diện mặt trời Thien Tân 3                  300           IPP (Ninh Thuan)
-2021  16   NLTT   Năng lượng tái tạo                         790               <empty>
-2022  1    TD     Ban M6ng (Song Hi~u)                        60                  IPP
-2022  2    TD     Hoa Binh rna rQng #2                       240                  EVN
-2022  3    TD     Dak Re                                      60                  IPP
-2022  4    ND     d6ng pMt Hili Ha 2                         150                  IPP
-2022  4    ND     d6ng pMt Hili Ha 2                         150                  IPP
-2022  4    ND     d6ng pMt Hili Ha 2                         150                  IPP
-2022  4    ND     d6ng pMt Hili Ha 2                         150                  IPP
-2022  4    ND     d6ng pMt Hili Ha 2                         150                  IPP
-2022  5    ND     L\lC Nam #1                                 50                  IPP
+2020  9    ND     Cong Thanh                                 600              Cty Co phan Nhiet diên Cong Thanh
+2020  10   TBKHH  O Mon III                                  750              EVN
+2020  11   TDN    Cum TDN Nam Cum 2, 3, 6                     54              IPP
+2020  12   DG     Dien gio Hanbaram                          117              IPP
+2020  13   DMT    Dien mặt trời Thien Tan 2                  400              IPP (Ninh Thuan)
+2020  14   NLTT   Năng lượng tái tạo                         470              <empty>
+2021  1    TD     MyLy                                       250              IPP
+2021  2    TD     Hoa Binh rna rQng #1                       240              EVN
+2021  3    ND     Nghi Son II #1                             600              Marubeni - Kepco (BOT)
+2021  4    ND     Viing Ang II #1                            600              VAPCO (BOT)
+2021  5    ND     Hai Duong #2                               600              Jaks Resources Bhd (BOT)
+2021  6    ND     Nam Dinh I #1                              600              Taekwang Power Holdings - ACWA Power (BOT)
+2021  7    ND     Quang Tr\l.ch 1#1                          600              PVN
+2021  8    TBKHH  Kien Giang I                               750              PVN
+2021  9    TBKHH  6 Mon IV                                   750              EVN
+2021  10   ND     Duyen Hai II #1                            600              Janakuasa SDN BHD (BOT)
+2021  10   ND     Duyen Hai II #2                            600              Janakuasa SDN BHD (BOT)
+2021  11   ND     Song H~u II #1                            1000              Toyo Ink (BOT)
+2021  12   ND     Long PM II #1                              660              TATA Power (BOT)
+2021  13   ND     Long Phu III #1                            600              PVN
+2021  14   ND     Uong Bf ngimg philt dien                   105              EVN
+2021  15   DMT    Diện mặt trời Thien Tân 3                  300              IPP (Ninh Thuan)
+2021  16   NLTT   Năng lượng tái tạo                         790              <empty>
+2022  1    TD     Ban M6ng (Song Hi~u)                        60              IPP
+2022  2    TD     Hoa Binh rna rQng #2                       240              EVN
+2022  3    TD     Dak Re                                      60              IPP
+2022  4    ND     d6ng pMt Hili Ha 2                         150              IPP
+2022  4    ND     d6ng pMt Hili Ha 2                         150              IPP
+2022  4    ND     d6ng pMt Hili Ha 2                         150              IPP
+2022  4    ND     d6ng pMt Hili Ha 2                         150              IPP
+2022  4    ND     d6ng pMt Hili Ha 2                         150              IPP
+2022  5    ND     L\lC Nam #1                                 50              IPP
 2022  6    ND     Quynh L~p I #1                             600              Vinacomin
-2022  7    ND     Viing Ang II #2                            600            VAPCO (BOT)
-2022  8    ND     Nghi Son II #2                             600        Marubeni - Kepco (BOT)
-2022  9    ND     Nam Dinh I #2                              600     Taekwang Power Holdings - ACWA Power (BOT)
-2022  10   ND     Quang Tr~eh I #2                           600                  PVN
-2022  11   ND     Vinh Tan III #1                            660            VTEC (BOT)
-2022  12   ND     Song H~u II #2                            1000          Toyo Ink (BOT)
-2022  13   ND     Long PM II #2                              660         TATA Power(BOT)
-2022  14   ND     Long Phu III #2                            600                  PVN
-2022  14   ND     Long Phu III #3                            600                  PVN
-2022  15   ND     Van Phong I #1                             660          Sumitomo (BOT)
-2022  16   TBKHH  Kien Giang II                              750                  PVN
+2022  7    ND     Viing Ang II #2                            600              VAPCO (BOT)
+2022  8    ND     Nghi Son II #2                             600              Marubeni - Kepco (BOT)
+2022  9    ND     Nam Dinh I #2                              600              Taekwang Power Holdings - ACWA Power (BOT)
+2022  10   ND     Quang Tr~eh I #2                           600              PVN
+2022  11   ND     Vinh Tan III #1                            660              VTEC (BOT)
+2022  12   ND     Song H~u II #2                            1000              Toyo Ink (BOT)
+2022  13   ND     Long PM II #2                              660              TATA Power(BOT)
+2022  14   ND     Long Phu III #2                            600              PVN
+2022  14   ND     Long Phu III #3                            600              PVN
+2022  15   ND     Van Phong I #1                             660              Sumitomo (BOT)
+2022  16   TBKHH  Kien Giang II                              750              PVN
 2022  17   NLTT   Năng lượng tái tạo                        1200              <empty>
-2023  1    TD     cot nu6e th~p PM Th9                       105       Cty Co phk T~p doan  XD & DL Binh Minh
+2023  1    TD     cot nu6e th~p PM Th9                       105              Cty Co phk T~p doan  XD & DL Binh Minh
 2023  2    ND     Quynh L~p I #2                             600             Vinacomin
-2023  3    ND     L\le Nam #2                                 50                 IPP
-2023  4    ND     Quang Tri #1                               600           EGATi (BOT)
-2023  5    TBKHH  Miên Trung I                               750                 PVN
-2023  6    TBKHH  Dung Quat I                                750          Sembcorp (BOT)
-2023  7    ND     Vinh Tan III #2                            660           VTEC (BOT)
-2023  7    ND     Vinh Tan III #3                            660           VTEC (BOT)
-2023  8    ND     Van Phong I #2                             660          Sumitomo (BOT)
-2023  9    TBKHH  Son My II #1                               750                 PVN
-2023  10   TDTN   Bac Ai #1                                  300                 EVN
-2023  10   TDTN   Bac Ai #2                                  300                 EVN
-2023  11   NLTT   Năng lượng tái tạo                        1000               <empty>
-2024  1    ND     Vung Ang III #1                            600       Samsung C&T (BOT)
-2024  2    ND     Quang Tri #2                               600           EGATi (BOT)
-2024  3    TBKHH  Miên Trung II                              750                 PVN
-2024  4    TBKHH  Dung Quat II                               750       Sembcorp (BOT)
-2024  5    ND     Long An I #1                               600                 <empty>
-2024  6    TBKHH  San My II #2                               750                 PVN
-2024  7    NLTT   Năng lượng tái tạo                        1200                 <empty>
-2025  1    TD     Tri An mo rong                             200                 EVN
-2025  2    ND     Hai PhOng III #1                           600          Vinacomin
-2025  3    ND     dAng pMt Hai Ha 3                          300                 IPP
-2025  3    ND     dAng pMt Hai Ha 3                          300                 IPP
-2025  4    ND     dAng pMt Rll-llg Dong                      100                 IPP
-2025  5    ND     Viing Aug III #2                           600       Samsung C&T (BOT)
-2025  6    ND     Long An I #2                               600            <empty>
-2025  7    TBKHH  Son My II #3                               750                PVN
-2025  8    TDTN   Bac Ai #3                                  300                EVN
-2025  8    TDTN   Bac Ai #4                                  300                EVN
-2025  9    NLTT   Năng lượng tái tạo                        1800                <empty>
-2026  1    TD     N~M 1 (Lao)                                 72                IPP
-2026  2    ND     H:l.i PhOng III #2                         600            Vinacomin
-2026  3    ND     QuYnh L?p II #1                            600               BOT
-2026  4    TBKHH  Mien Trung III                             750       PVN (neu khi cho hoa dau khong kha thi)
-2026  5    ND     Long An II #1                              800               <empty>
-2026  6    TBKHH  Ô Môn II                                   750               <empty>
-2026  7    TBKHH  Son My I #1                                750       GDF SUEZ/Sojitz-Pacific (BOT)
-2026  8    NLTT   Năng lượng tái tạo                        2160               <empty>
-2027  1    ND     Quynh Lap II #2                            600               BOT
-2027  2    TBKHH  Son My I #2                                750       GDF SUEZ/Sojitz-Pacific (BOT)
-2027  3    ND     Long An II #2                              800               <empty>
-2027  4    ND     Tan Phuoc 1#1                              600               <empty>
-2027  5    NLTT   Nang lugng tai                            2910               <empty>
-2028  1    TDTN   Dong Phu Yen #1                            300       Cty Xuan Thien
-2028  2    ND     dong phat Hai Hà 4                         300               IPP
-2028  2    ND     dong phat Hai Hà 4                         300               IPP
-2028  3    ND     Quang Trach II #1                          600               <empty>
-2028  4    DHN    Ninh Thuận I #1                           1200               EVN
-2028  5    ND     Tan Phuoc I #2                             600               <empty>
-2028  6    ND*    Tan Phuoc II #1 (*)                        600               <empty>
-2028  7    TBKHH  Son My I #3                                750       GDF SUEZ/Sojitz-Pacific  (BOT)
-2028  8    NLTT   Năng lượng tái tạo                        3240               <empty>
-2029  1    TDTN   Dong Phu Yen #2                            300       Cty Xuan Thien
-2029  2    ND     Quang Ninh III #1                          600               <empty>
-2029  3    ND*    Vung Ang III #3 (*)                        600               <empty>
-2029  4    ND     Quang TrllCh II #2                         600               <empty>
-2029  5    ND*    Tan Phuac II #2 (*)                        600               <empty>
-2029  6    ND*    Bac Lieu 1#1 (*)                           600               <empty>
-2029  7    DHN    Ninh Thuận I #2                           1200               EVN
-2029  8    DHN    Ninh Thuận II #1                          1100               EVN 
-2029  9    NLTT   Năng lượng tái tạo                        3350               <empty>
-2030  1    TD     Huoi Tao                                   180               <empty>
-2030  2    TDTN   Dong Phu Yen #3                            300       Cty Xuan Thien
-2030  3    TDTN   Don Duong #1                               300               EVN
-2030  4    ND     Quang Ninh III #2                          600               <empty>
-2030  5    ND*    Vung Ang III #4 (*)                        600               <empty>
-2030  6    ND*    Bac Lieu I #2 (*)                          600               <empty>
-2030  7    DHN    Ninh Thuận II #2                          1100               EVN
-2030  8    NLTT   Năng lượng tái tạo                        3530               <empty>
+2023  3    ND     L\le Nam #2                                 50              IPP
+2023  4    ND     Quang Tri #1                               600              EGATi (BOT)
+2023  5    TBKHH  Miên Trung I                               750              PVN
+2023  6    TBKHH  Dung Quat I                                750              Sembcorp (BOT)
+2023  7    ND     Vinh Tan III #2                            660              VTEC (BOT)
+2023  7    ND     Vinh Tan III #3                            660              VTEC (BOT)
+2023  8    ND     Van Phong I #2                             660              Sumitomo (BOT)
+2023  9    TBKHH  Son My II #1                               750              PVN
+2023  10   TDTN   Bac Ai #1                                  300              EVN
+2023  10   TDTN   Bac Ai #2                                  300              EVN
+2023  11   NLTT   Năng lượng tái tạo                        1000              <empty>
+2024  1    ND     Vung Ang III #1                            600              Samsung C&T (BOT)
+2024  2    ND     Quang Tri #2                               600              EGATi (BOT)
+2024  3    TBKHH  Miên Trung II                              750              PVN
+2024  4    TBKHH  Dung Quat II                               750              Sembcorp (BOT)
+2024  5    ND     Long An I #1                               600              <empty>
+2024  6    TBKHH  San My II #2                               750              PVN
+2024  7    NLTT   Năng lượng tái tạo                        1200              <empty>
+2025  1    TD     Tri An mo rong                             200              EVN
+2025  2    ND     Hai PhOng III #1                           600              Vinacomin
+2025  3    ND     dAng pMt Hai Ha 3                          300              IPP
+2025  3    ND     dAng pMt Hai Ha 3                          300              IPP
+2025  4    ND     dAng pMt Rll-llg Dong                      100              IPP
+2025  5    ND     Viing Aug III #2                           600              Samsung C&T (BOT)
+2025  6    ND     Long An I #2                               600             <empty>
+2025  7    TBKHH  Son My II #3                               750              PVN
+2025  8    TDTN   Bac Ai #3                                  300              EVN
+2025  8    TDTN   Bac Ai #4                                  300              EVN
+2025  9    NLTT   Năng lượng tái tạo                        1800              <empty>
+2026  1    TD     N~M 1 (Lao)                                 72              IPP
+2026  2    ND     H:l.i PhOng III #2                         600              Vinacomin
+2026  3    ND     QuYnh L?p II #1                            600              BOT
+2026  4    TBKHH  Mien Trung III                             750              PVN (neu khi cho hoa dau khong kha thi)
+2026  5    ND     Long An II #1                              800              <empty>
+2026  6    TBKHH  Ô Môn II                                   750              <empty>
+2026  7    TBKHH  Son My I #1                                750             GDF SUEZ/Sojitz-Pacific (BOT)
+2026  8    NLTT   Năng lượng tái tạo                        2160              <empty>
+2027  1    ND     Quynh Lap II #2                            600              BOT
+2027  2    TBKHH  Son My I #2                                750             GDF SUEZ/Sojitz-Pacific (BOT)
+2027  3    ND     Long An II #2                              800              <empty>
+2027  4    ND     Tan Phuoc 1#1                              600              <empty>
+2027  5    NLTT   Nang lugng tai                            2910              <empty>
+2028  1    TDTN   Dong Phu Yen #1                            300              Cty Xuan Thien
+2028  2    ND     dong phat Hai Hà 4                         300              IPP
+2028  2    ND     dong phat Hai Hà 4                         300              IPP
+2028  3    ND     Quang Trach II #1                          600              <empty>
+2028  4    DHN    Ninh Thuận I #1                           1200              EVN
+2028  5    ND     Tan Phuoc I #2                             600              <empty>
+2028  6    ND*    Tan Phuoc II #1 (*)                        600              <empty>
+2028  7    TBKHH  Son My I #3                                750              GDF SUEZ/Sojitz-Pacific  (BOT)
+2028  8    NLTT   Năng lượng tái tạo                        3240              <empty>
+2029  1    TDTN   Dong Phu Yen #2                            300              Cty Xuan Thien
+2029  2    ND     Quang Ninh III #1                          600              <empty>
+2029  3    ND*    Vung Ang III #3 (*)                        600              <empty>
+2029  4    ND     Quang TrllCh II #2                         600              <empty>
+2029  5    ND*    Tan Phuac II #2 (*)                        600              <empty>
+2029  6    ND*    Bac Lieu 1#1 (*)                           600              <empty>
+2029  7    DHN    Ninh Thuận I #2                           1200              EVN
+2029  8    DHN    Ninh Thuận II #1                          1100              EVN 
+2029  9    NLTT   Năng lượng tái tạo                        3350              <empty>
+2030  1    TD     Huoi Tao                                   180              <empty>
+2030  2    TDTN   Dong Phu Yen #3                            300              Cty Xuan Thien
+2030  3    TDTN   Don Duong #1                               300              EVN
+2030  4    ND     Quang Ninh III #2                          600              <empty>
+2030  5    ND*    Vung Ang III #4 (*)                        600              <empty>
+2030  6    ND*    Bac Lieu I #2 (*)                          600              <empty>
+2030  7    DHN    Ninh Thuận II #2                          1100              EVN
+2030  8    NLTT   Năng lượng tái tạo                        3530              <empty>
