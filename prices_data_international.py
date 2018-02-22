@@ -7,9 +7,8 @@ Created on Mon Jan  8 11:44:08 2018
 Prices are in $/mt (in 2017 US dollars and metric ton) for Coal based on Australian prices and
 in $/mmbtu for Gas based on Japan prices.
 
-Data come from World Bank database
-
-ISSUE TO SOLVE : These prices are smaller than local prices
+Data has to be choose in the beginning of this script by uncomment the right one
+They are from the World Bank (WB), British Petroleum (BP) or US Energy Information Agency (EIA)
 """
 
 import sys
@@ -18,14 +17,30 @@ import numpy as np
 from scipy.stats import norm
 from init import pd, start_year, end_year, t, MBtu, calorific_power
 
+international_past_data = {}
+
+# FROM WB
+international_past_data["path_data"] = "data/Oil_Gas_prices/data_prices_international_past_WB.csv"
+international_past_data["ini_year_Gas"] = 1977
+international_past_data["ini_year_Coal"] = 1970
+
+# FROM BP
+#international_past_data["path_data"] = "data/Oil_Gas_prices/data_prices_international_past_BP.csv"
+#international_past_data["ini_year_Gas"] = 1977
+#international_past_data["ini_year_Coal"] = 1970
+
+# FROM EIA
+#international_past_data["path_data"] = "data/Oil_Gas_prices/data_\
+#prices_international_past_EIA.csv"
+#international_past_data["ini_year_Gas"] = 1970
+#international_past_data["ini_year_Coal"] = 1960
 
 #%%Monte Carlo characteristics : 35 forcasted prices from 2016 to 2050
 for_values = end_year - start_year +1
 
-#Collect of data
 
-international_prices_data = pd.read_csv("data/Oil_Gas_prices/data_prices_international_past.csv",
-                        index_col=0)
+#Collect of data
+international_prices_data = pd.read_csv(international_past_data["path_data"], index_col=0)
 
 international_prices_data.columns = ["Gas", "Coal"]
 
@@ -33,8 +48,10 @@ x = np.array(international_prices_data.index)
 y_coal = np.array(international_prices_data.Coal) / (calorific_power["Coal_international"] * t)
 y_gas = np.array(international_prices_data.Gas) / MBtu
 
-price_gas = pd.DataFrame({'Price_Gas': international_prices_data['Gas']}).loc[1977:2016] / (MBtu)
-price_coal = pd.DataFrame({'Price_Coal': international_prices_data['Coal']}).loc[1970:2016]\
+price_gas = pd.DataFrame({'Price_Gas': international_prices_data['Gas']})\
+            .loc[international_past_data["ini_year_Gas"]:2016] / (MBtu)
+price_coal = pd.DataFrame({'Price_Coal': international_prices_data['Coal']})\
+            .loc[international_past_data["ini_year_Coal"]:2016]\
 /(calorific_power["Coal_international"] * t)
 coal = []
 gas = []
