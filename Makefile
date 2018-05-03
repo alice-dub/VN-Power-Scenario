@@ -9,9 +9,9 @@ PYTHON = python3
 COVERAGE = python3-coverage
 
 
-tables = table-parameters.fwf table-comparison.fwf
+tables = table-parameters.fwf table-comparison.fwf table-price-run.fwf table-past-data.fwf table-LCOE-prices.fwf
 
-figures = plan_baseline.pdf plan_withCCS.pdf figure-capacities.pdf figure-capacities.png
+figures = plan_baseline.pdf plan_withCCS.pdf plan_baseline_2.pdf figure-capacities.pdf figure-capacities.png figure_prices.pdf price_fuel.pdf price_LCOE_run.pdf
 
 
 all-parallel:
@@ -25,6 +25,12 @@ table-parameters.fwf: param_reference.txt
 table-comparison.fwf: Run.txt
 	head -26 $< | tail -16 > $@
 
+table-price-run.fwf: price_fuel.txt
+
+table-past-data.fwf: prices_data_international.txt
+
+table-LCOE-prices.fwf: price_LCOE_run.txt
+
 %.txt: %.py
 	@-sed -i "s/VERBOSE = True/VERBOSE = False/" init.py
 	$(PYTHON) $< summarize > $@
@@ -36,17 +42,17 @@ table-comparison.fwf: Run.txt
 	$(PYTHON) $< plot $@
 
 test: cleaner
-	py.test-3 --doctest-modules
+	py.test --doctest-modules
 
 coverage: coverage.xml
 	$(COVERAGE) html
 	see htmlcov/index.html
 
 coverage.xml:
-	py.test-3 --doctest-modules --cov=. --cov-report term-missing --cov-report xml
+	py.test --doctest-modules --cov=. --cov-report term-missing --cov-report xml
 
 regtest-reset:
-	py.test-3 --regtest-reset
+	py.test --regtest-reset
 
 lint:
 	pylint3 *py
@@ -71,7 +77,7 @@ clean:
 
 cleaner: clean
 	find . -type f -name '*.pyc' -delete
-	rm -f Run.txt param_reference.txt 
+	rm -f Run.txt param_reference.txt table-price-run.txt
 	rm -rf __pycache__
 	rm -f *.bak
 	rm -rf .coverage coverage.xml htmlcov
